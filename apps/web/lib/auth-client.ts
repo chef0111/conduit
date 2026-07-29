@@ -1,3 +1,3 @@
-"use client";
+'use client';
 
-export { authClient, createAppAuthClient } from "@repo/auth/client";
+export { authClient, createAppAuthClient } from '@repo/auth/client';

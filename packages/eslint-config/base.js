@@ -1,14 +1,14 @@
-import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import turboPlugin from "eslint-plugin-turbo";
-import tseslint from "typescript-eslint";
-import onlyWarn from "eslint-plugin-only-warn";
+import js from '@eslint/js';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import turboPlugin from 'eslint-plugin-turbo';
+import tseslint from 'typescript-eslint';
 
 /**
- * A shared ESLint configuration for the repository.
+ * Shared ESLint baseline for the monorepo (TypeScript + Prettier + import sort).
  *
  * @type {import("eslint").Linter.Config[]}
- * */
+ */
 export const config = [
   js.configs.recommended,
   eslintConfigPrettier,
@@ -18,15 +18,27 @@ export const config = [
       turbo: turboPlugin,
     },
     rules: {
-      "turbo/no-undeclared-env-vars": "warn",
+      'turbo/no-undeclared-env-vars': 'warn',
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          prefer: 'type-imports',
+          fixStyle: 'separate-type-imports',
+        },
+      ],
+      '@typescript-eslint/no-import-type-side-effects': 'error',
     },
   },
   {
     plugins: {
-      onlyWarn,
+      'simple-import-sort': simpleImportSort,
+    },
+    rules: {
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
     },
   },
   {
-    ignores: ["dist/**"],
+    ignores: ['dist/**', '.turbo/**', 'coverage/**'],
   },
 ];

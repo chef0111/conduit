@@ -1,4 +1,4 @@
-import { z } from "@repo/zod";
+import { z } from '@repo/zod';
 
 export const signInEmailSchema = z.object({
   email: z.string().email(),

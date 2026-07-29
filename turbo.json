@@ -1,16 +1,28 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
+  "globalEnv": [
+    "DATABASE_URL",
+    "DATABASE_DIRECT_URL",
+    "PORT",
+    "SERVER_URL",
+    "NEXT_PUBLIC_SERVER_URL",
+    "BETTER_AUTH_SECRET",
+    "BETTER_AUTH_URL",
+    "BETTER_AUTH_TRUSTED_ORIGIN",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GITHUB_CLIENT_ID",
+    "GITHUB_CLIENT_SECRET",
+    "RESEND_API_KEY",
+    "AUTH_EMAIL_FROM",
+    "NODE_ENV"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [
-        "dist/**",
-        ".next/**",
-        "!.next/cache/**",
-        "!.next/dev/**"
-      ]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "!.next/dev/**"]
     },
     "generate": {
       "cache": false,

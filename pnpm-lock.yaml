@@ -14,6 +14,9 @@ importers:
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
+      prettier-plugin-tailwindcss:
+        specifier: ^0.8.1
+        version: 0.8.1(prettier@3.7.4)
       turbo:
         specifier: ^2.10.6
         version: 2.10.6
@@ -66,6 +69,9 @@ importers:
       '@nestjs/schematics':
         specifier: ^11.0.7
         version: 11.1.0(@typescript/typescript6@6.0.2)(chokidar@4.0.3)(prettier@3.7.4)
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -78,6 +84,9 @@ importers:
       '@typescript/native':
         specifier: npm:typescript@^7.0.2
         version: typescript@7.0.2
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.1(jiti@2.7.0)
       typescript:
         specifier: npm:@typescript/typescript6@^6.0.2
         version: '@typescript/typescript6@6.0.2'
@@ -108,6 +117,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.101.4
         version: 5.101.4(react@19.2.8)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.101.4
+        version: 5.101.4(@tanstack/react-query@5.101.4(react@19.2.8))(react@19.2.8)
       next:
         specifier: 16.2.11
         version: 16.2.11(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -231,40 +243,44 @@ importers:
         version: '@typescript/typescript6@6.0.2'
 
   packages/eslint-config:
-    devDependencies:
+    dependencies:
       '@eslint/js':
         specifier: ^9.39.1
         version: 9.39.1
       '@next/eslint-plugin-next':
         specifier: ^16.2.0
         version: 16.2.0
-      eslint:
-        specifier: ^9.39.1
-        version: 9.39.1(jiti@2.7.0)
       eslint-config-prettier:
         specifier: ^10.1.1
         version: 10.1.1(eslint@9.39.1(jiti@2.7.0))
-      eslint-plugin-only-warn:
-        specifier: ^1.1.0
-        version: 1.1.0
       eslint-plugin-react:
         specifier: ^7.37.5
         version: 7.37.5(eslint@9.39.1(jiti@2.7.0))
       eslint-plugin-react-hooks:
         specifier: ^5.2.0
         version: 5.2.0(eslint@9.39.1(jiti@2.7.0))
+      eslint-plugin-simple-import-sort:
+        specifier: ^14.0.0
+        version: 14.0.0(eslint@9.39.1(jiti@2.7.0))
       eslint-plugin-turbo:
         specifier: ^2.7.1
         version: 2.7.1(eslint@9.39.1(jiti@2.7.0))(turbo@2.10.6)
       globals:
         specifier: ^16.5.0
         version: 16.5.0
-      typescript:
-        specifier: npm:@typescript/typescript6@^6.0.2
-        version: '@typescript/typescript6@6.0.2'
       typescript-eslint:
         specifier: ^8.50.0
         version: 8.50.0(@typescript/typescript6@6.0.2)(eslint@9.39.1(jiti@2.7.0))
+    devDependencies:
+      '@typescript/native':
+        specifier: npm:typescript@^7.0.2
+        version: typescript@7.0.2
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.1(jiti@2.7.0)
+      typescript:
+        specifier: npm:@typescript/typescript6@^6.0.2
+        version: '@typescript/typescript6@6.0.2'
 
   packages/typescript-config: {}
 
@@ -1169,6 +1185,15 @@ packages:
   '@tanstack/query-core@5.101.4':
     resolution: {integrity: sha512-gNwcvOJcRbLWPOLG/2OBm+zM+Yv+MKsXKEOWC57USuZDEsI71hEErQsiEGx5wX9rzWWkfwM0fVSPoiIFSsxfiw==}
 
+  '@tanstack/query-devtools@5.101.4':
+    resolution: {integrity: sha512-z5IPHnDX3aUWeTWlRKLyooBQekaCAw4xRpZqPQ390RiWTDBcTynjpPT221BArw0u2+pnQMdGvPQI9YNNubBcmA==}
+
+  '@tanstack/react-query-devtools@5.101.4':
+    resolution: {integrity: sha512-VeK2gtmfj7kvRBjtxS7TKxt/6qKhn8VzabY4UiYMr7NV9CddjSRYRgeYyld+NpjAkgMV9dd+2Qdr8ah5I03NeA==}
+    peerDependencies:
+      '@tanstack/react-query': ^5.101.4
+      react: ^18 || ^19
+
   '@tanstack/react-query@5.101.4':
     resolution: {integrity: sha512-yRg2pfOCxIs4ZJW3XYYHU/WgtD04FHSnfHlpRT7h7pR77hwkdRG4wxbKe4aq6P0RvXUTBSQpQeadS1SUYUe+KA==}
     peerDependencies:
@@ -1611,10 +1636,6 @@ packages:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
-
-  acorn@8.15.0:
-    resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
-    engines: {node: '>=0.4.0'}
 
   acorn@8.17.0:
     resolution: {integrity: sha512-xRQbDb9BnwDafYNn6Vwl839DYVjqXYb1XVGtWAZ1kcDc6iwAL4hg3B1dZlRiuENFeO2H53gFG3in621AdERVAg==}
@@ -2207,10 +2228,6 @@ packages:
     peerDependencies:
       eslint: '>=7.0.0'
 
-  eslint-plugin-only-warn@1.1.0:
-    resolution: {integrity: sha512-2tktqUAT+Q3hCAU0iSf4xAN1k9zOpjK5WO8104mB0rT/dGhOa09582HN5HlbxNbPRZ0THV7nLGvzugcNOSjzfA==}
-    engines: {node: '>=6'}
-
   eslint-plugin-react-hooks@5.2.0:
     resolution: {integrity: sha512-+f15FfK64YQwZdJNELETdn5ibXEUQmW1DZL6KXhNnc2heoy/sg9VJJeT7n8TlMWouzWqSWavFkIhHyIbIAEapg==}
     engines: {node: '>=10'}
@@ -2222,6 +2239,11 @@ packages:
     engines: {node: '>=4'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
+
+  eslint-plugin-simple-import-sort@14.0.0:
+    resolution: {integrity: sha512-NUJO0+XFCkk+o5EsAJruTgnfMEpeWrPWeJS15UVF60GgXmqz1BJ9/3hzlvG7lkL8Bubzos5cCLptThbFfPnSMQ==}
+    peerDependencies:
+      eslint: '>=5.0.0'
 
   eslint-plugin-turbo@2.7.1:
     resolution: {integrity: sha512-ZC7dTOdw6tGuvx1CeC1WQ0pMkgT/Jmj69QW93d63nysiLbbKRLiDKKA9s/TvwJHq8Uvbou2+hnU8if1L0jHsVQ==}
@@ -2696,6 +2718,7 @@ packages:
 
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
+    hasBin: true
 
   json-buffer@3.0.1:
     resolution: {integrity: sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==}
@@ -3070,6 +3093,61 @@ packages:
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+
+  prettier-plugin-tailwindcss@0.8.1:
+    resolution: {integrity: sha512-iaFMYqDsE4ffdDkn5qup0j5f2aCEBFZrdrZnvu9QKTlWx/iGPeQ4HHu7b7fCPMxeo9nwQBiOAh2nSypdFYWJkw==}
+    engines: {node: '>=20.19'}
+    peerDependencies:
+      '@ianvs/prettier-plugin-sort-imports': '*'
+      '@prettier/plugin-hermes': '*'
+      '@prettier/plugin-oxc': '*'
+      '@prettier/plugin-pug': '*'
+      '@shopify/prettier-plugin-liquid': '*'
+      '@trivago/prettier-plugin-sort-imports': '*'
+      '@zackad/prettier-plugin-twig': '*'
+      prettier: ^3.0
+      prettier-plugin-astro: '*'
+      prettier-plugin-css-order: '*'
+      prettier-plugin-jsdoc: '*'
+      prettier-plugin-marko: '*'
+      prettier-plugin-multiline-arrays: '*'
+      prettier-plugin-organize-attributes: '*'
+      prettier-plugin-organize-imports: '*'
+      prettier-plugin-sort-imports: '*'
+      prettier-plugin-svelte: '*'
+    peerDependenciesMeta:
+      '@ianvs/prettier-plugin-sort-imports':
+        optional: true
+      '@prettier/plugin-hermes':
+        optional: true
+      '@prettier/plugin-oxc':
+        optional: true
+      '@prettier/plugin-pug':
+        optional: true
+      '@shopify/prettier-plugin-liquid':
+        optional: true
+      '@trivago/prettier-plugin-sort-imports':
+        optional: true
+      '@zackad/prettier-plugin-twig':
+        optional: true
+      prettier-plugin-astro:
+        optional: true
+      prettier-plugin-css-order:
+        optional: true
+      prettier-plugin-jsdoc:
+        optional: true
+      prettier-plugin-marko:
+        optional: true
+      prettier-plugin-multiline-arrays:
+        optional: true
+      prettier-plugin-organize-attributes:
+        optional: true
+      prettier-plugin-organize-imports:
+        optional: true
+      prettier-plugin-sort-imports:
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
 
   prettier@3.7.4:
     resolution: {integrity: sha512-v6UNi1+3hSlVvv8fSaoUbggEM5VErKmmpGA7Pl3HF8V6uKY7rvClBOJlH6yNwQtfTueNkGVpOv/mtWL9L4bgRA==}
@@ -3682,6 +3760,7 @@ packages:
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
     engines: {node: '>= 8'}
+    hasBin: true
 
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
@@ -4640,6 +4719,14 @@ snapshots:
 
   '@tanstack/query-core@5.101.4': {}
 
+  '@tanstack/query-devtools@5.101.4': {}
+
+  '@tanstack/react-query-devtools@5.101.4(@tanstack/react-query@5.101.4(react@19.2.8))(react@19.2.8)':
+    dependencies:
+      '@tanstack/query-devtools': 5.101.4
+      '@tanstack/react-query': 5.101.4(react@19.2.8)
+      react: 19.2.8
+
   '@tanstack/react-query@5.101.4(react@19.2.8)':
     dependencies:
       '@tanstack/query-core': 5.101.4
@@ -5104,11 +5191,9 @@ snapshots:
     dependencies:
       acorn: 8.17.0
 
-  acorn-jsx@5.3.2(acorn@8.15.0):
+  acorn-jsx@5.3.2(acorn@8.17.0):
     dependencies:
-      acorn: 8.15.0
-
-  acorn@8.15.0: {}
+      acorn: 8.17.0
 
   acorn@8.17.0: {}
 
@@ -5731,8 +5816,6 @@ snapshots:
     dependencies:
       eslint: 9.39.1(jiti@2.7.0)
 
-  eslint-plugin-only-warn@1.1.0: {}
-
   eslint-plugin-react-hooks@5.2.0(eslint@9.39.1(jiti@2.7.0)):
     dependencies:
       eslint: 9.39.1(jiti@2.7.0)
@@ -5758,6 +5841,10 @@ snapshots:
       semver: 6.3.1
       string.prototype.matchall: 4.0.12
       string.prototype.repeat: 1.0.0
+
+  eslint-plugin-simple-import-sort@14.0.0(eslint@9.39.1(jiti@2.7.0)):
+    dependencies:
+      eslint: 9.39.1(jiti@2.7.0)
 
   eslint-plugin-turbo@2.7.1(eslint@9.39.1(jiti@2.7.0))(turbo@2.10.6):
     dependencies:
@@ -5822,8 +5909,8 @@ snapshots:
 
   espree@10.4.0:
     dependencies:
-      acorn: 8.15.0
-      acorn-jsx: 5.3.2(acorn@8.15.0)
+      acorn: 8.17.0
+      acorn-jsx: 5.3.2(acorn@8.17.0)
       eslint-visitor-keys: 4.2.1
 
   esprima@4.0.1: {}
@@ -6634,6 +6721,10 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
+  prettier-plugin-tailwindcss@0.8.1(prettier@3.7.4):
+    dependencies:
+      prettier: 3.7.4
+
   prettier@3.7.4: {}
 
   prisma@7.9.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(@typescript/typescript6@6.0.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
@@ -7101,7 +7192,7 @@ snapshots:
   terser@5.49.0:
     dependencies:
       '@jridgewell/source-map': 0.3.11
-      acorn: 8.15.0
+      acorn: 8.17.0
       commander: 2.20.3
       source-map-support: 0.5.21
 

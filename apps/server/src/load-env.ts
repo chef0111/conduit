@@ -1,13 +1,14 @@
-import { existsSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import { config } from "dotenv";
+import { existsSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { config } from 'dotenv';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
 const candidates = [
-  resolve(here, "../.env"), // apps/server/.env when running from dist/
-  resolve(process.cwd(), ".env"),
+  resolve(here, '../.env'), // apps/server/.env when running from dist/
+  resolve(process.cwd(), '.env'),
 ];
 
 for (const path of candidates) {
@@ -17,7 +18,7 @@ for (const path of candidates) {
       console.warn(`[env] failed to load ${path}:`, result.error.message);
     } else {
       console.log(
-        `[env] loaded ${Object.keys(result.parsed ?? {}).length} vars from ${path}`,
+        `[env] loaded ${Object.keys(result.parsed ?? {}).length} vars from ${path}`
       );
     }
     break;
@@ -26,6 +27,6 @@ for (const path of candidates) {
 
 if (!process.env.DATABASE_URL) {
   console.warn(
-    "[env] DATABASE_URL is still missing after loading .env — Nest does not auto-load env files",
+    '[env] DATABASE_URL is still missing after loading .env — Nest does not auto-load env files'
   );
 }
