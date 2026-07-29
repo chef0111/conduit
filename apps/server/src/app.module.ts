@@ -1,12 +1,13 @@
-import { Module } from "@nestjs/common";
-import { REQUEST } from "@nestjs/core";
-import { AuthModule } from "@thallesp/nestjs-better-auth";
-import { onError, ORPCModule } from "@orpc/nest";
-import type { Request } from "express";
-import { auth } from "./auth.js";
-import { HealthController } from "./health.controller.js";
+import { Module } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { onError, ORPCModule } from '@orpc/nest';
+import { AuthModule } from '@thallesp/nestjs-better-auth';
+import type { Request } from 'express';
 
-declare module "@orpc/nest" {
+import { auth } from './auth.js';
+import { HealthController } from './health.controller.js';
+
+declare module '@orpc/nest' {
   interface ORPCGlobalContext {
     request: Request;
   }
@@ -17,8 +18,8 @@ declare module "@orpc/nest" {
     AuthModule.forRoot({
       auth,
       bodyParser: {
-        json: { limit: "2mb" },
-        urlencoded: { limit: "2mb", extended: true },
+        json: { limit: '2mb' },
+        urlencoded: { limit: '2mb', extended: true },
       },
     }),
     ORPCModule.forRootAsync({

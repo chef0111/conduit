@@ -1,7 +1,7 @@
-import { z } from "@repo/zod";
+import { z } from '@repo/zod';
 
 export const HealthStatusSchema = z.object({
-  status: z.literal("ok"),
+  status: z.literal('ok'),
 });
 
 export type HealthStatus = z.infer<typeof HealthStatusSchema>;
