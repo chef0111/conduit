@@ -28,6 +28,11 @@
     "strings": "on"
   },
   "tailwindCSS.classFunctions": ["cva", "cn"],
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore",
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]?([^\"'`]+)[\"'`]?"],
+    ["cn\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
   "files.associations": {
     "*.css": "tailwindcss"
   }

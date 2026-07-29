@@ -6,10 +6,9 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
-    "check-types": "turbo run check-types",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,mdx,css}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,mdx,css}\" --cache",
-    "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,mdx,css}\" --cache"
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,mdx,css}\" --cache",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,mdx,css}\" --cache"
   },
   "devDependencies": {
     "@typescript/native": "npm:typescript@^7.0.2",

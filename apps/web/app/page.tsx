@@ -1,8 +1,10 @@
 export default function Home() {
   return (
-    <main style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif' }}>
-      <h1>Conduit</h1>
-      <p>Monorepo foundation is ready. Auth UI pages come next.</p>
+    <main className="flex min-h-svh flex-col items-start justify-center gap-2 p-8">
+      <h1 className="text-2xl font-medium tracking-tight">Conduit</h1>
+      <p className="text-muted-foreground">
+        Monorepo foundation is ready. Auth UI pages come next.
+      </p>
     </main>
   );
 }
