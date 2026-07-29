@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { fontVariables } from '@/config/font';
+import { ThemeProvider } from '@/context/theme';
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
@@ -21,12 +22,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn('h-full antialiased', fontVariables)}>
+    <html
+      lang="en"
+      className={cn('h-full antialiased', fontVariables)}
+      suppressHydrationWarning
+    >
       <body>
-        <Providers>
-          <TooltipProvider>{children}</TooltipProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Providers>
+            <TooltipProvider>{children}</TooltipProvider>
+          </Providers>
           <Toaster richColors closeButton />
-        </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

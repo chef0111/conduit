@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint --max-warnings 0 .",
     "typecheck": "next typegen && tsc --noEmit --extendedDiagnostics",
-    "upgrade:next": "npm exec @next/codemod@latest upgrade latest"
+    "upgrade:next": "npx @next/codemod@latest upgrade latest"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -28,6 +28,7 @@
     "cnfast": "^0.1.0",
     "geist": "^1.7.2",
     "input-otp": "^1.4.2",
+    "motion": "^12.42.2",
     "next": "16.2.11",
     "next-themes": "^0.4.6",
     "react": "19.2.8",

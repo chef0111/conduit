@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: [
-    "@repo/api-contract",
-    "@repo/auth",
-    "@repo/zod",
-    "@repo/db",
+    '@repo/api-contract',
+    '@repo/auth',
+    '@repo/zod',
+    '@repo/db',
   ],
 };
 
