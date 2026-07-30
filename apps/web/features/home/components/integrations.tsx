@@ -1,4 +1,8 @@
+'use client';
+
+import { motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Gemini } from '@/features/home/components/svgs/gemini';
@@ -7,8 +11,49 @@ import { MagicUI } from '@/features/home/components/svgs/magic-ui';
 import { MediaWiki } from '@/features/home/components/svgs/media-wiki';
 import { Replit } from '@/features/home/components/svgs/replit';
 import { VSCodium } from '@/features/home/components/svgs/vs-codium';
+import {
+  easeOut,
+  staggerContainer,
+  staggerItem,
+  viewportOnce,
+} from '@/features/home/lib/motion';
+
+const integrations = [
+  {
+    icon: <Gemini />,
+    name: 'Gemini',
+    description: "The AI model that powers Google's search engine.",
+  },
+  {
+    icon: <Replit />,
+    name: 'Replit',
+    description: "The AI model that powers Google's search engine.",
+  },
+  {
+    icon: <GooglePaLM />,
+    name: 'GooglePaLM',
+    description: "The AI model that powers Google's search engine.",
+  },
+  {
+    icon: <MagicUI />,
+    name: 'MagicUI',
+    description: "The AI model that powers Google's search engine.",
+  },
+  {
+    icon: <VSCodium />,
+    name: 'VSCodium',
+    description: "The AI model that powers Google's search engine.",
+  },
+  {
+    icon: <MediaWiki />,
+    name: 'MediaWiki',
+    description: "The AI model that powers Google's search engine.",
+  },
+] as const;
 
 export default function Integrations() {
+  const reduced = useReducedMotion() ?? false;
+
   return (
     <section>
       <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
@@ -29,8 +74,8 @@ export default function Integrations() {
               />
             </div>
 
-            <p className="text-muted-foreground max-w-xs text-lg text-balance">
-              Tailark CRM integrates with{' '}
+            <p className="text-muted-foreground max-w-xs text-lg text-pretty">
+              Conduit integrates with{' '}
               <span className="text-foreground font-medium">
                 over 150 Tools
               </span>{' '}
@@ -40,38 +85,23 @@ export default function Integrations() {
 
           <div className="-mx-6 mask-radial-[100%_80%] mask-radial-from-65% mask-radial-at-top-left px-6 sm:mx-auto sm:max-w-md md:-mx-6 md:mr-0 md:ml-auto">
             <div className="bg-card rounded-2xl border p-3 shadow-lg md:pb-12">
-              <div className="grid grid-cols-2 gap-2">
-                <Integration
-                  icon={<Gemini />}
-                  name="Gemini"
-                  description="The AI model that powers Google's search engine."
-                />
-                <Integration
-                  icon={<Replit />}
-                  name="Replit"
-                  description="The AI model that powers Google's search engine."
-                />
-                <Integration
-                  icon={<GooglePaLM />}
-                  name="GooglePaLM"
-                  description="The AI model that powers Google's search engine."
-                />
-                <Integration
-                  icon={<MagicUI />}
-                  name="MagicUI"
-                  description="The AI model that powers Google's search engine."
-                />
-                <Integration
-                  icon={<VSCodium />}
-                  name="VSCodium"
-                  description="The AI model that powers Google's search engine."
-                />
-                <Integration
-                  icon={<MediaWiki />}
-                  name="MediaWiki"
-                  description="The AI model that powers Google's search engine."
-                />
-              </div>
+              <motion.div
+                className="grid grid-cols-2 gap-2"
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportOnce}
+                variants={staggerContainer(0.05, reduced)}
+              >
+                {integrations.map((item) => (
+                  <Integration
+                    key={item.name}
+                    icon={item.icon}
+                    name={item.name}
+                    description={item.description}
+                    reduced={reduced}
+                  />
+                ))}
+              </motion.div>
             </div>
           </div>
         </div>
@@ -84,13 +114,20 @@ const Integration = ({
   icon,
   name,
   description,
+  reduced,
 }: {
-  icon: React.ReactNode;
+  icon: ReactNode;
   name: string;
   description: string;
+  reduced: boolean;
 }) => {
   return (
-    <div className="hover:bg-foreground/5 cursor-pointer space-y-4 rounded-lg border p-4 transition-colors">
+    <motion.div
+      variants={staggerItem(reduced)}
+      whileHover={reduced ? undefined : { y: -2 }}
+      transition={{ duration: 0.16, ease: easeOut }}
+      className="hover:bg-foreground/5 cursor-pointer space-y-4 rounded-lg border p-4 transition-colors duration-150"
+    >
       <div className="flex size-fit items-center justify-center">{icon}</div>
       <div className="space-y-1">
         <h3 className="text-sm font-medium">{name}</h3>
@@ -98,6 +135,6 @@ const Integration = ({
           {description}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
