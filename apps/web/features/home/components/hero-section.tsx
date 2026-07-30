@@ -1,19 +1,23 @@
-import { ArrowRight, ChevronRight } from 'lucide-react';
+'use client';
+
+import { IconArrowRight } from '@tabler/icons-react';
+import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Beacon } from '@/features/home/components/svgs/beacon';
-import { Bolt } from '@/features/home/components/svgs/bolt';
-import { Claude } from '@/features/home/components/svgs/claude';
-import { FirebaseFull } from '@/features/home/components/svgs/firebase';
-import { Hulu } from '@/features/home/components/svgs/hulu';
-import { Spotify } from '@/features/home/components/svgs/spotify';
-import { SupabaseFull } from '@/features/home/components/svgs/supabase';
-import { VercelFull } from '@/features/home/components/svgs/vercel';
+import {
+  easeOut,
+  fadeUpBlurVariants,
+  fadeUpVariants,
+} from '@/features/home/lib/motion';
+
+import { LogoCloud } from './logo-could';
 
 export default function HeroSection() {
+  const reduced = useReducedMotion() ?? false;
+  const variants = fadeUpVariants(reduced);
+
   return (
     <>
       <main className="overflow-hidden">
@@ -21,36 +25,64 @@ export default function HeroSection() {
           <div className="relative pt-24 md:pt-36">
             <div className="mx-auto max-w-7xl">
               <div className="px-6 text-center sm:mx-auto lg:mt-0 lg:mr-auto">
-                <Link
-                  href="#link"
-                  className="group mx-auto flex w-fit items-center gap-3 rounded-full p-1 pl-4 transition-colors duration-300"
+                <motion.div
+                  custom={0}
+                  initial="hidden"
+                  animate="visible"
+                  variants={variants}
                 >
-                  <span className="text-sm font-medium">New:</span>
-                  <span className="text-muted-foreground text-sm">
-                    Introducing breaking AI features
-                  </span>
+                  <Link
+                    href="#link"
+                    className="group border-input bg-input/30 mx-auto flex w-fit items-center gap-2 rounded-full border p-1 pl-4 transition-colors duration-300"
+                  >
+                    <span className="text-sm font-medium">New:</span>
+                    <span className="text-muted-foreground text-sm">
+                      Introducing breaking AI features
+                    </span>
 
-                  <div className="size-6 overflow-hidden rounded-full duration-500">
-                    <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
-                      <span className="flex size-6">
-                        <ArrowRight className="m-auto size-3" />
-                      </span>
-                      <span className="flex size-6">
-                        <ArrowRight className="m-auto size-3" />
-                      </span>
+                    <div className="size-6 overflow-hidden rounded-full duration-500">
+                      <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
+                        <span className="flex size-6">
+                          <IconArrowRight className="m-auto size-3" />
+                        </span>
+                        <span className="flex size-6">
+                          <IconArrowRight className="m-auto size-3" />
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </motion.div>
 
-                <h1 className="mx-auto mt-8 max-w-4xl text-5xl font-medium tracking-tight text-balance md:text-6xl lg:mt-12 xl:text-7xl">
-                  AI-ready home for team communication
-                </h1>
-                <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-balance md:text-lg">
+                <motion.h1
+                  custom={0.08}
+                  initial="hidden"
+                  animate="visible"
+                  variants={fadeUpBlurVariants(reduced)}
+                  className="mx-auto mt-8 max-w-4xl text-5xl font-semibold tracking-tight text-balance md:text-6xl lg:mt-12 xl:text-7xl"
+                >
+                  <span className="text-transparent [filter:drop-shadow(0_0_10px_color-mix(in_oklch,var(--foreground)_70%,transparent))_drop-shadow(0_0_28px_color-mix(in_oklch,var(--foreground)_18%,transparent))] [-webkit-text-stroke:1.5px_var(--foreground)]">
+                    AI-ready
+                  </span>{' '}
+                  home for team communication
+                </motion.h1>
+                <motion.p
+                  custom={0.14}
+                  initial="hidden"
+                  animate="visible"
+                  variants={variants}
+                  className="text-muted-foreground mx-auto mt-4 max-w-2xl font-medium text-balance md:text-lg"
+                >
                   Conduit organizes conversations into channels with threads, is
                   realtime, and uses AI to keep teams in sync.
-                </p>
+                </motion.p>
 
-                <div className="mt-6 flex flex-col items-center justify-center gap-2 md:flex-row">
+                <motion.div
+                  custom={0.2}
+                  initial="hidden"
+                  animate="visible"
+                  variants={variants}
+                  className="mt-6 flex flex-col items-center justify-center gap-2 md:flex-row"
+                >
                   <Button
                     key={1}
                     nativeButton={false}
@@ -71,10 +103,23 @@ export default function HeroSection() {
                       </Link>
                     }
                   />
-                </div>
+                </motion.div>
               </div>
 
-              <div className="relative mt-8 overflow-hidden p-6 max-sm:-mr-56 sm:mt-16">
+              <motion.div
+                initial={
+                  reduced ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.98 }
+                }
+                animate={
+                  reduced ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }
+                }
+                transition={{
+                  duration: reduced ? 0.2 : 0.6,
+                  delay: reduced ? 0 : 0.28,
+                  ease: easeOut,
+                }}
+                className="relative mt-8 overflow-hidden p-6 max-sm:-mr-56 sm:mt-16"
+              >
                 <div className="absolute inset-0 rounded-4xl border bg-linear-to-b to-zinc-600 mask-t-from-25% mask-t-to-65%"></div>
                 <div className="bg-background ring-foreground/6.5 before:ring-foreground before:border-foreground/10 relative rounded-2xl p-2 shadow-xl ring shadow-black/50 before:absolute before:-inset-px before:z-10 before:size-56 before:rounded-tl-2xl before:border-t before:border-l before:mask-radial-[100%_60%] before:mask-radial-from-65% before:mask-radial-at-top-left">
                   <div className="bg-foreground/2 absolute inset-0 z-1 rounded-2xl"></div>
@@ -84,54 +129,15 @@ export default function HeroSection() {
                     alt="app screen"
                     width="2700"
                     height="1440"
+                    loading="eager"
                   />
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
 
-        <section className="bg-background pt-6 pb-16 md:pb-32">
-          <div className="group relative m-auto max-w-5xl px-6">
-            <div className="absolute inset-0 z-10 flex scale-95 items-center justify-center opacity-0 duration-500 group-hover:scale-100 group-hover:opacity-100">
-              <Link
-                href="/"
-                className="block text-sm duration-150 hover:opacity-75"
-              >
-                <span> See the network</span>
-
-                <ChevronRight className="ml-1 inline-block size-3" />
-              </Link>
-            </div>
-            <div className="**:fill-foreground mx-auto mt-12 grid max-w-2xl grid-cols-3 gap-x-12 gap-y-8 transition-all duration-500 group-hover:opacity-50 group-hover:blur-xs sm:gap-x-16 sm:gap-y-14 md:grid-cols-4">
-              <div className="flex items-center">
-                <Bolt className="mx-auto h-5 w-full" />
-              </div>
-              <div className="flex items-center">
-                <VercelFull className="mx-auto h-4 w-full" />
-              </div>
-              <div className="flex items-center">
-                <SupabaseFull className="mx-auto h-6" />
-              </div>
-              <div className="flex items-center">
-                <Hulu className="mx-auto h-4 w-full" />
-              </div>
-              <div className="flex items-center">
-                <Spotify className="mx-auto h-6 w-full" />
-              </div>
-              <div className="flex items-center">
-                <FirebaseFull className="mx-auto h-6 w-full" />
-              </div>
-              <div className="hidden items-center sm:flex">
-                <Beacon className="mx-auto h-4 w-full" />
-              </div>
-
-              <div className="hidden items-center sm:flex">
-                <Claude className="mx-auto h-5 w-full" />
-              </div>
-            </div>
-          </div>
-        </section>
+        <LogoCloud />
       </main>
     </>
   );

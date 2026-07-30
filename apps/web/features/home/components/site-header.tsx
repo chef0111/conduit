@@ -1,11 +1,13 @@
 'use client';
 
 import { X } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
 import React from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/features/home/components/logo';
+import { easeDrawer } from '@/features/home/lib/motion';
 
 const menuItems = [
   { name: 'Product', href: '#link' },
@@ -16,6 +18,7 @@ const menuItems = [
 
 export default function SiteHeader() {
   const [menuState, setMenuState] = React.useState(false);
+  const reduced = useReducedMotion() ?? false;
 
   React.useEffect(() => {
     if (!menuState) return;
@@ -86,35 +89,75 @@ export default function SiteHeader() {
               </ul>
             </div>
 
-            <div className="mb-6 hidden w-full flex-wrap items-center justify-end in-data-[state=active]:block max-lg:space-y-8 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:in-data-[state=active]:flex">
-              <div className="lg:hidden">
-                <ul>
-                  {menuItems.map((item, index) => (
-                    <li key={index}>
-                      <Link
-                        href={item.href}
-                        className="text-foreground block py-3 text-2xl font-medium"
-                      >
-                        <span>{item.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  nativeButton={false}
-                  render={<Link href="#">Login</Link>}
-                />
-                <Button
-                  size="sm"
-                  nativeButton={false}
-                  render={<Link href="#">Get Started</Link>}
-                />
-              </div>
+            <div className="hidden w-fit flex-wrap items-center justify-end gap-3 lg:flex">
+              <Button
+                size="sm"
+                variant="outline"
+                nativeButton={false}
+                render={<Link href="#">Login</Link>}
+              />
+              <Button
+                size="sm"
+                nativeButton={false}
+                render={<Link href="#">Get Started</Link>}
+              />
             </div>
+
+            <AnimatePresence>
+              {menuState ? (
+                <motion.div
+                  key="mobile-menu"
+                  initial={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                  animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                  exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                  transition={{
+                    duration: reduced ? 0.15 : 0.25,
+                    ease: easeDrawer,
+                  }}
+                  className="mb-6 w-full space-y-8 lg:hidden"
+                >
+                  <ul>
+                    {menuItems.map((item, index) => (
+                      <motion.li
+                        key={item.name}
+                        initial={
+                          reduced ? { opacity: 0 } : { opacity: 0, y: 6 }
+                        }
+                        animate={
+                          reduced ? { opacity: 1 } : { opacity: 1, y: 0 }
+                        }
+                        transition={{
+                          duration: reduced ? 0.15 : 0.22,
+                          delay: reduced ? 0 : 0.04 * index,
+                          ease: easeDrawer,
+                        }}
+                      >
+                        <Link
+                          href={item.href}
+                          className="text-foreground block py-3 text-2xl font-medium"
+                          onClick={() => setMenuState(false)}
+                        >
+                          <span>{item.name}</span>
+                        </Link>
+                      </motion.li>
+                    ))}
+                  </ul>
+                  <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      nativeButton={false}
+                      render={<Link href="#">Login</Link>}
+                    />
+                    <Button
+                      size="sm"
+                      nativeButton={false}
+                      render={<Link href="#">Get Started</Link>}
+                    />
+                  </div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
           </div>
         </div>
       </nav>
