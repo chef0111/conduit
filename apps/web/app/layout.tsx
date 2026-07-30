@@ -1,11 +1,9 @@
 import './globals.css';
 
 import type { Metadata } from 'next';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
-import { Toaster } from '@/components/ui/sonner';
-import { TooltipProvider } from '@/components/ui/tooltip';
 import { fontVariables } from '@/config/font';
-import { ThemeProvider } from '@/context/theme';
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
@@ -28,17 +26,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Providers>
-            <TooltipProvider>{children}</TooltipProvider>
-          </Providers>
-          <Toaster richColors closeButton />
-        </ThemeProvider>
+        <Providers>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </Providers>
       </body>
     </html>
   );
