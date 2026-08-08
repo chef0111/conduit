@@ -1,3 +1,4 @@
+import type { Route } from 'next';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -5,40 +6,42 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LogoIcon } from '@/features/home/components/logo';
 
-const communityLinks = [
-  { href: '#', label: 'GitHub' },
-  { href: '#', label: 'Discord' },
-  { href: '#', label: 'Slack' },
-  { href: '#', label: 'X / Twitter' },
+type FooterLink = { href: Route; label: string };
+
+const communityLinks: FooterLink[] = [
+  { href: '#' as Route, label: 'GitHub' },
+  { href: '#' as Route, label: 'Discord' },
+  { href: '#' as Route, label: 'Slack' },
+  { href: '#' as Route, label: 'X / Twitter' },
 ];
 
-const footerLinks = [
+const footerLinks: { name: string; links: FooterLink[] }[] = [
   {
     name: 'Product',
     links: [
-      { href: '#', label: 'Security' },
-      { href: '#', label: 'Customization' },
-      { href: '#', label: 'Enterprise' },
-      { href: '#', label: 'Partners' },
+      { href: '#' as Route, label: 'Security' },
+      { href: '#' as Route, label: 'Customization' },
+      { href: '#' as Route, label: 'Enterprise' },
+      { href: '#' as Route, label: 'Partners' },
     ],
   },
   {
     name: 'Company',
     links: [
-      { href: '#', label: 'About' },
-      { href: '#', label: 'Customers' },
-      { href: '#', label: 'Enterprise' },
-      { href: '#', label: 'Partners' },
-      { href: '#', label: 'Jobs' },
+      { href: '#' as Route, label: 'About' },
+      { href: '#' as Route, label: 'Customers' },
+      { href: '#' as Route, label: 'Enterprise' },
+      { href: '#' as Route, label: 'Partners' },
+      { href: '#' as Route, label: 'Jobs' },
     ],
   },
   {
     name: 'Legal',
     links: [
-      { href: '#', label: 'Licence' },
-      { href: '#', label: 'Privacy Policy' },
-      { href: '#', label: 'Terms of Service' },
-      { href: '#', label: 'Cookie Policy' },
+      { href: '#' as Route, label: 'Licence' },
+      { href: '#' as Route, label: 'Privacy Policy' },
+      { href: '#' as Route, label: 'Terms of Service' },
+      { href: '#' as Route, label: 'Cookie Policy' },
     ],
   },
 ];

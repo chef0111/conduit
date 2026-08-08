@@ -31,8 +31,8 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
-    "check-types": {
-      "dependsOn": ["^check-types", "^build"]
+    "typecheck": {
+      "dependsOn": ["^typecheck", "^build"]
     },
     "dev": {
       "cache": false,

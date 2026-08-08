@@ -2,6 +2,7 @@
 
 import { X } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import type { Route } from 'next';
 import Link from 'next/link';
 import React from 'react';
 
@@ -9,11 +10,11 @@ import { Button } from '@/components/ui/button';
 import { Logo } from '@/features/home/components/logo';
 import { easeDrawer } from '@/features/home/lib/motion';
 
-const menuItems = [
-  { name: 'Product', href: '#link' },
-  { name: 'Solutions', href: '#link' },
-  { name: 'Pricing', href: '#link' },
-  { name: 'Company', href: '#link' },
+const menuItems: { name: string; href: Route }[] = [
+  { name: 'Product', href: '#' as Route },
+  { name: 'Solutions', href: '#' as Route },
+  { name: 'Pricing', href: '#' as Route },
+  { name: 'Company', href: '#' as Route },
 ];
 
 export default function SiteHeader() {
