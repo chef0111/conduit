@@ -1,11 +1,15 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - 'apps/*'
+  - 'packages/*'
 
 allowBuilds:
   sharp: true
-  "@prisma/engines": true
-  "@prisma/client": true
+  '@prisma/engines': true
+  '@prisma/client': true
   prisma: true
   esbuild: true
-  '@prisma/ppg': set this to true or false
+  '@prisma/ppg': true
+
+overrides:
+  '@types/react': 19.2.18
+  '@types/react-dom': 19.2.4
