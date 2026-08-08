@@ -7,8 +7,8 @@ import Link from 'next/link';
 import React from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Logo } from '@/features/home/components/logo';
-import { easeDrawer } from '@/features/home/lib/motion';
+import { Logo } from '@/features/marketing/components/logo';
+import { easeDrawer } from '@/features/marketing/lib/motion';
 
 const menuItems: { name: string; href: Route }[] = [
   { name: 'Product', href: '#' as Route },

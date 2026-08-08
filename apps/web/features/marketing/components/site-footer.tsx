@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { LogoIcon } from '@/features/home/components/logo';
+import { LogoIcon } from '@/features/marketing/components/logo';
 
 type FooterLink = { href: Route; label: string };
 

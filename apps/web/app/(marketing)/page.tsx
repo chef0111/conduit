@@ -1,10 +1,10 @@
-import Features from '@/features/home/components/features';
-import HeroSection from '@/features/home/components/hero-section';
-import Integrations from '@/features/home/components/integrations';
-import Pricing from '@/features/home/components/pricing';
-import SiteFooter from '@/features/home/components/site-footer';
-import SiteHeader from '@/features/home/components/site-header';
-import Stats from '@/features/home/components/stats';
+import Features from '@/features/marketing/components/features';
+import HeroSection from '@/features/marketing/components/hero-section';
+import Integrations from '@/features/marketing/components/integrations';
+import Pricing from '@/features/marketing/components/pricing';
+import SiteFooter from '@/features/marketing/components/site-footer';
+import SiteHeader from '@/features/marketing/components/site-header';
+import Stats from '@/features/marketing/components/stats';
 
 export default function LandingPage() {
   return (

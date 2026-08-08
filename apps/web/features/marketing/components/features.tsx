@@ -9,7 +9,7 @@ import {
   staggerContainer,
   staggerItem,
   viewportOnce,
-} from '@/features/home/lib/motion';
+} from '@/features/marketing/lib/motion';
 
 const featureItems = [
   {

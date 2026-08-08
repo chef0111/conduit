@@ -10,7 +10,7 @@ import {
   easeOut,
   fadeUpBlurVariants,
   fadeUpVariants,
-} from '@/features/home/lib/motion';
+} from '@/features/marketing/lib/motion';
 
 import { LogoCloud } from './logo-could';
 
@@ -32,7 +32,7 @@ export default function HeroSection() {
                   variants={variants}
                 >
                   <Link
-                    href="#link"
+                    href="#"
                     className="group border-input bg-input/30 mx-auto flex w-fit items-center gap-2 rounded-full border p-1 pl-4 transition-colors duration-300"
                   >
                     <span className="text-sm font-medium">New:</span>

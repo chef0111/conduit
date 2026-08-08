@@ -9,7 +9,7 @@ import {
   easeOut,
   staggerContainer,
   viewportOnce,
-} from '@/features/home/lib/motion';
+} from '@/features/marketing/lib/motion';
 
 const plans = [
   {
