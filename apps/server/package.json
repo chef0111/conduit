@@ -7,8 +7,9 @@
     "dev": "nest start --watch",
     "build": "nest build",
     "start": "node dist/main.js",
-    "check-types": "tsc --noEmit",
-    "lint": "eslint --max-warnings 0 ."
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint --max-warnings 0 .",
+    "upgrade:nest": "npx npm-check-updates \"/^@nestjs/\" -u"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.6",

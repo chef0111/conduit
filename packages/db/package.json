@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "check-types": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
     "dev": "tsc --watch"

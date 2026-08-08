@@ -11,7 +11,7 @@ import { Providers } from './providers';
 export const metadata: Metadata = {
   title: 'Conduit',
   description:
-    'An all-in-one communication platform powered by AI, for modern teams and organizations.',
+    'All-in-one communication platform powered by AI, for modern teams and organizations',
 };
 
 export default function RootLayout({
