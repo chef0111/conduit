@@ -11,7 +11,7 @@ const buttonVariants = cva(
         default:
           'flex items-center justify-center gap-2 border border-primary bg-primary text-primary-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3),inset_1px_0_0_0_rgba(255,255,255,0.15),inset_-1px_0_0_0_rgba(255,255,255,0.15),inset_4px_4px_0_0_rgba(255,255,255,0.01),inset_-4px_-4px_0_0_rgba(255,255,255,0.01),inset_6px_6px_0_0_rgba(255,255,255,0.01),inset_-6px_-6px_0_0_rgba(255,255,255,0.01),inset_8px_8px_0_0_rgba(255,255,255,0.01),inset_-8px_-8px_0_0_rgba(255,255,255,0.01),0_1px_2px_0_rgba(0,0,0,0.08),0_2px_4px_0_rgba(0,0,0,0.06),0_4px_6px_0_rgba(0,0,0,0.04),0_6px_8px_0_rgba(0,0,0,0.02),0_2px_1px_0_rgba(0,0,0,0.04)] transition-colors text-shadow-2xs text-shadow-primary/45 hover:bg-primary/90',
         outline:
-          'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
+          'border-border text-foreround bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
         ghost:

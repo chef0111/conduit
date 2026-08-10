@@ -8,7 +8,7 @@ import Stats from '@/features/marketing/components/stats';
 
 export default function LandingPage() {
   return (
-    <>
+    <main>
       <SiteHeader />
       <HeroSection />
       <Integrations />
@@ -16,6 +16,6 @@ export default function LandingPage() {
       <Pricing />
       <Stats />
       <SiteFooter />
-    </>
+    </main>
   );
 }

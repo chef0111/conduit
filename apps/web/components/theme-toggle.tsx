@@ -13,7 +13,7 @@ interface ThemeToggleProps {
   className?: string;
 }
 
-export default function ThemeToggle({
+export function ThemeToggle({
   variant = 'outline',
   size = 'icon',
   className,
