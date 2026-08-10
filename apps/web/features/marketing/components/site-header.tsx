@@ -6,9 +6,9 @@ import type { Route } from 'next';
 import Link from 'next/link';
 import React from 'react';
 
+import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
-import { Logo } from '@/features/home/components/logo';
-import { easeDrawer } from '@/features/home/lib/motion';
+import { easeDrawer } from '@/features/marketing/lib/motion';
 
 const menuItems: { name: string; href: Route }[] = [
   { name: 'Product', href: '#' as Route },
@@ -90,17 +90,17 @@ export default function SiteHeader() {
               </ul>
             </div>
 
-            <div className="hidden w-fit flex-wrap items-center justify-end gap-3 lg:flex">
+            <div className="dark hidden w-fit flex-wrap items-center justify-end gap-3 lg:flex">
               <Button
                 size="sm"
                 variant="outline"
                 nativeButton={false}
-                render={<Link href="#">Login</Link>}
+                render={<Link href="/sign-in">Login</Link>}
               />
               <Button
                 size="sm"
                 nativeButton={false}
-                render={<Link href="#">Get Started</Link>}
+                render={<Link href="/sign-up">Get Started</Link>}
               />
             </div>
 

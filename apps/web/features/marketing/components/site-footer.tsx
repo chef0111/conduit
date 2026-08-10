@@ -1,10 +1,10 @@
 import type { Route } from 'next';
 import Link from 'next/link';
 
+import { LogoIcon } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { LogoIcon } from '@/features/home/components/logo';
 
 type FooterLink = { href: Route; label: string };
 

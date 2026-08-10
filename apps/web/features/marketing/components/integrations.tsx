@@ -5,18 +5,18 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Gemini } from '@/features/home/components/svgs/gemini';
-import { GooglePaLM } from '@/features/home/components/svgs/google-palm';
-import { MagicUI } from '@/features/home/components/svgs/magic-ui';
-import { MediaWiki } from '@/features/home/components/svgs/media-wiki';
-import { Replit } from '@/features/home/components/svgs/replit';
-import { VSCodium } from '@/features/home/components/svgs/vs-codium';
+import { Gemini } from '@/features/marketing/components/svgs/gemini';
+import { GooglePaLM } from '@/features/marketing/components/svgs/google-palm';
+import { MagicUI } from '@/features/marketing/components/svgs/magic-ui';
+import { MediaWiki } from '@/features/marketing/components/svgs/media-wiki';
+import { Replit } from '@/features/marketing/components/svgs/replit';
+import { VSCodium } from '@/features/marketing/components/svgs/vs-codium';
 import {
   easeOut,
   staggerContainer,
   staggerItem,
   viewportOnce,
-} from '@/features/home/lib/motion';
+} from '@/features/marketing/lib/motion';
 
 const integrations = [
   {

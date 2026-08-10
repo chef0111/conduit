@@ -1,10 +1,21 @@
 import { cn } from '@/lib/utils';
 
-export const Logo = ({ className }: { className?: string }) => {
+export const Logo = ({
+  className,
+  textClassName,
+}: {
+  className?: string;
+  textClassName?: string;
+}) => {
   return (
     <span className={cn('inline-flex items-center gap-2', className)}>
       <LogoIcon />
-      <span className="text-foreground text-2xl font-semibold tracking-tight">
+      <span
+        className={cn(
+          'text-foreground text-2xl font-semibold tracking-tight',
+          textClassName
+        )}
+      >
         Conduit
       </span>
     </span>

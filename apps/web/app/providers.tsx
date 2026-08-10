@@ -21,7 +21,7 @@ export function Providers({ children }: { children: ReactNode }) {
       disableTransitionOnChange
     >
       <ProgressProvider
-        color="var(--foreground)"
+        color="var(--primary)"
         height="2px"
         delay={500}
         options={{ showSpinner: false }}
