@@ -28,9 +28,9 @@ export function createAuth() {
       provider: 'postgresql',
     }),
     secret: requireEnv('BETTER_AUTH_SECRET'),
-    baseURL: process.env.BETTER_AUTH_URL ?? 'http://localhost:3333',
+    baseURL: process.env.BETTER_AUTH_URL ?? 'https://api.conduit.localhost',
     trustedOrigins: [
-      process.env.BETTER_AUTH_TRUSTED_ORIGIN ?? 'http://localhost:3000',
+      process.env.BETTER_AUTH_TRUSTED_ORIGIN ?? 'https://conduit.localhost',
     ],
     emailAndPassword: {
       enabled: true,

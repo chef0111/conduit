@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ['conduit.localhost', '*.conduit.localhost'],
   cacheComponents: true,
   partialPrefetching: true,
   typedRoutes: true,
