@@ -1,140 +1,169 @@
 'use client';
 
-import { motion, useReducedMotion } from 'motion/react';
-import Link from 'next/link';
-import type { ReactNode } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { type ComponentType, type SVGProps, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Gemini } from '@/features/marketing/components/svgs/gemini';
-import { GooglePaLM } from '@/features/marketing/components/svgs/google-palm';
-import { MagicUI } from '@/features/marketing/components/svgs/magic-ui';
-import { MediaWiki } from '@/features/marketing/components/svgs/media-wiki';
-import { Replit } from '@/features/marketing/components/svgs/replit';
-import { VSCodium } from '@/features/marketing/components/svgs/vs-codium';
+import { CanvasRevealEffect } from '@/components/ui/canvas-reveal-effect';
+import { cn } from '@/lib/utils';
+
+import { ForwardButton } from './forward-button';
+import { SectionShell } from './section-shell';
 import {
-  easeOut,
-  staggerContainer,
-  staggerItem,
-  viewportOnce,
-} from '@/features/marketing/lib/motion';
+  ArcjetMark,
+  ClaudeMark,
+  MotionMark,
+  NeonMark,
+  PrismaMark,
+  Vercel,
+} from './svgs';
 
-const integrations = [
+type Framework = {
+  name: string;
+  Mark: ComponentType<SVGProps<SVGSVGElement> & { className?: string }>;
+  markClassName?: string;
+  fillClassName?: string;
+  colors: number[][];
+  dotSize?: number;
+};
+
+const frameworks: Framework[] = [
   {
-    icon: <Gemini />,
-    name: 'Gemini',
-    description: "The AI model that powers Google's search engine.",
+    name: 'Vercel',
+    Mark: Vercel,
+    markClassName: '[&_path]:stroke-[10]',
+    colors: [[255, 255, 255]],
   },
   {
-    icon: <Replit />,
-    name: 'Replit',
-    description: "The AI model that powers Google's search engine.",
+    name: 'Neon',
+    Mark: NeonMark,
+    markClassName: '[&_path]:stroke-[2.25]',
+    fillClassName:
+      'group-hover/canvas-card:[&_path]:fill-[#00E599] motion-reduce:[&_path]:fill-[#00E599]',
+    colors: [[0, 229, 153]],
   },
   {
-    icon: <GooglePaLM />,
-    name: 'GooglePaLM',
-    description: "The AI model that powers Google's search engine.",
+    name: 'Prisma',
+    Mark: PrismaMark,
+    markClassName: '[&_path]:stroke-[6]',
+    colors: [[125, 211, 252]],
   },
   {
-    icon: <MagicUI />,
-    name: 'MagicUI',
-    description: "The AI model that powers Google's search engine.",
+    name: 'Arcjet',
+    Mark: ArcjetMark,
+    markClassName: '[&_path]:stroke-[5] size-14',
+    colors: [
+      [236, 72, 153],
+      [232, 121, 249],
+    ],
   },
   {
-    icon: <VSCodium />,
-    name: 'VSCodium',
-    description: "The AI model that powers Google's search engine.",
+    name: 'Claude',
+    Mark: ClaudeMark,
+    markClassName: '[&_path]:stroke-[2]',
+    fillClassName:
+      'group-hover/canvas-card:[&_path]:fill-[#D97757] motion-reduce:[&_path]:fill-[#D97757]',
+    colors: [[217, 119, 87]],
   },
   {
-    icon: <MediaWiki />,
-    name: 'MediaWiki',
-    description: "The AI model that powers Google's search engine.",
+    name: 'Motion',
+    Mark: MotionMark,
+    markClassName: 'size-14 [&_path]:stroke-[1.1]',
+    colors: [[251, 191, 36]],
   },
-] as const;
+];
 
 export default function Integrations() {
-  const reduced = useReducedMotion() ?? false;
-
   return (
-    <section>
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-        <div className="grid gap-4 md:grid-cols-2 md:gap-6 lg:gap-12">
-          <div className="flex flex-col justify-between gap-12 pb-6 max-lg:order-last md:mt-6">
-            <div>
-              <h2 className="text-4xl font-medium tracking-tight text-balance lg:text-5xl">
-                Integrate with your favorite Tools
-              </h2>
-              <p className="text-muted-foreground mt-4 mb-6 text-lg text-balance">
-                Connect seamlessly with popular platforms and services to
-                enhance your workflow.
-              </p>
-              <Button
-                variant="outline"
-                nativeButton={false}
-                render={<Link href="#">Get Started</Link>}
-              />
-            </div>
+    <SectionShell theme="dark" cutout="down" className="py-24 md:py-32">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-primary text-sm font-semibold tracking-tight">
+            Integrations
+          </p>
+          <h2 className="text-foreground mt-3 text-3xl font-semibold tracking-tight text-balance md:text-5xl">
+            Build with the tools you already ship
+          </h2>
+          <p className="text-muted-foreground mx-auto mt-4 max-w-xl text-base text-balance md:text-lg">
+            Conduit keeps developer experience front-and-center with a stack
+            that fits modern web and AI workflows.
+          </p>
+          <ForwardButton href="/sign-up" className="mt-6">
+            All integrations
+          </ForwardButton>
+        </div>
 
-            <p className="text-muted-foreground max-w-xs text-lg text-pretty">
-              Conduit integrates with{' '}
-              <span className="text-foreground font-medium">
-                over 150 Tools
-              </span>{' '}
-              to enhance your workflow.
-            </p>
-          </div>
-
-          <div className="-mx-6 mask-radial-[100%_80%] mask-radial-from-65% mask-radial-at-top-left px-6 sm:mx-auto sm:max-w-md md:-mx-6 md:mr-0 md:ml-auto">
-            <div className="bg-card rounded-2xl border p-3 shadow-lg md:pb-12">
-              <motion.div
-                className="grid grid-cols-2 gap-2"
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOnce}
-                variants={staggerContainer(0.05, reduced)}
-              >
-                {integrations.map((item) => (
-                  <Integration
-                    key={item.name}
-                    icon={item.icon}
-                    name={item.name}
-                    description={item.description}
-                    reduced={reduced}
-                  />
-                ))}
-              </motion.div>
-            </div>
+        <div className="border-border/70 mx-auto mt-14 max-w-5xl border-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {frameworks.map((item) => (
+              <FrameworkCard key={item.name} item={item} />
+            ))}
           </div>
         </div>
       </div>
-    </section>
+    </SectionShell>
   );
 }
 
-const Integration = ({
-  icon,
-  name,
-  description,
-  reduced,
-}: {
-  icon: ReactNode;
-  name: string;
-  description: string;
-  reduced: boolean;
-}) => {
+function FrameworkCard({ item }: { item: Framework }) {
+  const [hovered, setHovered] = useState(false);
+  const reduced = useReducedMotion() ?? false;
+  const { Mark } = item;
+
   return (
-    <motion.div
-      variants={staggerItem(reduced)}
-      whileHover={reduced ? undefined : { y: -2 }}
-      transition={{ duration: 0.16, ease: easeOut }}
-      className="hover:bg-foreground/5 cursor-pointer space-y-4 rounded-lg border p-4 transition-colors duration-150"
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={cn(
+        'group/canvas-card bg-background border-border relative flex h-44 items-center justify-center overflow-hidden border-dashed sm:h-52 md:h-56',
+        'border-b-2 max-sm:last:border-b-0',
+        'sm:max-lg:[&:nth-last-child(-n+2)]:border-b-0',
+        'lg:[&:nth-last-child(-n+3)]:border-b-0',
+        'sm:border-r-2 sm:max-lg:[&:nth-child(2n)]:border-r-0',
+        'lg:[&:nth-child(3n)]:border-r-0'
+      )}
     >
-      <div className="flex size-fit items-center justify-center">{icon}</div>
-      <div className="space-y-1">
-        <h3 className="text-sm font-medium">{name}</h3>
-        <p className="text-muted-foreground line-clamp-1 text-sm md:line-clamp-2">
-          {description}
-        </p>
+      <AnimatePresence>
+        {hovered && !reduced && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 h-full w-full"
+          >
+            <CanvasRevealEffect
+              animationSpeed={2}
+              colors={item.colors}
+              dotSize={item.dotSize}
+              containerClassName="bg-background"
+            />
+            <div className="absolute inset-0 bg-black/50 [mask-image:radial-gradient(200px_at_center,white,transparent)] dark:bg-black/90" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="relative z-20 flex size-full items-center justify-center">
+        <div className="ease-out-cubic transition-transform duration-500 group-hover/canvas-card:-translate-y-5 motion-reduce:translate-y-0">
+          <Mark
+            aria-label={item.name}
+            className={cn(
+              'text-foreground/70 size-12 overflow-visible [&_path]:fill-none [&_path]:stroke-current group-hover/canvas-card:[&_path]:stroke-none motion-reduce:[&_path]:stroke-none',
+              item.fillClassName ??
+                'group-hover/canvas-card:[&_path]:fill-white motion-reduce:[&_path]:fill-white',
+              item.markClassName
+            )}
+          />
+        </div>
+        <span
+          className={cn(
+            'ease-out-cubic pointer-events-none absolute top-1/2 translate-y-5 text-sm font-medium text-white transition-opacity duration-500',
+            reduced
+              ? 'opacity-100'
+              : 'opacity-0 group-hover/canvas-card:opacity-100'
+          )}
+        >
+          {item.name}
+        </span>
       </div>
-    </motion.div>
+    </div>
   );
-};
+}

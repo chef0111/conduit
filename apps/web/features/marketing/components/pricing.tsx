@@ -11,6 +11,8 @@ import {
   viewportOnce,
 } from '@/features/marketing/lib/motion';
 
+import { SectionShell } from './section-shell';
+
 const plans = [
   {
     name: 'Starter',
@@ -19,11 +21,10 @@ const plans = [
     featured: false,
     variant: 'outline' as const,
     features: [
-      'Basic Analytics Dashboard',
-      '5GB Cloud Storage',
-      'Email and Chat Support',
+      'Unlimited personal channels',
+      'Realtime messaging',
+      'Email support',
     ],
-    className: 'flex flex-col gap-8 max-lg:border-b lg:border-r',
   },
   {
     name: 'Pro',
@@ -32,39 +33,27 @@ const plans = [
     featured: true,
     variant: 'default' as const,
     features: [
-      'Everything in Free Plan',
-      '5GB Cloud Storage',
-      'Email and Chat Support',
-      'Access to Community Forum',
-      'Single User Access',
-      'Access to Basic Templates',
-      'Mobile App Access',
-      '1 Custom Report Per Month',
-      'Monthly Product Updates',
-      'Standard Security Features',
+      'Everything in Starter',
+      'AI thread summaries',
+      'Shared workspaces',
+      'Priority support',
+      'Custom roles',
+      'Mobile access',
     ],
-    className:
-      'bg-card relative flex flex-col gap-8 shadow-xl max-lg:border-y lg:border-x',
   },
   {
     name: 'Startup',
-    description: 'For growing businesses and teams',
+    description: 'For growing teams',
     price: '$99',
     featured: false,
     variant: 'outline' as const,
     features: [
-      'Everything in Pro Plan',
-      '10GB Cloud Storage',
-      'Email and Chat Support',
-      'Access to Community Forum',
-      'Single User Access',
-      'Access to Basic Templates',
-      'Mobile App Access',
-      '1 Custom Report Per Month',
-      'Monthly Product Updates',
-      'Standard Security Features',
+      'Everything in Pro',
+      'SSO-ready auth',
+      'Audit-friendly history',
+      'Dedicated onboarding',
+      'Higher AI limits',
     ],
-    className: 'flex flex-col gap-8 max-lg:border-t lg:border-l',
   },
 ] as const;
 
@@ -72,17 +61,24 @@ export default function Pricing() {
   const reduced = useReducedMotion() ?? false;
 
   return (
-    <section className="py-16 md:py-20">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="max-w-lg space-y-6">
-          <h1 className="text-muted-foreground text-4xl font-medium tracking-tight text-balance lg:text-5xl">
-            <span className="text-foreground">Start free.</span> <br /> Upgrade
-            as you scale.
-          </h1>
+    <SectionShell
+      theme="light"
+      id="pricing"
+      cutout="up"
+      className="py-24 md:py-32"
+    >
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-foreground text-3xl font-semibold tracking-tight text-balance md:text-5xl">
+            Start free. Upgrade as you scale.
+          </h2>
+          <p className="text-muted-foreground mt-4 text-base text-balance md:text-lg">
+            Simple pricing for channels that grow with your team.
+          </p>
         </div>
 
         <motion.div
-          className="mt-12 grid gap-6 border *:p-8 max-lg:mx-auto max-lg:max-w-sm lg:mt-20 lg:grid-cols-3"
+          className="mx-auto mt-14 grid max-w-5xl gap-4 lg:grid-cols-3"
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
@@ -91,7 +87,11 @@ export default function Pricing() {
           {plans.map((plan) => (
             <motion.div
               key={plan.name}
-              className={plan.className}
+              className={
+                plan.featured
+                  ? 'border-foreground/15 bg-card relative flex flex-col gap-8 rounded-2xl border p-8 shadow-lg'
+                  : 'border-border flex flex-col gap-8 rounded-2xl border p-8'
+              }
               variants={{
                 hidden: reduced
                   ? { opacity: 0 }
@@ -113,33 +113,35 @@ export default function Pricing() {
               }}
             >
               {plan.featured ? (
-                <div className="inset-ring-foreground/10 absolute top-0 right-0 w-fit translate-x-px -translate-y-px rounded-bl bg-emerald-500/15 px-3 py-1 text-xs font-medium text-emerald-200 inset-ring [corner-shape:bevel]">
+                <div className="bg-primary text-primary-foreground absolute top-0 right-0 translate-x-px -translate-y-px rounded-tr-2xl rounded-bl-lg px-3 py-1 text-xs font-medium">
                   Popular
                 </div>
               ) : null}
               <div>
                 <p className="text-lg font-medium">{plan.name}</p>
-                <p className="text-muted-foreground text-lg font-medium">
+                <p className="text-muted-foreground text-sm font-medium">
                   {plan.description}
                 </p>
 
-                <div className="my-8 block text-4xl font-medium tracking-tight">
+                <div className="my-8 block text-4xl font-semibold tracking-tight">
                   {plan.price}{' '}
-                  <span className="text-muted-foreground text-lg">/mo</span>
+                  <span className="text-muted-foreground text-lg font-medium">
+                    /mo
+                  </span>
                 </div>
 
                 <Button
                   className="w-full"
                   variant={plan.variant}
                   nativeButton={false}
-                  render={<Link href="#">Get Started</Link>}
+                  render={<Link href="/sign-up">Get Started</Link>}
                 />
               </div>
 
-              <ul className="text-muted-foreground list-outside space-y-3">
+              <ul className="text-muted-foreground list-outside space-y-3 text-sm">
                 {plan.features.map((item) => (
                   <li key={item} className="flex items-center gap-3">
-                    <Check className="text-muted-foreground size-3" />
+                    <Check className="text-foreground size-3.5 shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -148,6 +150,6 @@ export default function Pricing() {
           ))}
         </motion.div>
       </div>
-    </section>
+    </SectionShell>
   );
 }

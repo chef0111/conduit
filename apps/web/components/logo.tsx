@@ -12,7 +12,7 @@ export const Logo = ({
       <LogoIcon />
       <span
         className={cn(
-          'text-foreground text-2xl font-semibold tracking-tight',
+          'text-foreground text-2xl leading-none font-semibold tracking-tight',
           textClassName
         )}
       >
@@ -25,26 +25,25 @@ export const Logo = ({
 export const LogoIcon = ({ className }: { className?: string }) => {
   return (
     <svg
-      className={cn('text-foreground size-8', className)}
+      className={cn('text-foreground relative size-8', className)}
       width="512"
       height="512"
       viewBox="0 0 512 512"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <rect width="512" height="512" rx="128" fill="#0069a8" />
       <rect
-        id="_r_o_"
         width="512"
         height="512"
-        x="0"
-        y="0"
         rx="128"
-        fill="#0E84E9"
-        stroke="#FFFFFF"
-        strokeWidth="0"
-        strokeOpacity="100%"
-        paintOrder="stroke"
-      ></rect>
+        fill="none"
+        stroke="black"
+        strokeOpacity="0.1"
+        strokeWidth="48"
+        pathLength="100"
+        className="dark:stroke-white"
+      />
       <clipPath id="clip"></clipPath>
       <defs>
         <linearGradient

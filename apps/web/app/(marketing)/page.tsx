@@ -1,21 +1,35 @@
-import Features from '@/features/marketing/components/features';
+import type { Metadata } from 'next';
+
+import CallToAction from '@/features/marketing/components/call-to-action';
+import {
+  FeatureBandAi,
+  FeatureBandRealtime,
+} from '@/features/marketing/components/feature-bands';
 import HeroSection from '@/features/marketing/components/hero-section';
 import Integrations from '@/features/marketing/components/integrations';
+import LogoCloud from '@/features/marketing/components/logo-cloud';
 import Pricing from '@/features/marketing/components/pricing';
-import SiteFooter from '@/features/marketing/components/site-footer';
-import SiteHeader from '@/features/marketing/components/site-header';
-import Stats from '@/features/marketing/components/stats';
+import ProductShowcase from '@/features/marketing/components/product-showcase';
+import Testimonials from '@/features/marketing/components/testimonials';
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+};
 
 export default function LandingPage() {
   return (
-    <main>
-      <SiteHeader />
+    <>
       <HeroSection />
+      <LogoCloud />
+      <ProductShowcase />
+      <FeatureBandRealtime />
+      <FeatureBandAi />
       <Integrations />
-      <Features />
+      <Testimonials />
       <Pricing />
-      <Stats />
-      <SiteFooter />
-    </main>
+      <CallToAction />
+    </>
   );
 }

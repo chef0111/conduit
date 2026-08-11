@@ -6,7 +6,7 @@ type LogoProps = {
   className?: string;
 };
 
-const MotionMark = (props: SVGProps<SVGSVGElement>) => (
+export const MotionMark = (props: SVGProps<SVGSVGElement>) => (
   <svg
     aria-hidden
     viewBox="0 0 26 10"

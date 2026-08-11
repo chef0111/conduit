@@ -1,5 +1,21 @@
 import type { SVGProps } from 'react';
 
+const arcjetMarkPath =
+  'M284.06 229.715c11.824 3.022 21.598 5.444 41.94 9.955-20.342 4.511-30.116 6.933-41.94 9.955a11.24 11.24 0 0 0-8.106 8.105c-3.021 11.821-5.443 21.599-9.954 41.94-4.511-20.341-6.933-30.119-9.954-41.94a11.24 11.24 0 0 0-8.106-8.105c-11.824-3.022-21.598-5.444-41.94-9.955 20.342-4.511 30.116-6.933 41.94-9.955a11.24 11.24 0 0 0 8.106-8.105c3.021-11.821 5.443-21.599 9.954-41.94 4.511 20.341 6.933 30.119 9.954 41.94a11.24 11.24 0 0 0 8.106 8.105';
+
+export const ArcjetMark = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    aria-hidden
+    viewBox="190 175 150 150"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    overflow="visible"
+    {...props}
+  >
+    <path fill="currentColor" d={arcjetMarkPath} />
+  </svg>
+);
+
 export const Arcjet = (props: SVGProps<SVGSVGElement>) => (
   <svg
     aria-label="Arcjet"
@@ -9,10 +25,7 @@ export const Arcjet = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <path
-      fill="currentColor"
-      d="M284.06 229.715c11.824 3.022 21.598 5.444 41.94 9.955-20.342 4.511-30.116 6.933-41.94 9.955a11.24 11.24 0 0 0-8.106 8.105c-3.021 11.821-5.443 21.599-9.954 41.94-4.511-20.341-6.933-30.119-9.954-41.94a11.24 11.24 0 0 0-8.106-8.105c-11.824-3.022-21.598-5.444-41.94-9.955 20.342-4.511 30.116-6.933 41.94-9.955a11.24 11.24 0 0 0 8.106-8.105c3.021-11.821 5.443-21.599 9.954-41.94 4.511 20.341 6.933 30.119 9.954 41.94a11.24 11.24 0 0 0 8.106 8.105"
-    />
+    <path fill="currentColor" d={arcjetMarkPath} />
     <path
       fill="currentColor"
       fillRule="evenodd"
