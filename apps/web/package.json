@@ -4,9 +4,11 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3000",
+    "dev": "portless conduit next dev",
+    "dev:app": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "portless conduit next start",
+    "start:app": "next start",
     "lint": "eslint --max-warnings 0 .",
     "typecheck": "next typegen && tsc --noEmit --extendedDiagnostics",
     "upgrade:next": "npx @next/codemod@latest upgrade latest"

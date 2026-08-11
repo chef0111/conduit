@@ -13,7 +13,8 @@ const candidates = [
 
 for (const path of candidates) {
   if (existsSync(path)) {
-    const result = config({ path, override: true });
+    // Do not override vars already set by the shell / portless (e.g. PORT).
+    const result = config({ path, override: false });
     if (result.error) {
       console.warn(`[env] failed to load ${path}:`, result.error.message);
     } else {
