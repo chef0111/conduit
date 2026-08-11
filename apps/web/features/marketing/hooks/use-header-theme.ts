@@ -6,7 +6,7 @@ import type { SectionTheme } from '@/features/marketing/components/section-shell
 
 /**
  * Sample Y for the light ↔ dark transition.
- * Higher = transition sooner.
+ * Higher = section must travel further under the dock before the header flips.
  */
 const SAMPLE_Y_PX = 80;
 
@@ -16,28 +16,9 @@ function getRootMargin(sampleY: number) {
   return `-${sampleY}px 0px -${bottom}px 0px`;
 }
 
-function themeAt(
-  sections: HTMLElement[],
-  sampleY: number,
-  fallback: SectionTheme
-): SectionTheme {
-  for (const section of sections) {
-    const rect = section.getBoundingClientRect();
-    if (rect.top <= sampleY && rect.bottom > sampleY) {
-      return (section.getAttribute('data-header-theme') ??
-        fallback) as SectionTheme;
-    }
-  }
-  return fallback;
-}
-
 /**
- * Tracks which marketing band is under the dock.
- *
- * Two sample lines, no scroll-direction state (avoids blink):
- * - light above / dark below → follow `SAMPLE_Y_PX` (80)
- * - dark above / light below → follow `SAMPLE_Y_PX` (44)
- * - both lines same theme → that theme
+ * Tracks which marketing band crosses the sample line under the dock.
+ * Uses a 1px IntersectionObserver band (no continuous theme thrashing).
  */
 export function useHeaderTheme(defaultTheme: SectionTheme = 'light') {
   const [theme, setTheme] = useState<SectionTheme>(defaultTheme);
@@ -50,70 +31,50 @@ export function useHeaderTheme(defaultTheme: SectionTheme = 'light') {
     if (sections.length === 0) return;
 
     const resolveTheme = () => {
-      const upper = themeAt(sections, SAMPLE_Y_PX, defaultTheme);
-      const lower = themeAt(sections, SAMPLE_Y_PX, defaultTheme);
+      let best: Element | null = null;
 
-      let next: SectionTheme;
-      if (upper === lower) {
-        next = upper;
-      } else if (upper === 'dark' && lower === 'light') {
-        // Dark-above / light-below boundary → flip at the upper sample (44)
-        next = upper;
-      } else {
-        // Light-above / dark-below boundary → flip at the lower sample (80)
-        next = lower;
+      for (const section of sections) {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= SAMPLE_Y_PX && rect.bottom > SAMPLE_Y_PX) {
+          best = section;
+          break;
+        }
       }
 
+      const next = (best?.getAttribute('data-header-theme') ??
+        defaultTheme) as SectionTheme;
       setTheme((prev) => (prev === next ? prev : next));
     };
 
-    const sampleLines = Array.from(new Set([SAMPLE_Y_PX, SAMPLE_Y_PX]));
+    let observer = new IntersectionObserver(() => resolveTheme(), {
+      root: null,
+      rootMargin: getRootMargin(SAMPLE_Y_PX),
+      threshold: [0, 1],
+    });
 
-    const connect = () =>
-      sampleLines.map((sampleY) => {
-        const observer = new IntersectionObserver(() => resolveTheme(), {
-          root: null,
-          rootMargin: getRootMargin(sampleY),
-          threshold: [0, 1],
-        });
-        for (const section of sections) {
-          observer.observe(section);
-        }
-        return observer;
-      });
-
-    let observers = connect();
+    for (const section of sections) {
+      observer.observe(section);
+    }
     resolveTheme();
 
     const onResize = () => {
-      for (const observer of observers) {
-        observer.disconnect();
+      observer.disconnect();
+      observer = new IntersectionObserver(() => resolveTheme(), {
+        root: null,
+        rootMargin: getRootMargin(SAMPLE_Y_PX),
+        threshold: [0, 1],
+      });
+      for (const section of sections) {
+        observer.observe(section);
       }
-      observers = connect();
       resolveTheme();
     };
 
-    // rAF-throttled scroll so we catch the boundary while crossing the gap
-    // between the two sample lines (IO alone only fires on enter/leave).
-    let raf = 0;
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        resolveTheme();
-      });
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
 
     return () => {
-      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
-      if (raf) cancelAnimationFrame(raf);
-      for (const observer of observers) {
-        observer.disconnect();
-      }
+      observer.disconnect();
     };
   }, [defaultTheme]);
 

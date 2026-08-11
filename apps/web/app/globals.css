@@ -197,13 +197,13 @@
 }
 
 @utility scroll-fade-effect-top {
-  --scroll-buffer: 1.75rem;
+  --scroll-buffer: 4rem;
 
   @supports (animation-timeline: scroll()) {
     animation-name: show-top-fade;
     animation-duration: auto;
     animation-timeline: scroll(root block);
-    animation-range: 0 var(--scroll-buffer);
+    animation-range: 0.25rem var(--scroll-buffer);
     animation-fill-mode: both;
   }
 }
@@ -222,7 +222,7 @@
 
 @keyframes show-top-fade {
   from {
-    transform: translateY(-100%);
+    opacity: 0;
   }
 }
 

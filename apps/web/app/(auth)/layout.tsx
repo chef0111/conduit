@@ -2,9 +2,8 @@ import { IconChevronLeft } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { ForcedThemeProvider } from '@/components/forced-theme-provider';
 import { Logo } from '@/components/logo';
-
-import { Providers } from './providers';
 
 export default function AuthLayout({
   children,
@@ -12,7 +11,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Providers>
+    <ForcedThemeProvider theme="light">
       <main
         data-surface="light"
         className="bg-background text-foreground flex min-h-screen w-full flex-col font-sans lg:flex-row"
@@ -60,6 +59,6 @@ export default function AuthLayout({
 
         {children}
       </main>
-    </Providers>
+    </ForcedThemeProvider>
   );
 }

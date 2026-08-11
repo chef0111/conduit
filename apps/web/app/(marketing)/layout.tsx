@@ -1,15 +1,18 @@
+import { ForcedThemeProvider } from '@/components/forced-theme-provider';
 import SiteFooter from '@/features/marketing/components/site-footer';
 import SiteHeader from '@/features/marketing/components/site-header';
 import { cn } from '@/lib/utils';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="group/layout">
-      <SiteHeader />
-      <main className="max-w-screen overflow-x-hidden">{children}</main>
-      <SiteFooter />
-      <ScrollFadeOverlay align="top" />
-    </div>
+    <ForcedThemeProvider theme="dark">
+      <div className="group/layout">
+        <SiteHeader />
+        <main className="max-w-screen overflow-x-hidden">{children}</main>
+        <SiteFooter />
+        <ScrollFadeOverlay align="top" />
+      </div>
+    </ForcedThemeProvider>
   );
 }
 
