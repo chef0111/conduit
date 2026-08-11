@@ -10,22 +10,20 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <SiteHeader />
         <main className="max-w-screen overflow-x-hidden">{children}</main>
         <SiteFooter />
-        <ScrollFadeOverlay align="top" />
+        <FadedOverlay align="top" />
       </div>
     </ForcedThemeProvider>
   );
 }
 
-function ScrollFadeOverlay({ align }: { align: 'top' | 'bottom' }) {
+function FadedOverlay({ align }: { align: 'top' | 'bottom' }) {
   const isTop = align === 'top';
 
   return (
     <div
       className={cn(
         'pointer-events-none fixed inset-x-0 z-50',
-        isTop
-          ? 'scroll-fade-effect-top -top-0.5'
-          : 'scroll-fade-effect-bottom -bottom-0.5'
+        isTop ? '-top-0.5' : '-bottom-0.5'
       )}
       aria-hidden
     >
