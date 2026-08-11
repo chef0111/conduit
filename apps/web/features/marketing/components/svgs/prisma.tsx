@@ -1,5 +1,26 @@
 import type { SVGProps } from 'react';
 
+const prismaMarkPath =
+  'M2.20316 123.367C0.281957 126.5 0.311691 130.455 2.2798 133.559L37.902 189.752C40.214 193.399 44.6703 195.062 48.8063 193.821L151.604 162.982C157.214 161.299 160.036 155.041 157.584 149.722L91.5009 6.37265C88.2782 -0.618156 78.563 -1.19199 74.5397 5.37082L2.20316 123.367ZM89.7451 39.1438C88.3406 35.8938 83.5845 36.3944 82.8873 39.8656L57.4457 166.544C56.9092 169.215 59.4101 171.496 62.0207 170.717L133.045 149.515C135.118 148.897 136.186 146.607 135.328 144.621L89.7451 39.1438Z';
+
+/** Icon-only prism mark. */
+export const PrismaMark = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    aria-hidden
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 160 200"
+    fill="none"
+    {...props}
+  >
+    <path
+      fill="currentColor"
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d={prismaMarkPath}
+    />
+  </svg>
+);
+
 export const Prisma = (props: SVGProps<SVGSVGElement>) => (
   <svg
     aria-label="Prisma"
@@ -13,7 +34,7 @@ export const Prisma = (props: SVGProps<SVGSVGElement>) => (
       fill="currentColor"
       fillRule="evenodd"
       clipRule="evenodd"
-      d="M2.20316 123.367C0.281957 126.5 0.311691 130.455 2.2798 133.559L37.902 189.752C40.214 193.399 44.6703 195.062 48.8063 193.821L151.604 162.982C157.214 161.299 160.036 155.041 157.584 149.722L91.5009 6.37265C88.2782 -0.618156 78.563 -1.19199 74.5397 5.37082L2.20316 123.367ZM89.7451 39.1438C88.3406 35.8938 83.5845 36.3944 82.8873 39.8656L57.4457 166.544C56.9092 169.215 59.4101 171.496 62.0207 170.717L133.045 149.515C135.118 148.897 136.186 146.607 135.328 144.621L89.7451 39.1438Z"
+      d={prismaMarkPath}
     />
     <path
       fill="currentColor"

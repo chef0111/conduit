@@ -5,10 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
 
 export default function LoginPage() {
   return (
-    <div className="flex w-full flex-col items-center justify-center p-6 sm:p-8 lg:w-1/2">
+    <div className="bg-background flex w-full flex-col items-center justify-center p-6 sm:p-8 lg:w-1/2">
       <div className="w-full max-w-md md:max-w-lg xl:max-w-xl">
         {/* Titles */}
         <div className="mb-6 text-center">
@@ -34,9 +35,11 @@ export default function LoginPage() {
 
         {/* Divider */}
         <div className="relative mb-6 flex items-center">
-          <div className="border-muted-foreground grow border-t"></div>
-          <span className="text-muted-foreground px-4 text-[13px]">or</span>
-          <div className="border-muted-foreground grow border-t"></div>
+          <Separator orientation="horizontal" className="flex-1 grow" />
+          <span className="text-muted-foreground px-4 text-[13px]">
+            Or continue with
+          </span>
+          <Separator orientation="horizontal" className="flex-1 grow" />
         </div>
 
         {/* Form */}
@@ -65,7 +68,7 @@ export default function LoginPage() {
           <div className="mt-1 flex items-start gap-3">
             <Checkbox id="terms" />
             <Label htmlFor="terms">
-              I agree to all Terms, Privacy Policy and Fees
+              I agree to all Terms and Privacy Policy.
             </Label>
           </div>
 

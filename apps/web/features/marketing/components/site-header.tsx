@@ -1,6 +1,6 @@
 'use client';
 
-import { X } from 'lucide-react';
+import { IconMenu2, IconX } from '@tabler/icons-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
@@ -8,18 +8,21 @@ import React from 'react';
 
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
+import { useHeaderTheme } from '@/features/marketing/hooks/use-header-theme';
 import { easeDrawer } from '@/features/marketing/lib/motion';
+import { cn } from '@/lib/utils';
 
 const menuItems: { name: string; href: Route }[] = [
-  { name: 'Product', href: '#' as Route },
-  { name: 'Solutions', href: '#' as Route },
-  { name: 'Pricing', href: '#' as Route },
-  { name: 'Company', href: '#' as Route },
+  { name: 'Product', href: '#product' as Route },
+  { name: 'Solutions', href: '#solutions' as Route },
+  { name: 'Pricing', href: '#pricing' as Route },
+  { name: 'Company', href: '#company' as Route },
 ];
 
 export default function SiteHeader() {
   const [menuState, setMenuState] = React.useState(false);
   const reduced = useReducedMotion() ?? false;
+  const headerTheme = useHeaderTheme('light');
 
   React.useEffect(() => {
     if (!menuState) return;
@@ -42,124 +45,133 @@ export default function SiteHeader() {
   }, [menuState]);
 
   return (
-    <header>
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-100 flex flex-row items-center justify-center px-4 pt-2">
       <nav
-        data-state={menuState && 'active'}
-        className="bg-background fixed top-0 z-20 w-full border-b max-lg:data-[state=active]:bottom-0"
+        data-state={menuState ? 'active' : undefined}
+        data-surface={headerTheme}
+        data-theme={headerTheme}
+        className={cn(
+          'pointer-events-auto relative w-full max-w-6xl',
+          'rounded-xl border backdrop-blur-xl',
+          'transition-[background-color,border-color,color,box-shadow] duration-500',
+          'ease-out-cubic',
+          'max-lg:data-[state=active]:rounded-xl',
+          headerTheme === 'dark' && 'dark',
+          'bg-background/70 border-border shadow-sm'
+        )}
       >
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="relative flex flex-wrap items-center justify-between py-4 max-lg:gap-6">
-            <div className="flex w-full justify-between lg:w-auto">
-              <Link
-                href="/"
-                aria-label="home"
-                className="flex items-center space-x-2"
-              >
-                <Logo />
-              </Link>
+        <div className="relative flex flex-wrap items-center justify-between gap-3 p-2">
+          <div className="flex w-full items-center justify-between md:w-auto">
+            <Link href="/" aria-label="home" className="flex items-center pl-1">
+              <Logo className="origin-left scale-90" />
+            </Link>
 
-              <button
-                onClick={() => setMenuState(!menuState)}
-                aria-label={menuState == true ? 'Close Menu' : 'Open Menu'}
-                className="relative z-20 block cursor-pointer after:absolute after:-inset-4 lg:hidden"
-              >
-                <div
-                  aria-hidden
-                  className="m-auto flex size-4.5 flex-col items-center justify-center gap-[7px] duration-200 in-data-[state=active]:scale-0 in-data-[state=active]:rotate-180 in-data-[state=active]:opacity-0"
-                >
-                  <span className="bg-foreground h-0.5 w-full rounded-full" />
-                  <span className="bg-foreground h-0.5 w-full rounded-full" />
-                </div>
-
-                <X className="absolute inset-0 m-auto size-6 translate-x-[-3px] scale-0 -rotate-180 opacity-0 duration-200 in-data-[state=active]:scale-100 in-data-[state=active]:rotate-0 in-data-[state=active]:opacity-100" />
-              </button>
-            </div>
-
-            <div className="absolute inset-0 m-auto size-fit max-lg:hidden">
-              <ul className="flex gap-8 text-sm">
-                {menuItems.map((item, index) => (
-                  <li key={index}>
-                    <Link
-                      href={item.href}
-                      className="text-muted-foreground hover:text-accent-foreground block duration-150"
-                    >
-                      <span>{item.name}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="dark hidden w-fit flex-wrap items-center justify-end gap-3 lg:flex">
-              <Button
-                size="sm"
-                variant="outline"
-                nativeButton={false}
-                render={<Link href="/sign-in">Login</Link>}
+            <Button
+              type="button"
+              variant="ghost"
+              data-slot="menu-trigger"
+              onClick={() => setMenuState(!menuState)}
+              aria-label={menuState ? 'Close Menu' : 'Open Menu'}
+              className="group relative z-20 md:hidden"
+            >
+              <IconMenu2
+                className={cn(
+                  'text-foreground ease-out-cubic size-5 transition-all duration-300',
+                  menuState && 'scale-0 rotate-90 opacity-0'
+                )}
               />
-              <Button
-                size="sm"
-                nativeButton={false}
-                render={<Link href="/sign-up">Get Started</Link>}
+              <IconX
+                className={cn(
+                  'text-foreground ease-out-cubic absolute size-5 transition-all duration-300',
+                  menuState
+                    ? 'scale-100 rotate-0 opacity-100'
+                    : 'scale-0 -rotate-90 opacity-0'
+                )}
               />
-            </div>
-
-            <AnimatePresence>
-              {menuState ? (
-                <motion.div
-                  key="mobile-menu"
-                  initial={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
-                  animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                  exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
-                  transition={{
-                    duration: reduced ? 0.15 : 0.25,
-                    ease: easeDrawer,
-                  }}
-                  className="mb-6 w-full space-y-8 lg:hidden"
-                >
-                  <ul>
-                    {menuItems.map((item, index) => (
-                      <motion.li
-                        key={item.name}
-                        initial={
-                          reduced ? { opacity: 0 } : { opacity: 0, y: 6 }
-                        }
-                        animate={
-                          reduced ? { opacity: 1 } : { opacity: 1, y: 0 }
-                        }
-                        transition={{
-                          duration: reduced ? 0.15 : 0.22,
-                          delay: reduced ? 0 : 0.04 * index,
-                          ease: easeDrawer,
-                        }}
-                      >
-                        <Link
-                          href={item.href}
-                          className="text-foreground block py-3 text-2xl font-medium"
-                          onClick={() => setMenuState(false)}
-                        >
-                          <span>{item.name}</span>
-                        </Link>
-                      </motion.li>
-                    ))}
-                  </ul>
-                  <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      nativeButton={false}
-                      render={<Link href="#">Login</Link>}
-                    />
-                    <Button
-                      size="sm"
-                      nativeButton={false}
-                      render={<Link href="#">Get Started</Link>}
-                    />
-                  </div>
-                </motion.div>
-              ) : null}
-            </AnimatePresence>
+            </Button>
           </div>
+
+          <div className="absolute inset-0 m-auto hidden size-fit md:block">
+            <ul className="flex items-center gap-1 text-sm">
+              {menuItems.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className="text-muted-foreground hover:text-foreground hover:bg-muted/60 block rounded-lg px-3 py-1.5 duration-200"
+                  >
+                    <span>{item.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="hidden items-center gap-2 md:flex">
+            <Button
+              size="sm"
+              variant="ghost"
+              nativeButton={false}
+              className="text-foreground"
+              render={<Link href="/sign-in">Login</Link>}
+            />
+            <Button
+              size="sm"
+              nativeButton={false}
+              render={<Link href="/sign-up">Get Started</Link>}
+            />
+          </div>
+
+          <AnimatePresence>
+            {menuState && (
+              <motion.div
+                key="mobile-menu"
+                initial={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                transition={{
+                  duration: reduced ? 0.15 : 0.28,
+                  ease: easeDrawer,
+                }}
+                className="w-full space-y-6 px-2 pb-3 md:hidden"
+              >
+                <ul>
+                  {menuItems.map((item, index) => (
+                    <motion.li
+                      key={item.name}
+                      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
+                      animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                      transition={{
+                        duration: reduced ? 0.15 : 0.24,
+                        delay: reduced ? 0 : 0.04 * index,
+                        ease: easeDrawer,
+                      }}
+                    >
+                      <Link
+                        href={item.href}
+                        className="text-foreground block py-2.5 text-lg font-medium"
+                        onClick={() => setMenuState(false)}
+                      >
+                        <span>{item.name}</span>
+                      </Link>
+                    </motion.li>
+                  ))}
+                </ul>
+                <div className="flex w-full flex-col gap-2 sm:flex-row">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    nativeButton={false}
+                    render={<Link href="/sign-in">Login</Link>}
+                  />
+                  <Button
+                    size="sm"
+                    nativeButton={false}
+                    render={<Link href="/sign-up">Get Started</Link>}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </nav>
     </header>

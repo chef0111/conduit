@@ -1,10 +1,8 @@
 import type { Route } from 'next';
 import Link from 'next/link';
 
-import { LogoIcon } from '@/components/logo';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Logo } from '@/components/logo';
+import { SectionShell } from '@/features/marketing/components/section-shell';
 
 type FooterLink = { href: Route; label: string };
 
@@ -19,20 +17,19 @@ const footerLinks: { name: string; links: FooterLink[] }[] = [
   {
     name: 'Product',
     links: [
-      { href: '#' as Route, label: 'Security' },
-      { href: '#' as Route, label: 'Customization' },
-      { href: '#' as Route, label: 'Enterprise' },
-      { href: '#' as Route, label: 'Partners' },
+      { href: '#product' as Route, label: 'Surfaces' },
+      { href: '#solutions' as Route, label: 'Solutions' },
+      { href: '#pricing' as Route, label: 'Pricing' },
+      { href: '/sign-up' as Route, label: 'Get started' },
     ],
   },
   {
     name: 'Company',
     links: [
-      { href: '#' as Route, label: 'About' },
+      { href: '#company' as Route, label: 'About' },
       { href: '#' as Route, label: 'Customers' },
-      { href: '#' as Route, label: 'Enterprise' },
+      { href: '#' as Route, label: 'Careers' },
       { href: '#' as Route, label: 'Partners' },
-      { href: '#' as Route, label: 'Jobs' },
     ],
   },
   {
@@ -48,24 +45,31 @@ const footerLinks: { name: string; links: FooterLink[] }[] = [
 
 export default function SiteFooter() {
   return (
-    <footer>
-      <div className="mx-auto max-w-7xl space-y-16 px-6 pt-32 pb-16">
-        <div className="grid grid-cols-2 gap-x-3 gap-y-12 sm:grid-cols-4 lg:grid-cols-5">
-          <div className="max-lg:col-span-full">
-            <Link href="/" aria-label="go home">
-              <LogoIcon />
-            </Link>
-          </div>
+    <SectionShell
+      as="footer"
+      theme="dark"
+      className="border-border/60 border-t"
+    >
+      <div className="mx-auto grid w-full max-w-6xl space-y-16 px-16 pt-20 pb-16 lg:grid-cols-3 lg:gap-8">
+        <div className="flex flex-col gap-4 md:gap-2">
+          <Link href="/" aria-label="go home">
+            <Logo />
+          </Link>
+          <span className="text-muted-foreground text-sm">
+            Manage your team&apos;s work in one place.
+          </span>
+        </div>
 
-          {footerLinks.map((linksGroup, index) => (
-            <div key={index}>
+        <div className="grid grid-cols-2 gap-x-3 gap-y-12 sm:grid-cols-4 lg:col-span-2">
+          {footerLinks.map((linksGroup) => (
+            <div key={linksGroup.name}>
               <span className="text-sm font-medium">{linksGroup.name}</span>
               <ul className="mt-4 list-inside space-y-4">
-                {linksGroup.links.map((link, index) => (
-                  <li key={index}>
+                {linksGroup.links.map((link) => (
+                  <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="hover:text-primary text-muted-foreground text-sm duration-150"
+                      className="hover:text-foreground text-muted-foreground text-sm duration-150"
                     >
                       {link.label}
                     </Link>
@@ -77,44 +81,26 @@ export default function SiteFooter() {
           <div>
             <span className="text-sm font-medium">Community</span>
             <ul className="mt-4 list-inside space-y-4">
-              {communityLinks.map((link, index) => (
-                <li key={index}>
+              {communityLinks.map((link) => (
+                <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="hover:text-primary text-muted-foreground text-sm duration-150"
+                    className="hover:text-foreground text-muted-foreground text-sm duration-150"
                   >
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-
-            <form className="mt-12 w-full max-w-xs">
-              <div className="space-y-2.5">
-                <Label className="block text-sm font-medium" htmlFor="email">
-                  Subscribe to our newsletter
-                </Label>
-                <Input
-                  className="text-sm"
-                  placeholder="Your email"
-                  type="email"
-                  id="email"
-                  required
-                  name="email"
-                />
-              </div>
-              <Button type="submit" className="mt-3" size="sm">
-                <span>Subscribe</span>
-              </Button>
-            </form>
           </div>
         </div>
-        <div className="mt-16">
-          <span className="text-muted-foreground block text-sm">
-            &copy; Conduit 2026 - All rights reserved
-          </span>
-        </div>
       </div>
-    </footer>
+      <div className="via-border h-px w-full bg-linear-to-r" />
+      <div className="w-full text-center">
+        <span className="text-muted-foreground block py-4 text-sm">
+          &copy; Conduit 2026 - All rights reserved
+        </span>
+      </div>
+    </SectionShell>
   );
 }

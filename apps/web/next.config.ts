@@ -26,12 +26,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'cfww31lk7t.ufs.sh',
+        hostname: 'gravatar.com',
         port: '',
       },
       {
         protocol: 'https',
-        hostname: 'gravatar.com',
+        hostname: 'images.unsplash.com',
         port: '',
       },
       {
