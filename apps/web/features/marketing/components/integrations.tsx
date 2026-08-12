@@ -74,7 +74,7 @@ const frameworks: Framework[] = [
 
 export default function Integrations() {
   return (
-    <SectionShell theme="dark" cutout="down" className="py-24 md:py-32">
+    <SectionShell theme="dark" cutout="down" className="pt-24 md:pt-32">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-primary text-sm font-semibold tracking-tight">

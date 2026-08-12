@@ -48,7 +48,7 @@ export default function Testimonials() {
   const reduced = useReducedMotion() ?? false;
 
   return (
-    <SectionShell theme="dark" id="company" className="pt-16 pb-24 md:pb-48">
+    <SectionShell theme="dark" id="company" className="py-24 md:pt-32 md:pb-48">
       <div className="mx-auto max-w-6xl px-6">
         <h2 className="text-foreground mx-auto max-w-2xl text-center text-3xl font-semibold tracking-tight text-balance md:text-5xl">
           Teams shipped faster with Conduit

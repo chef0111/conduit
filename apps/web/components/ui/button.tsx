@@ -38,12 +38,12 @@ const buttonVariants = cva(
       {
         variant: 'default',
         size: ['default', 'xs', 'sm', 'lg'],
-        class: 'h-[calc(var(--btn-h)-2px)]',
+        class: 'h-[calc(var(--btn-h)-1px)]',
       },
       {
         variant: 'default',
         size: ['icon', 'icon-xs', 'icon-sm', 'icon-lg'],
-        class: 'size-[calc(var(--btn-h)-2px)]',
+        class: 'size-[calc(var(--btn-h)-1px)]',
       },
     ],
     defaultVariants: {
