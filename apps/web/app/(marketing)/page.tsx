@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
 
 import CallToAction from '@/features/marketing/components/call-to-action';
-import {
-  FeatureBandAi,
-  FeatureBandRealtime,
-} from '@/features/marketing/components/feature-bands';
+import { FeatureBands } from '@/features/marketing/components/feature-bands';
 import HeroSection from '@/features/marketing/components/hero-section';
 import Integrations from '@/features/marketing/components/integrations';
 import LogoCloud from '@/features/marketing/components/logo-cloud';
@@ -24,8 +21,7 @@ export default function LandingPage() {
       <HeroSection />
       <LogoCloud />
       <ProductShowcase />
-      <FeatureBandRealtime />
-      <FeatureBandAi />
+      <FeatureBands />
       <Integrations />
       <Testimonials />
       <Pricing />

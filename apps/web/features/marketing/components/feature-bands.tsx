@@ -33,7 +33,7 @@ const aiPoints = [
   },
 ] as const;
 
-export function FeatureBandRealtime() {
+export function FeatureBands() {
   const reduced = useReducedMotion() ?? false;
 
   return (
@@ -41,7 +41,7 @@ export function FeatureBandRealtime() {
       theme="light"
       id="solutions"
       cutout="up"
-      className="py-24 md:pt-32"
+      className="space-y-24 py-24 md:py-32"
     >
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-2 lg:gap-16">
         <div>
@@ -96,15 +96,7 @@ export function FeatureBandRealtime() {
           />
         </motion.div>
       </div>
-    </SectionShell>
-  );
-}
 
-export function FeatureBandAi() {
-  const reduced = useReducedMotion() ?? false;
-
-  return (
-    <SectionShell theme="light" cutout="down" className="pb-24 md:pb-32">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-2 lg:gap-16">
         <motion.div
           initial={reduced ? { opacity: 0 } : { opacity: 0, y: 16 }}
