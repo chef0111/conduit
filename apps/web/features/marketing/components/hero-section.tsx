@@ -100,7 +100,6 @@ export default function HeroSection() {
               <Button
                 variant="outline"
                 nativeButton={false}
-                className="h-9.5"
                 render={
                   <Link href="#product">
                     <span className="text-nowrap">View product</span>
