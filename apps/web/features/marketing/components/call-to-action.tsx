@@ -1,10 +1,9 @@
 'use client';
 
-import { IconArrowRight, IconAt } from '@tabler/icons-react';
+import { IconAt } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 
-import { Button } from '@/components/ui/button';
 import {
   InputGroup,
   InputGroupAddon,
@@ -12,6 +11,8 @@ import {
 } from '@/components/ui/input-group';
 import { SectionShell } from '@/features/marketing/components/section-shell';
 import { fadeUpVariants } from '@/features/marketing/lib/motion';
+
+import { ForwardButton } from './forward-button';
 
 const avatars = [
   {
@@ -75,9 +76,9 @@ export default function CallToAction() {
             </InputGroupAddon>
           </InputGroup>
 
-          <Button>
-            Subscribe <IconArrowRight data-icon="inline-end" />
-          </Button>
+          <ForwardButton variant="default" href="#">
+            Subscribe
+          </ForwardButton>
         </motion.div>
         <motion.div
           custom={0.14}

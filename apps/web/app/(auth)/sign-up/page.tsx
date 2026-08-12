@@ -87,7 +87,7 @@ export default function LoginPage() {
             href="/sign-in"
             className="text-foreground font-semibold underline-offset-3 hover:underline"
           >
-            Log in
+            Sign up
           </Link>
         </div>
       </div>

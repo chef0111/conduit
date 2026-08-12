@@ -101,7 +101,9 @@ export default function ProductShowcase() {
         </motion.div>
 
         <div className="mt-12 flex justify-center">
-          <ForwardButton href="/sign-up">Explore all surfaces</ForwardButton>
+          <ForwardButton variant="ghost" href="/sign-up">
+            Explore all surfaces
+          </ForwardButton>
         </div>
       </div>
     </SectionShell>

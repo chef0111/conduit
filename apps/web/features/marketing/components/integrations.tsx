@@ -87,7 +87,7 @@ export default function Integrations() {
             Conduit keeps developer experience front-and-center with a stack
             that fits modern web and AI workflows.
           </p>
-          <ForwardButton href="/sign-up" className="mt-6">
+          <ForwardButton variant="ghost" href="/sign-up" className="mt-6">
             All integrations
           </ForwardButton>
         </div>

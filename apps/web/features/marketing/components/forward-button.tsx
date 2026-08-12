@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 interface ForwardButtonProps {
   href: Route;
   children: React.ReactNode;
-  variant?: 'outline' | 'ghost';
+  variant?: 'default' | 'outline' | 'ghost';
   size?: 'default' | 'sm' | 'lg';
   className?: string;
 }
@@ -16,7 +16,7 @@ interface ForwardButtonProps {
 export function ForwardButton({
   href,
   children,
-  variant = 'ghost',
+  variant = 'default',
   size = 'default',
   className,
 }: ForwardButtonProps) {
@@ -26,7 +26,7 @@ export function ForwardButton({
       size={size}
       nativeButton={false}
       render={<Link href={href} />}
-      className={cn('group gap-1 overflow-hidden pr-1', className)}
+      className={cn('group gap-1 overflow-hidden pr-1.5', className)}
     >
       {children}
       <div className="relative overflow-hidden rounded-full p-2">
