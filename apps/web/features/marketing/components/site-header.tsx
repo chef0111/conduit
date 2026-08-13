@@ -15,8 +15,8 @@ import { cn } from '@/lib/utils';
 const menuItems: { name: string; href: Route }[] = [
   { name: 'Product', href: '#product' as Route },
   { name: 'Solutions', href: '#solutions' as Route },
-  { name: 'Pricing', href: '#pricing' as Route },
   { name: 'Company', href: '#company' as Route },
+  { name: 'Pricing', href: '#pricing' as Route },
 ];
 
 export default function SiteHeader() {
@@ -98,6 +98,12 @@ export default function SiteHeader() {
                   <Link
                     href={item.href}
                     className="text-muted-foreground hover:text-foreground hover:bg-muted/60 block rounded-lg px-3 py-1.5 duration-200"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const el = document.getElementById(item.href.slice(1));
+                      el?.scrollIntoView({ behavior: 'smooth' });
+                      window.history.pushState(null, '', item.href);
+                    }}
                   >
                     <span>{item.name}</span>
                   </Link>

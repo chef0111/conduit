@@ -18,11 +18,6 @@ export function createAuth() {
   const resend = resendApiKey ? new Resend(resendApiKey) : null;
   const emailFrom = process.env.AUTH_EMAIL_FROM ?? 'onboarding@resend.dev';
 
-  const googleClientId = process.env.GOOGLE_CLIENT_ID;
-  const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
-  const githubClientId = process.env.GITHUB_CLIENT_ID;
-  const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
-
   return betterAuth({
     database: prismaAdapter(prisma, {
       provider: 'postgresql',
@@ -37,22 +32,14 @@ export function createAuth() {
       requireEmailVerification: true,
     },
     socialProviders: {
-      ...(googleClientId && googleClientSecret
-        ? {
-            google: {
-              clientId: googleClientId,
-              clientSecret: googleClientSecret,
-            },
-          }
-        : {}),
-      ...(githubClientId && githubClientSecret
-        ? {
-            github: {
-              clientId: githubClientId,
-              clientSecret: githubClientSecret,
-            },
-          }
-        : {}),
+      google: {
+        clientId: requireEnv('GOOGLE_CLIENT_ID'),
+        clientSecret: requireEnv('GOOGLE_CLIENT_SECRET'),
+      },
+      github: {
+        clientId: requireEnv('GITHUB_CLIENT_ID'),
+        clientSecret: requireEnv('GITHUB_CLIENT_SECRET'),
+      },
     },
     plugins: [
       emailOTP({

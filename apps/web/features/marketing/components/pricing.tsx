@@ -29,7 +29,7 @@ const plans = [
   {
     name: 'Pro',
     description: 'For ambitious founders',
-    price: '$59',
+    price: '$49',
     featured: true,
     variant: 'default' as const,
     features: [
@@ -89,7 +89,7 @@ export default function Pricing() {
               key={plan.name}
               className={
                 plan.featured
-                  ? 'border-foreground/15 bg-card relative flex flex-col gap-8 rounded-2xl border p-8 shadow-lg'
+                  ? 'border-primary bg-card relative flex flex-col gap-8 rounded-xl border p-8 shadow-lg'
                   : 'border-border flex flex-col gap-8 rounded-2xl border p-8'
               }
               variants={{
@@ -112,11 +112,11 @@ export default function Pricing() {
                 },
               }}
             >
-              {plan.featured ? (
-                <div className="bg-primary text-primary-foreground absolute top-0 right-0 translate-x-px -translate-y-px rounded-tr-2xl rounded-bl-lg px-3 py-1 text-xs font-medium">
+              {plan.featured && (
+                <div className="bg-primary text-primary-foreground absolute top-0 right-0 translate-x-px -translate-y-px rounded-tr-xl rounded-bl-lg px-3 py-1 text-xs font-medium">
                   Popular
                 </div>
-              ) : null}
+              )}
               <div>
                 <p className="text-lg font-medium">{plan.name}</p>
                 <p className="text-muted-foreground text-sm font-medium">
