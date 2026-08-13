@@ -11,3 +11,4 @@ export type {
   SignUpEmailInput,
   EmailOtpInput,
 } from './schemas.js';
+export { getSessionCookie } from 'better-auth/cookies';

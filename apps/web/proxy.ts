@@ -1,9 +1,9 @@
-import { getSessionCookie } from 'better-auth/cookies';
+import { getSessionCookie } from '@repo/auth';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 export function proxy(request: NextRequest) {
-  const sessionCookie = getSessionCookie(request);
+  const session = getSessionCookie(request);
   const pathname = request.nextUrl.pathname;
 
   const protectedRoutes = ['/dashboard'];
@@ -20,16 +20,22 @@ export function proxy(request: NextRequest) {
   ];
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 
-  if (isProtectedRoute && !sessionCookie) {
-    const url = new URL('/sign-in', request.url);
-    url.searchParams.set('from', pathname);
+  // Redirect unauthenticated users from protected routes to login
+  if (isProtectedRoute && !session) {
+    const url = new URL('/login', request.url);
+    url.searchParams.set('callbackURL', pathname);
     return NextResponse.redirect(url);
   }
 
-  if (isAuthRoute && sessionCookie) {
-    const from = request.nextUrl.searchParams.get('from');
+  // Redirect logged-in users away from auth pages
+  if (isAuthRoute && session) {
+    const callbackURL = request.nextUrl.searchParams.get('callbackURL');
     const redirectUrl =
-      from && from.startsWith('/') && !from.startsWith('//') ? from : '/';
+      callbackURL &&
+      callbackURL.startsWith('/') &&
+      !callbackURL.startsWith('//')
+        ? callbackURL
+        : '/';
     return NextResponse.redirect(new URL(redirectUrl, request.url));
   }
 

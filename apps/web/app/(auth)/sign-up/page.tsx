@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
 
 import { GitHubIcon, GoogleIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
@@ -11,8 +10,6 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
 export default function SignUpPage() {
-  const [isLoading, setIsLoading] = useState(false);
-
   return (
     <div className="bg-background flex w-full flex-col items-center justify-center p-6 sm:p-8 lg:w-1/2">
       <div className="w-full max-w-md md:max-w-lg xl:max-w-xl">
