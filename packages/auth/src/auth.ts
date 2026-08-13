@@ -16,6 +16,23 @@ export function createAuth(extraPlugins: BetterAuthPlugin[] = []) {
   const resendApiKey = process.env.RESEND_API_KEY;
   const resend = resendApiKey ? new Resend(resendApiKey) : null;
   const emailFrom = process.env.AUTH_EMAIL_FROM ?? 'onboarding@resend.dev';
+  const socialProviders: NonNullable<
+    Parameters<typeof betterAuth>[0]['socialProviders']
+  > = {};
+
+  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+    socialProviders.google = {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    };
+  }
+
+  if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
+    socialProviders.github = {
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    };
+  }
 
   return betterAuth({
     database: prismaAdapter(prisma, {
@@ -41,16 +58,7 @@ export function createAuth(extraPlugins: BetterAuthPlugin[] = []) {
       },
       useSecureCookies: true,
     },
-    socialProviders: {
-      google: {
-        clientId: requireEnv('GOOGLE_CLIENT_ID'),
-        clientSecret: requireEnv('GOOGLE_CLIENT_SECRET'),
-      },
-      github: {
-        clientId: requireEnv('GITHUB_CLIENT_ID'),
-        clientSecret: requireEnv('GITHUB_CLIENT_SECRET'),
-      },
-    },
+    socialProviders,
     plugins: [
       emailOTP({
         overrideDefaultEmailVerification: true,

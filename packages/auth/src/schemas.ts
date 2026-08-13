@@ -9,7 +9,9 @@ export const signUpEmailSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(8),
-  terms: z.literal(true),
+  terms: z
+    .boolean()
+    .refine((value) => value, { message: 'You must accept the terms' }),
 });
 
 export const emailOtpSchema = z.object({

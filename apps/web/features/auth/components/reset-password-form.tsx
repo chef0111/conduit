@@ -1,7 +1,8 @@
 'use client';
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { resetPasswordSchema, type ResetPasswordInput } from '@repo/auth/schemas';
+import { authClient } from '@repo/auth/client';
+import { type ResetPasswordInput,resetPasswordSchema } from '@repo/auth/schemas';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -12,36 +13,26 @@ import { FormInputOTP } from '@/components/form/form-otp';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
-import { authClient } from '@repo/auth/client';
+import { withCallbackURL } from '@/features/auth/lib/callback-url';
 
 type ResetPasswordFormProps = {
   emailFromQuery: string | null;
   callbackURL: string | null;
 };
 
-function isSafeInternalPath(value: string | null): value is string {
-  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
-}
-
-function withCallbackURL(pathname: string, callbackURL: string | null): string {
-  if (!isSafeInternalPath(callbackURL)) {
-    return pathname;
-  }
-
-  const params = new URLSearchParams({ callbackURL });
-  const joiner = pathname.includes('?') ? '&' : '?';
-  return `${pathname}${joiner}${params.toString()}`;
-}
-
 export function ResetPasswordForm({
   emailFromQuery,
   callbackURL,
 }: ResetPasswordFormProps) {
   const router = useRouter();
+  const parsedEmailFromQuery = resetPasswordSchema.shape.email.safeParse(emailFromQuery);
+  const validEmailFromQuery = parsedEmailFromQuery.success
+    ? parsedEmailFromQuery.data
+    : null;
   const { control, handleSubmit, formState } = useForm<ResetPasswordInput>({
     resolver: standardSchemaResolver(resetPasswordSchema),
     defaultValues: {
-      email: emailFromQuery ?? '',
+      email: validEmailFromQuery ?? '',
       otp: '',
       password: '',
       confirmPassword: '',
@@ -67,7 +58,7 @@ export function ResetPasswordForm({
   return (
     <form className="flex flex-col gap-5" onSubmit={onSubmit}>
       <FieldGroup>
-        {!emailFromQuery ? (
+        {!validEmailFromQuery ? (
           <FormInput
             control={control}
             name="email"

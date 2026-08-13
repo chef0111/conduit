@@ -2,8 +2,10 @@
 
 import { authClient } from '@repo/auth/client';
 import { useSearchParams } from 'next/navigation';
-import { type ReactNode, createContext, useContext, useState } from 'react';
+import { createContext, type ReactNode, useContext, useState } from 'react';
 import { toast } from 'sonner';
+
+import { isSafeInternalPath } from '@/features/auth/lib/callback-url';
 
 import type { OAuthProvider } from '../types/auth';
 
@@ -25,9 +27,11 @@ export function OAuthProvider({ children }: { children: ReactNode }) {
     setPendingProvider(provider);
 
     try {
+      const callbackURL = searchParams.get('callbackURL');
+
       await authClient.signIn.social({
         provider,
-        callbackURL: searchParams.get('callbackURL') ?? '/',
+        callbackURL: isSafeInternalPath(callbackURL) ? callbackURL : '/',
         errorCallbackURL: '/banned',
         fetchOptions: {
           onError: (ctx) => {

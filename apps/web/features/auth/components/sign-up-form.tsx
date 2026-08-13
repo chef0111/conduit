@@ -1,7 +1,8 @@
 'use client';
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { signUpEmailSchema, type SignUpEmailInput } from '@repo/auth/schemas';
+import { authClient } from '@repo/auth/client';
+import { type SignUpEmailInput,signUpEmailSchema } from '@repo/auth/schemas';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -12,26 +13,12 @@ import { FormInput } from '@/components/form/form-input';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
-import { authClient } from '@repo/auth/client';
+import { withCallbackURL } from '@/features/auth/lib/callback-url';
 
 type SignUpFormProps = {
   callbackURL: string | null;
   isOAuthPending: boolean;
 };
-
-function isSafeInternalPath(value: string | null): value is string {
-  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
-}
-
-function withCallbackURL(pathname: string, callbackURL: string | null): string {
-  if (!isSafeInternalPath(callbackURL)) {
-    return pathname;
-  }
-
-  const params = new URLSearchParams({ callbackURL });
-  const joiner = pathname.includes('?') ? '&' : '?';
-  return `${pathname}${joiner}${params.toString()}`;
-}
 
 export function SignUpForm({ callbackURL, isOAuthPending }: SignUpFormProps) {
   const router = useRouter();
@@ -41,7 +28,7 @@ export function SignUpForm({ callbackURL, isOAuthPending }: SignUpFormProps) {
       name: '',
       email: '',
       password: '',
-      terms: true,
+      terms: false,
     },
   });
 

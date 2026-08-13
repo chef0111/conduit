@@ -8,20 +8,7 @@ import { FieldSeparator } from '@/components/ui/field';
 import { OAuthForm } from '@/features/auth/components/oauth-form';
 import { SignUpForm } from '@/features/auth/components/sign-up-form';
 import { OAuthProvider, useOAuth } from '@/features/auth/context/oauth-provider';
-
-function isSafeInternalPath(value: string | null): value is string {
-  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
-}
-
-function withCallbackURL(pathname: string, callbackURL: string | null): string {
-  if (!isSafeInternalPath(callbackURL)) {
-    return pathname;
-  }
-
-  const params = new URLSearchParams({ callbackURL });
-  const joiner = pathname.includes('?') ? '&' : '?';
-  return `${pathname}${joiner}${params.toString()}`;
-}
+import { withCallbackURL } from '@/features/auth/lib/callback-url';
 
 function SignUpContent({ callbackURL }: { callbackURL: string | null }) {
   const { isOAuthPending } = useOAuth();

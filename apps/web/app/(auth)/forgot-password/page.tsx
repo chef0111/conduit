@@ -5,20 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { ForgotPasswordForm } from '@/features/auth/components/forgot-password-form';
-
-function isSafeInternalPath(value: string | null): value is string {
-  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
-}
-
-function withCallbackURL(pathname: string, callbackURL: string | null): string {
-  if (!isSafeInternalPath(callbackURL)) {
-    return pathname;
-  }
-
-  const params = new URLSearchParams({ callbackURL });
-  const joiner = pathname.includes('?') ? '&' : '?';
-  return `${pathname}${joiner}${params.toString()}`;
-}
+import { withCallbackURL } from '@/features/auth/lib/callback-url';
 
 export default function ForgotPasswordPage() {
   const searchParams = useSearchParams();

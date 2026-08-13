@@ -1,7 +1,8 @@
 'use client';
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { emailOtpSchema, type EmailOtpInput } from '@repo/auth/schemas';
+import { authClient } from '@repo/auth/client';
+import { type EmailOtpInput,emailOtpSchema } from '@repo/auth/schemas';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -13,25 +14,25 @@ import { FormInputOTP } from '@/components/form/form-otp';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
-import { authClient } from '@repo/auth/client';
+import { isSafeInternalPath } from '@/features/auth/lib/callback-url';
 
 type VerifyEmailFormProps = {
   emailFromQuery: string | null;
   callbackURL: string | null;
 };
 
-function isSafeInternalPath(value: string | null): value is string {
-  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
-}
-
 export function VerifyEmailForm({ emailFromQuery, callbackURL }: VerifyEmailFormProps) {
   const router = useRouter();
   const [cooldown, setCooldown] = useState(0);
   const [isResending, setIsResending] = useState(false);
+  const parsedEmailFromQuery = emailOtpSchema.shape.email.safeParse(emailFromQuery);
+  const validEmailFromQuery = parsedEmailFromQuery.success
+    ? parsedEmailFromQuery.data
+    : null;
   const { control, handleSubmit, getValues, formState } = useForm<EmailOtpInput>({
     resolver: standardSchemaResolver(emailOtpSchema),
     defaultValues: {
-      email: emailFromQuery ?? '',
+      email: validEmailFromQuery ?? '',
       otp: '',
     },
   });
@@ -92,7 +93,7 @@ export function VerifyEmailForm({ emailFromQuery, callbackURL }: VerifyEmailForm
   return (
     <form className="flex flex-col gap-5" onSubmit={onSubmit}>
       <FieldGroup>
-        {!emailFromQuery ? (
+        {!validEmailFromQuery ? (
           <FormInput
             control={control}
             name="email"

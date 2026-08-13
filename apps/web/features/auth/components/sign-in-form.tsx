@@ -1,7 +1,8 @@
 'use client';
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { signInEmailSchema, type SignInEmailInput } from '@repo/auth/schemas';
+import { authClient } from '@repo/auth/client';
+import { type SignInEmailInput,signInEmailSchema } from '@repo/auth/schemas';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,8 +11,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { FormInput } from '@/components/form/form-input';
-import { Button } from '@/components/ui/button';
-import { FieldGroup } from '@/components/ui/field';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,76 +21,23 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
-import { authClient } from '@repo/auth/client';
+import { isSafeInternalPath, withCallbackURL } from '@/features/auth/lib/callback-url';
 
 type SignInFormProps = {
   callbackURL: string | null;
   isOAuthPending: boolean;
 };
 
-function isSafeInternalPath(value: string | null): value is string {
-  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
-}
-
-function withCallbackURL(pathname: string, callbackURL: string | null): string {
-  if (!isSafeInternalPath(callbackURL)) {
-    return pathname;
-  }
-
-  const params = new URLSearchParams({ callbackURL });
-  const joiner = pathname.includes('?') ? '&' : '?';
-  return `${pathname}${joiner}${params.toString()}`;
-}
-
 function isUnverifiedEmailError(error: {
   status?: number;
   code?: string;
-  message?: string;
 }) {
-  const code = error.code?.toLowerCase() ?? '';
-  const message = error.message?.toLowerCase() ?? '';
-
-  if (
-    code.includes('banned') ||
-    code.includes('suspended') ||
-    code.includes('suspend') ||
-    code.includes('blocked') ||
-    code.includes('disabled') ||
-    code.includes('deactivated') ||
-    message.includes('banned') ||
-    message.includes('suspended') ||
-    message.includes('suspend') ||
-    message.includes('blocked') ||
-    message.includes('disabled') ||
-    message.includes('deactivated')
-  ) {
-    return false;
-  }
-
-  const hasCodeSignal = code.includes('email_not_verified');
-  const hasExplicitMessageSignal = message.includes('email_not_verified');
-  const hasClearUnverifiedMessage =
-    message.includes('email is not verified') ||
-    message.includes('email not verified') ||
-    message.includes('verify your email') ||
-    message.includes('not verified');
-
-  if (hasCodeSignal || hasExplicitMessageSignal || hasClearUnverifiedMessage) {
-    return true;
-  }
-
-  const hasVerificationSignal = message.includes('verif');
-  const hasBannedOrSuspendedSignal =
-    message.includes('banned') ||
-    message.includes('suspended') ||
-    message.includes('suspend') ||
-    message.includes('blocked') ||
-    message.includes('disabled') ||
-    message.includes('deactivated');
-
-  return Boolean(
-    error.status === 403 && hasVerificationSignal && !hasBannedOrSuspendedSignal
+  return (
+    error.code?.toLowerCase() === 'email_not_verified' &&
+    (error.status === undefined || error.status === 403)
   );
 }
 

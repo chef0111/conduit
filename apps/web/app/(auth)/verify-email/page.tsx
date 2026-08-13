@@ -5,20 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { VerifyEmailForm } from '@/features/auth/components/verify-email-form';
-
-function isSafeInternalPath(value: string | null): value is string {
-  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
-}
-
-function withCallbackURL(pathname: string, callbackURL: string | null): string {
-  if (!isSafeInternalPath(callbackURL)) {
-    return pathname;
-  }
-
-  const params = new URLSearchParams({ callbackURL });
-  const joiner = pathname.includes('?') ? '&' : '?';
-  return `${pathname}${joiner}${params.toString()}`;
-}
+import { withCallbackURL } from '@/features/auth/lib/callback-url';
 
 export default function VerifyEmailPage() {
   const searchParams = useSearchParams();

@@ -4,8 +4,8 @@ import { GitHubIcon, GoogleIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 
-import type { OAuthProvider } from '../types/auth';
 import { useOAuth } from '../context/oauth-provider';
+import type { OAuthProvider } from '../types/auth';
 
 export const OAuthForm = () => {
   const { pendingProvider, isOAuthPending, signInWith } = useOAuth();
@@ -20,17 +20,26 @@ export const OAuthForm = () => {
       );
     }
 
-    return provider === 'google' ? (
-      <>
-        <GoogleIcon data-icon="inline-start" />
-        <span>Continue with Google</span>
-      </>
-    ) : (
-      <>
-        <GitHubIcon data-icon="inline-start" />
-        <span>Continue with GitHub</span>
-      </>
-    );
+    switch (provider) {
+      case 'google':
+        return (
+          <>
+            <GoogleIcon data-icon="inline-start" />
+            <span>Continue with Google</span>
+          </>
+        );
+      case 'github':
+        return (
+          <>
+            <GitHubIcon data-icon="inline-start" />
+            <span>Continue with GitHub</span>
+          </>
+        );
+      default: {
+        const exhaustiveCheck: never = provider;
+        return exhaustiveCheck;
+      }
+    }
   };
 
   const handleSignIn = async (provider: OAuthProvider) => {

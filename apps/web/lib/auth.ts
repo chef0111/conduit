@@ -1,6 +1,7 @@
 import 'server-only';
-import { nextCookies } from 'better-auth/next-js';
+
 import { createAuth } from '@repo/auth';
+import { nextCookies } from 'better-auth/next-js';
 import { headers } from 'next/headers';
 
 export const auth = createAuth([nextCookies()]);
