@@ -2,11 +2,11 @@
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { authClient } from '@repo/auth/client';
-import { type SignUpEmailInput,signUpEmailSchema } from '@repo/auth/schemas';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import type { z } from 'zod';
 
 import { FormCheckbox } from '@/components/form/form-checkbox';
 import { FormInput } from '@/components/form/form-input';
@@ -14,6 +14,9 @@ import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
 import { withCallbackURL } from '@/features/auth/lib/callback-url';
+import { SignUpSchema } from '@/features/auth/lib/validations';
+
+type SignUpFormValues = z.infer<typeof SignUpSchema>;
 
 type SignUpFormProps = {
   callbackURL: string | null;
@@ -22,12 +25,14 @@ type SignUpFormProps = {
 
 export function SignUpForm({ callbackURL, isOAuthPending }: SignUpFormProps) {
   const router = useRouter();
-  const { control, handleSubmit, formState } = useForm<SignUpEmailInput>({
-    resolver: standardSchemaResolver(signUpEmailSchema),
+
+  const { control, handleSubmit, formState } = useForm<SignUpFormValues>({
+    resolver: standardSchemaResolver(SignUpSchema),
     defaultValues: {
       name: '',
       email: '',
       password: '',
+      confirmPassword: '',
       terms: false,
     },
   });
@@ -51,6 +56,8 @@ export function SignUpForm({ callbackURL, isOAuthPending }: SignUpFormProps) {
       ) as Route
     );
   });
+
+  const isDisabled = isOAuthPending || formState.isSubmitting;
 
   return (
     <form className="flex flex-col gap-5" onSubmit={onSubmit}>
@@ -79,22 +86,22 @@ export function SignUpForm({ callbackURL, isOAuthPending }: SignUpFormProps) {
           label="Password"
           placeholder="********"
         />
+        <FormInput
+          control={control}
+          name="confirmPassword"
+          type="password"
+          label="Confirm your password"
+          placeholder="********"
+        />
         <FormCheckbox
           control={control}
           name="terms"
-          label={
-            'I agree to all Terms and Privacy Policy.'
-          }
+          label={'I agree to all Terms and Privacy Policy.'}
         />
       </FieldGroup>
 
-      <Button
-        type="submit"
-        size="lg"
-        className="w-full"
-        disabled={isOAuthPending || formState.isSubmitting}
-      >
-        {formState.isSubmitting ? <Spinner data-icon="inline-start" /> : null}
+      <Button type="submit" size="lg" className="w-full" disabled={isDisabled}>
+        {formState.isSubmitting && <Spinner data-icon="inline-start" />}
         Create account
       </Button>
     </form>

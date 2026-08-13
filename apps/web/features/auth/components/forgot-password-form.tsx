@@ -2,17 +2,20 @@
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { authClient } from '@repo/auth/client';
-import { type ForgotPasswordInput,forgotPasswordSchema } from '@repo/auth/schemas';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import type { z } from 'zod';
 
 import { FormInput } from '@/components/form/form-input';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
 import { withCallbackURL } from '@/features/auth/lib/callback-url';
+import { ForgotPasswordSchema } from '@/features/auth/lib/validations';
+
+type ForgotPasswordFormValues = z.infer<typeof ForgotPasswordSchema>;
 
 type ForgotPasswordFormProps = {
   callbackURL: string | null;
@@ -20,12 +23,14 @@ type ForgotPasswordFormProps = {
 
 export function ForgotPasswordForm({ callbackURL }: ForgotPasswordFormProps) {
   const router = useRouter();
-  const { control, handleSubmit, formState } = useForm<ForgotPasswordInput>({
-    resolver: standardSchemaResolver(forgotPasswordSchema),
-    defaultValues: {
-      email: '',
-    },
-  });
+
+  const { control, handleSubmit, formState } =
+    useForm<ForgotPasswordFormValues>({
+      resolver: standardSchemaResolver(ForgotPasswordSchema),
+      defaultValues: {
+        email: '',
+      },
+    });
 
   const onSubmit = handleSubmit(async (values) => {
     const { error } = await authClient.emailOtp.requestPasswordReset({
@@ -33,7 +38,9 @@ export function ForgotPasswordForm({ callbackURL }: ForgotPasswordFormProps) {
     });
 
     if (error) {
-      toast.error(error.message ?? 'Could not send reset code. Please try again.');
+      toast.error(
+        error.message ?? 'Could not send reset code. Please try again.'
+      );
       return;
     }
 
@@ -59,7 +66,12 @@ export function ForgotPasswordForm({ callbackURL }: ForgotPasswordFormProps) {
         />
       </FieldGroup>
 
-      <Button type="submit" size="lg" className="w-full" disabled={formState.isSubmitting}>
+      <Button
+        type="submit"
+        size="lg"
+        className="w-full"
+        disabled={formState.isSubmitting}
+      >
         {formState.isSubmitting ? <Spinner data-icon="inline-start" /> : null}
         Continue
       </Button>

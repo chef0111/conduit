@@ -12,10 +12,6 @@
       "types": "./dist/client.d.ts",
       "default": "./dist/client.js"
     },
-    "./schemas": {
-      "types": "./dist/schemas.d.ts",
-      "default": "./dist/schemas.js"
-    },
     "./cookies": {
       "types": "./dist/cookies.d.ts",
       "default": "./dist/cookies.js"
@@ -28,9 +24,9 @@
   },
   "dependencies": {
     "@repo/db": "workspace:*",
-    "@repo/zod": "workspace:*",
     "better-auth": "^1.6.25",
-    "resend": "^6.0.2"
+    "resend": "^6.0.2",
+    "zod": "^4.1.5"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",

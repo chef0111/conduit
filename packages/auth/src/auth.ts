@@ -1,8 +1,9 @@
-import { betterAuth, type BetterAuthPlugin } from 'better-auth';
+import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { emailOTP } from 'better-auth/plugins';
 import { prisma } from '@repo/db';
 import { Resend } from 'resend';
+import type {} from 'zod/v4/core';
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -12,7 +13,7 @@ function requireEnv(name: string): string {
   return value;
 }
 
-export function createAuth(extraPlugins: BetterAuthPlugin[] = []) {
+export function createAuth() {
   const resendApiKey = process.env.RESEND_API_KEY;
   const resend = resendApiKey ? new Resend(resendApiKey) : null;
   const emailFrom = process.env.AUTH_EMAIL_FROM ?? 'onboarding@resend.dev';
@@ -39,9 +40,9 @@ export function createAuth(extraPlugins: BetterAuthPlugin[] = []) {
       provider: 'postgresql',
     }),
     secret: requireEnv('BETTER_AUTH_SECRET'),
-    baseURL: process.env.BETTER_AUTH_URL ?? 'https://api.conduit.localhost',
+    baseURL: process.env.BETTER_AUTH_URL ?? 'http://localhost:3333',
     trustedOrigins: [
-      process.env.BETTER_AUTH_TRUSTED_ORIGIN ?? 'https://conduit.localhost',
+      process.env.BETTER_AUTH_TRUSTED_ORIGIN ?? 'http://localhost:3000',
     ],
     emailAndPassword: {
       enabled: true,
@@ -54,7 +55,7 @@ export function createAuth(extraPlugins: BetterAuthPlugin[] = []) {
     advanced: {
       crossSubDomainCookies: {
         enabled: true,
-        domain: process.env.AUTH_COOKIE_DOMAIN ?? 'conduit.localhost',
+        domain: process.env.AUTH_COOKIE_DOMAIN ?? 'localhost:3000',
       },
       useSecureCookies: true,
     },
@@ -87,10 +88,10 @@ export function createAuth(extraPlugins: BetterAuthPlugin[] = []) {
           });
         },
       }),
-      ...extraPlugins,
     ],
   });
 }
 
 export type Auth = ReturnType<typeof createAuth>;
 export type Session = Auth['$Infer']['Session'];
+export type User = Session['user'];

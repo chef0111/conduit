@@ -2,12 +2,12 @@
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { authClient } from '@repo/auth/client';
-import { type EmailOtpInput,emailOtpSchema } from '@repo/auth/schemas';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import type { z } from 'zod';
 
 import { FormInput } from '@/components/form/form-input';
 import { FormInputOTP } from '@/components/form/form-otp';
@@ -15,27 +15,36 @@ import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
 import { isSafeInternalPath } from '@/features/auth/lib/callback-url';
+import { EmailOtpSchema } from '@/features/auth/lib/validations';
+
+type VerifyEmailFormValues = z.infer<typeof EmailOtpSchema>;
 
 type VerifyEmailFormProps = {
   emailFromQuery: string | null;
   callbackURL: string | null;
 };
 
-export function VerifyEmailForm({ emailFromQuery, callbackURL }: VerifyEmailFormProps) {
+export function VerifyEmailForm({
+  emailFromQuery,
+  callbackURL,
+}: VerifyEmailFormProps) {
   const router = useRouter();
   const [cooldown, setCooldown] = useState(0);
   const [isResending, setIsResending] = useState(false);
-  const parsedEmailFromQuery = emailOtpSchema.shape.email.safeParse(emailFromQuery);
+  const parsedEmailFromQuery =
+    EmailOtpSchema.shape.email.safeParse(emailFromQuery);
   const validEmailFromQuery = parsedEmailFromQuery.success
     ? parsedEmailFromQuery.data
     : null;
-  const { control, handleSubmit, getValues, formState } = useForm<EmailOtpInput>({
-    resolver: standardSchemaResolver(emailOtpSchema),
-    defaultValues: {
-      email: validEmailFromQuery ?? '',
-      otp: '',
-    },
-  });
+
+  const { control, handleSubmit, getValues, formState } =
+    useForm<VerifyEmailFormValues>({
+      resolver: standardSchemaResolver(EmailOtpSchema),
+      defaultValues: {
+        email: validEmailFromQuery ?? '',
+        otp: '',
+      },
+    });
 
   useEffect(() => {
     if (cooldown <= 0) {
@@ -112,7 +121,12 @@ export function VerifyEmailForm({ emailFromQuery, callbackURL }: VerifyEmailForm
       </FieldGroup>
 
       <div className="flex flex-col gap-3">
-        <Button type="submit" size="lg" className="w-full" disabled={formState.isSubmitting}>
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full"
+          disabled={formState.isSubmitting}
+        >
           {formState.isSubmitting ? <Spinner data-icon="inline-start" /> : null}
           Verify email
         </Button>

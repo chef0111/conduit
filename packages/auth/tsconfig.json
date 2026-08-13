@@ -14,5 +14,5 @@
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"],
-  "references": [{ "path": "../db" }, { "path": "../zod" }]
+  "references": [{ "path": "../db" }]
 }

@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@orpc/contract": "^1.10.4",
-    "@repo/zod": "workspace:*"
+    "zod": "^4.1.5"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",

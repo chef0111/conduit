@@ -1,4 +1,4 @@
-import { z } from '@repo/zod';
+import { z } from 'zod';
 
 export const HealthStatusSchema = z.object({
   status: z.literal('ok'),

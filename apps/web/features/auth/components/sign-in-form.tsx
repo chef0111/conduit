@@ -2,13 +2,13 @@
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { authClient } from '@repo/auth/client';
-import { type SignInEmailInput,signInEmailSchema } from '@repo/auth/schemas';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import type { z } from 'zod';
 
 import { FormInput } from '@/components/form/form-input';
 import {
@@ -24,17 +24,20 @@ import {
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
-import { isSafeInternalPath, withCallbackURL } from '@/features/auth/lib/callback-url';
+import {
+  isSafeInternalPath,
+  withCallbackURL,
+} from '@/features/auth/lib/callback-url';
+import { SignInSchema } from '@/features/auth/lib/validations';
+
+type SignInFormValues = z.infer<typeof SignInSchema>;
 
 type SignInFormProps = {
   callbackURL: string | null;
   isOAuthPending: boolean;
 };
 
-function isUnverifiedEmailError(error: {
-  status?: number;
-  code?: string;
-}) {
+function isUnverifiedEmailError(error: { status?: number; code?: string }) {
   return (
     error.code?.toLowerCase() === 'email_not_verified' &&
     (error.status === undefined || error.status === 403)
@@ -45,8 +48,9 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
   const router = useRouter();
   const [openUnverifiedDialog, setOpenUnverifiedDialog] = useState(false);
   const [unverifiedEmail, setUnverifiedEmail] = useState('');
-  const { control, handleSubmit, formState } = useForm<SignInEmailInput>({
-    resolver: standardSchemaResolver(signInEmailSchema),
+
+  const { control, handleSubmit, formState } = useForm<SignInFormValues>({
+    resolver: standardSchemaResolver(SignInSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -114,12 +118,16 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
         </Button>
       </form>
 
-      <AlertDialog open={openUnverifiedDialog} onOpenChange={setOpenUnverifiedDialog}>
+      <AlertDialog
+        open={openUnverifiedDialog}
+        onOpenChange={setOpenUnverifiedDialog}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Verify your email first</AlertDialogTitle>
             <AlertDialogDescription>
-              Your account is not verified yet. Continue to the verification page to enter your code.
+              Your account is not verified yet. Continue to the verification
+              page to enter your code.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

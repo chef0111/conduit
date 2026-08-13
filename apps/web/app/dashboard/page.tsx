@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { getSession } from '@/lib/auth';
+import { getSession } from '@/features/auth/services/session';
+import { getQueryClient, HydrateClient } from '@/lib/query/hydration';
 
 async function DashboardContent() {
   const session = await getSession();
@@ -10,7 +11,11 @@ async function DashboardContent() {
     redirect('/sign-in');
   }
 
-  return <main>Dashboard</main>;
+  return (
+    <HydrateClient client={getQueryClient()}>
+      <main>Dashboard</main>
+    </HydrateClient>
+  );
 }
 
 export default function DashboardPage() {

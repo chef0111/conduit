@@ -6,6 +6,8 @@ import type { Request } from 'express';
 
 import { auth } from './auth.js';
 import { HealthController } from './health.controller.js';
+import { SessionController } from './session/session.controller.js';
+import { SessionService } from './session/session.service.js';
 
 declare module '@orpc/nest' {
   interface ORPCGlobalContext {
@@ -35,6 +37,7 @@ declare module '@orpc/nest' {
       inject: [REQUEST],
     }),
   ],
-  controllers: [HealthController],
+  controllers: [HealthController, SessionController],
+  providers: [SessionService],
 })
 export class AppModule {}

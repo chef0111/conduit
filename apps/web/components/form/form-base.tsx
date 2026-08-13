@@ -4,7 +4,6 @@ import { Controller } from 'react-hook-form';
 
 import {
   Field,
-  FieldContent,
   FieldDescription,
   FieldError,
   FieldLabel,
@@ -80,6 +79,7 @@ export function FormBase<
             {labelAction}
           </div>
         );
+
         const descElement = description && (
           <FieldDescription>{description}</FieldDescription>
         );
@@ -102,27 +102,19 @@ export function FormBase<
           >
             {controlFirst ? (
               <>
-                <FieldContent>
-                  {control}
-                  {descPosition === 'after-field' && descElement}
-                </FieldContent>
-                <FieldContent>
-                  {labelElement}
-                  {descPosition === 'after-label' && descElement}
-                  {errorElement}
-                </FieldContent>
+                {control}
+                {descPosition === 'after-field' && descElement}
+                {labelElement}
+                {descPosition === 'after-label' && descElement}
+                {errorElement}
               </>
             ) : (
               <>
-                <FieldContent>
-                  {labelElement}
-                  {descPosition === 'after-label' && descElement}
-                </FieldContent>
-                <FieldContent>
-                  {control}
-                  {descPosition === 'after-field' && descElement}
-                  {errorElement}
-                </FieldContent>
+                {labelElement}
+                {descPosition === 'after-label' && descElement}
+                {control}
+                {descPosition === 'after-field' && descElement}
+                <div>{errorElement}</div>
               </>
             )}
           </Field>

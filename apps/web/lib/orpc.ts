@@ -9,6 +9,12 @@ import { getServerBaseUrl } from './env';
 function createLink() {
   return new OpenAPILink(contract, {
     url: getServerBaseUrl(),
+    fetch: (request, init) =>
+      globalThis.fetch(request, {
+        ...init,
+        credentials: 'include',
+        cache: 'no-store',
+      }),
     headers: async () => {
       if (typeof window !== 'undefined') {
         return {};
