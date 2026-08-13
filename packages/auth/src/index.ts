@@ -5,10 +5,13 @@ export {
   signInEmailSchema,
   signUpEmailSchema,
   emailOtpSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
 } from './schemas.js';
 export type {
   SignInEmailInput,
   SignUpEmailInput,
   EmailOtpInput,
+  ForgotPasswordInput,
+  ResetPasswordInput,
 } from './schemas.js';
-export { getSessionCookie } from 'better-auth/cookies';

@@ -1,7 +1,6 @@
-import { betterAuth } from 'better-auth';
+import { betterAuth, type BetterAuthPlugin } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { emailOTP } from 'better-auth/plugins';
-import type {} from 'better-auth/plugins';
 import { prisma } from '@repo/db';
 import { Resend } from 'resend';
 
@@ -13,7 +12,7 @@ function requireEnv(name: string): string {
   return value;
 }
 
-export function createAuth() {
+export function createAuth(extraPlugins: BetterAuthPlugin[] = []) {
   const resendApiKey = process.env.RESEND_API_KEY;
   const resend = resendApiKey ? new Resend(resendApiKey) : null;
   const emailFrom = process.env.AUTH_EMAIL_FROM ?? 'onboarding@resend.dev';
@@ -31,6 +30,17 @@ export function createAuth() {
       enabled: true,
       requireEmailVerification: true,
     },
+    emailVerification: {
+      sendOnSignIn: true,
+      autoSignInAfterVerification: true,
+    },
+    advanced: {
+      crossSubDomainCookies: {
+        enabled: true,
+        domain: process.env.AUTH_COOKIE_DOMAIN ?? 'conduit.localhost',
+      },
+      useSecureCookies: true,
+    },
     socialProviders: {
       google: {
         clientId: requireEnv('GOOGLE_CLIENT_ID'),
@@ -43,13 +53,18 @@ export function createAuth() {
     },
     plugins: [
       emailOTP({
+        overrideDefaultEmailVerification: true,
+        sendVerificationOnSignUp: true,
+        otpLength: 6,
         async sendVerificationOTP({ email, otp, type }) {
           const subject =
             type === 'sign-in'
               ? 'Your sign-in code'
               : type === 'email-verification'
                 ? 'Verify your email'
-                : 'Your verification code';
+                : type === 'forget-password'
+                  ? 'Reset your password'
+                  : 'Your verification code';
 
           if (!resend) {
             console.log(`[auth:otp] to=${email} type=${type} otp=${otp}`);
@@ -64,6 +79,7 @@ export function createAuth() {
           });
         },
       }),
+      ...extraPlugins,
     ],
   });
 }
