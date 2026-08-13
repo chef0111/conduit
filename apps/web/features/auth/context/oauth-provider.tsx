@@ -2,10 +2,17 @@
 
 import { authClient } from '@repo/auth/client';
 import { useSearchParams } from 'next/navigation';
-import { createContext, type ReactNode, useContext, useState } from 'react';
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { toast } from 'sonner';
 
-import { isSafeInternalPath } from '@/features/auth/lib/callback-url';
+import { toAbsoluteAppUrl } from '@/features/auth/lib/callback-url';
 
 import type { OAuthProvider } from '../types/auth';
 
@@ -17,11 +24,30 @@ type OAuthContextValue = {
 
 const OAuthContext = createContext<OAuthContextValue | null>(null);
 
+function toastOAuthError(message: string) {
+  toast.error(
+    message.toLowerCase().includes('banned')
+      ? 'Your account has been suspended'
+      : 'Authentication failed. Please try again.'
+  );
+}
+
 export function OAuthProvider({ children }: { children: ReactNode }) {
   const searchParams = useSearchParams();
   const [pendingProvider, setPendingProvider] = useState<OAuthProvider | null>(
     null
   );
+  const didToastCallbackError = useRef(false);
+
+  useEffect(() => {
+    const error = searchParams.get('error');
+    if (!error || didToastCallbackError.current) {
+      return;
+    }
+
+    didToastCallbackError.current = true;
+    toastOAuthError(error);
+  }, [searchParams]);
 
   const signInWith = async (provider: OAuthProvider) => {
     setPendingProvider(provider);
@@ -31,16 +57,11 @@ export function OAuthProvider({ children }: { children: ReactNode }) {
 
       await authClient.signIn.social({
         provider,
-        callbackURL: isSafeInternalPath(callbackURL) ? callbackURL : '/',
-        errorCallbackURL: '/banned',
+        callbackURL: toAbsoluteAppUrl(callbackURL ?? '/dashboard'),
+        errorCallbackURL: toAbsoluteAppUrl('/sign-in'),
         fetchOptions: {
           onError: (ctx) => {
-            const message = ctx.error?.message ?? '';
-            toast.error(
-              message.toLowerCase().includes('banned')
-                ? 'Your account has been suspended'
-                : 'Authentication failed. Please try again.'
-            );
+            toastOAuthError(ctx.error?.message ?? '');
           },
         },
       });

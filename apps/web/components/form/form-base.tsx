@@ -106,7 +106,6 @@ export function FormBase<
                 {descPosition === 'after-field' && descElement}
                 {labelElement}
                 {descPosition === 'after-label' && descElement}
-                {errorElement}
               </>
             ) : (
               <>
@@ -114,9 +113,9 @@ export function FormBase<
                 {descPosition === 'after-label' && descElement}
                 {control}
                 {descPosition === 'after-field' && descElement}
-                <div>{errorElement}</div>
               </>
             )}
+            {errorElement}
           </Field>
         );
       }}

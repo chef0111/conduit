@@ -1,38 +1,11 @@
 import { createORPCClient } from '@orpc/client';
 import type { ContractRouterClient } from '@orpc/contract';
-import { OpenAPILink } from '@orpc/openapi-client/fetch';
 import { createTanstackQueryUtils } from '@orpc/tanstack-query';
-import { contract } from '@repo/api-contract';
+import type { contract } from '@repo/api-contract';
 
-import { getServerBaseUrl } from './env';
-
-function createLink() {
-  return new OpenAPILink(contract, {
-    url: getServerBaseUrl(),
-    fetch: (request, init) =>
-      globalThis.fetch(request, {
-        ...init,
-        credentials: 'include',
-        cache: 'no-store',
-      }),
-    headers: async () => {
-      if (typeof window !== 'undefined') {
-        return {};
-      }
-
-      try {
-        const { headers } = await import('next/headers');
-        const incoming = await headers();
-        const cookie = incoming.get('cookie');
-        return cookie ? { cookie } : {};
-      } catch {
-        return {};
-      }
-    },
-  });
-}
+import { createOrpcLink } from './orpc-link';
 
 export const client: ContractRouterClient<typeof contract> =
-  createORPCClient(createLink());
+  createORPCClient(createOrpcLink());
 
 export const orpc = createTanstackQueryUtils(client);

@@ -74,7 +74,9 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
       return;
     }
 
-    router.push((isSafeInternalPath(callbackURL) ? callbackURL : '/') as Route);
+    router.push(
+      (isSafeInternalPath(callbackURL) ? callbackURL : '/dashboard') as Route
+    );
   });
 
   return (

@@ -13,7 +13,33 @@ function requireEnv(name: string): string {
   return value;
 }
 
+function getTrustedOrigins(): string[] {
+  const configured =
+    process.env.BETTER_AUTH_TRUSTED_ORIGIN ?? 'http://localhost:3000';
+  const origins = new Set([configured]);
+
+  if (process.env.NODE_ENV !== 'production') {
+    origins.add('http://localhost:3000');
+    origins.add('https://conduit.localhost');
+  }
+
+  return [...origins];
+}
+
+function getCookieAdvanced(baseURL: string) {
+  const domain = process.env.AUTH_COOKIE_DOMAIN;
+
+  return {
+    useSecureCookies: baseURL.startsWith('https://'),
+    crossSubDomainCookies:
+      domain && !domain.includes(':')
+        ? { enabled: true as const, domain }
+        : { enabled: false as const },
+  };
+}
+
 export function createAuth() {
+  const baseURL = process.env.BETTER_AUTH_URL ?? 'http://localhost:3333';
   const resendApiKey = process.env.RESEND_API_KEY;
   const resend = resendApiKey ? new Resend(resendApiKey) : null;
   const emailFrom = process.env.AUTH_EMAIL_FROM ?? 'onboarding@resend.dev';
@@ -40,10 +66,8 @@ export function createAuth() {
       provider: 'postgresql',
     }),
     secret: requireEnv('BETTER_AUTH_SECRET'),
-    baseURL: process.env.BETTER_AUTH_URL ?? 'http://localhost:3333',
-    trustedOrigins: [
-      process.env.BETTER_AUTH_TRUSTED_ORIGIN ?? 'http://localhost:3000',
-    ],
+    baseURL,
+    trustedOrigins: getTrustedOrigins(),
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: true,
@@ -52,13 +76,7 @@ export function createAuth() {
       sendOnSignIn: true,
       autoSignInAfterVerification: true,
     },
-    advanced: {
-      crossSubDomainCookies: {
-        enabled: true,
-        domain: process.env.AUTH_COOKIE_DOMAIN ?? 'localhost:3000',
-      },
-      useSecureCookies: true,
-    },
+    advanced: getCookieAdvanced(baseURL),
     socialProviders,
     plugins: [
       emailOTP({

@@ -25,7 +25,7 @@ export const SignUpSchema = z
     name: z.string().min(1, 'Name is required'),
     email: z.email('Email is required'),
     password: PasswordSchema,
-    confirmPassword: z.string().min(8),
+    confirmPassword: z.string().min(1, 'You must confirm your password'),
     terms: z
       .boolean()
       .refine((value) => value, { message: 'You must accept the terms' }),
@@ -49,7 +49,7 @@ export const ResetPasswordSchema = z
     email: z.email('Email is required'),
     otp: z.string().length(6),
     password: PasswordSchema,
-    confirmPassword: z.string().min(8),
+    confirmPassword: z.string().min(1, 'You must confirm your password'),
   })
   .refine((value) => value.password === value.confirmPassword, {
     path: ['confirmPassword'],

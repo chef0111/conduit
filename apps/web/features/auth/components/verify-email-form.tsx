@@ -69,7 +69,9 @@ export function VerifyEmailForm({
       return;
     }
 
-    router.push((isSafeInternalPath(callbackURL) ? callbackURL : '/') as Route);
+    router.push(
+      (isSafeInternalPath(callbackURL) ? callbackURL : '/dashboard') as Route
+    );
   });
 
   const handleResend = async () => {

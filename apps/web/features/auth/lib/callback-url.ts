@@ -1,5 +1,16 @@
-export function isSafeInternalPath(value: string | null | undefined): value is string {
-  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
+export function isSafeInternalPath(
+  value: string | null | undefined
+): value is string {
+  return (
+    typeof value === 'string' &&
+    value.startsWith('/') &&
+    !value.startsWith('//')
+  );
+}
+
+export function toAbsoluteAppUrl(path: string): string {
+  const pathname = isSafeInternalPath(path) ? path : '/';
+  return new URL(pathname, window.location.origin).toString();
 }
 
 export function withCallbackURL(
