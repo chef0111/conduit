@@ -4,10 +4,7 @@ import type { Route } from 'next';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-import { FieldSeparator } from '@/components/ui/field';
-import { OAuthForm } from '@/features/auth/components/oauth-form';
-import { SignInForm } from '@/features/auth/components/sign-in-form';
-import { OAuthProvider, useOAuth } from '@/features/auth/context/oauth-provider';
+import { ResetPasswordForm } from '@/features/auth/components/reset-password-form';
 
 function isSafeInternalPath(value: string | null): value is string {
   return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
@@ -23,43 +20,32 @@ function withCallbackURL(pathname: string, callbackURL: string | null): string {
   return `${pathname}${joiner}${params.toString()}`;
 }
 
-function SignInContent({ callbackURL }: { callbackURL: string | null }) {
-  const { isOAuthPending } = useOAuth();
-
-  return (
-    <div className="flex flex-col gap-6">
-      <OAuthForm />
-      <FieldSeparator>Or continue with</FieldSeparator>
-      <SignInForm callbackURL={callbackURL} isOAuthPending={isOAuthPending} />
-    </div>
-  );
-}
-
-export default function SignInPage() {
+export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
   const callbackURL = searchParams.get('callbackURL');
+  const email = searchParams.get('email');
 
   return (
     <div className="bg-background flex w-full flex-col items-center justify-center p-6 sm:p-8 lg:w-1/2">
       <div className="w-full max-w-md md:max-w-lg xl:max-w-xl">
         <div className="mb-6 text-center">
           <h2 className="text-foreground mb-2 text-3xl font-medium tracking-tight">
-            Sign in
+            Reset your password
           </h2>
-          <p className="text-muted-foreground text-base">Welcome back.</p>
+          <p className="text-muted-foreground text-base">
+            Enter your code and choose a new password.
+          </p>
         </div>
 
-        <OAuthProvider>
-          <SignInContent callbackURL={callbackURL} />
-        </OAuthProvider>
+        <ResetPasswordForm emailFromQuery={email} callbackURL={callbackURL} />
 
         <p className="text-muted-foreground mt-6 text-xs">
-          Don&apos;t have an account?{' '}
+          Back to{' '}
           <Link
-            href={withCallbackURL('/sign-up', callbackURL) as Route}
+            href={withCallbackURL('/sign-in', callbackURL) as Route}
             className="text-foreground font-semibold underline-offset-3 hover:underline"
           >
-            Sign up
+            Sign in
           </Link>
         </p>
       </div>

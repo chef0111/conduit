@@ -1,6 +1,7 @@
 import { IconChevronLeft } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 import { ForcedThemeProvider } from '@/components/forced-theme-provider';
 import { Logo } from '@/components/logo';
@@ -57,7 +58,7 @@ export default function AuthLayout({
           </div>
         </div>
 
-        {children}
+        <Suspense>{children}</Suspense>
       </main>
     </ForcedThemeProvider>
   );
