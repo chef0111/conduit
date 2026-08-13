@@ -9,7 +9,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'flex items-center justify-center gap-2 border border-primary bg-primary text-primary-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3),inset_1px_0_0_0_rgba(255,255,255,0.15),inset_-1px_0_0_0_rgba(255,255,255,0.15),inset_4px_4px_0_0_rgba(255,255,255,0.02),inset_-4px_-4px_0_0_rgba(255,255,255,0.02),inset_6px_6px_0_0_rgba(255,255,255,0.01),inset_-6px_-6px_0_0_rgba(255,255,255,0.01),inset_8px_8px_0_0_rgba(255,255,255,0.01),inset_-8px_-8px_0_0_rgba(255,255,255,0.01),0_1px_2px_0_rgba(0,0,0,0.08),0_2px_4px_0_rgba(0,0,0,0.06),0_4px_6px_0_rgba(0,0,0,0.04),0_6px_8px_0_rgba(0,0,0,0.02),0_2px_1px_0_rgba(0,0,0,0.04)] transition-colors text-shadow-2xs text-shadow-primary/45 hover:bg-primary/90',
+          'flex items-center justify-center gap-2 border border-primary bg-primary text-primary-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3),inset_1px_0_0_0_rgba(255,255,255,0.15),inset_-1px_0_0_0_rgba(255,255,255,0.15),inset_4px_4px_0_0_rgba(255,255,255,0.02),inset_-4px_-4px_0_0_rgba(255,255,255,0.02),inset_6px_6px_0_0_rgba(255,255,255,0.01),inset_-6px_-6px_0_0_rgba(255,255,255,0.01),inset_8px_8px_0_0_rgba(255,255,255,0.01),inset_-8px_-8px_0_0_rgba(255,255,255,0.01)] transition-colors hover:bg-primary/90',
         outline:
           'border-border text-foreround bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
         secondary:
@@ -22,30 +22,18 @@ const buttonVariants = cva(
       },
       size: {
         default:
-          '[--btn-h:calc(var(--spacing)*9)] h-(--btn-h) gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2',
-        xs: "[--btn-h:calc(var(--spacing)*7)] h-(--btn-h) gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "[--btn-h:calc(var(--spacing)*8)] h-(--btn-h) gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: '[--btn-h:calc(var(--spacing)*10)] h-(--btn-h) gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2',
-        icon: '[--btn-h:calc(var(--spacing)*9)] size-(--btn-h)',
+          'h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2',
+        xs: "h-7 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&_svg:not([class*='size-'])]:size-3",
+        sm: "h-8 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&_svg:not([class*='size-'])]:size-3.5",
+        lg: 'h-10 gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2',
+        icon: 'size-9',
         'icon-xs':
-          "[--btn-h:calc(var(--spacing)*7)] size-(--btn-h) rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
+          "h-7 size-7 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
         'icon-sm':
-          '[--btn-h:calc(var(--spacing)*8)] size-(--btn-h) rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg',
-        'icon-lg': '[--btn-h:calc(var(--spacing)*10)] size-(--btn-h)',
+          'h-8 size-8 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg',
+        'icon-lg': 'h-10 size-10',
       },
     },
-    compoundVariants: [
-      {
-        variant: 'default',
-        size: ['default', 'xs', 'sm', 'lg'],
-        class: 'h-[calc(var(--btn-h)-1px)]',
-      },
-      {
-        variant: 'default',
-        size: ['icon', 'icon-xs', 'icon-sm', 'icon-lg'],
-        class: 'size-[calc(var(--btn-h)-1px)]',
-      },
-    ],
     defaultVariants: {
       variant: 'default',
       size: 'default',
@@ -62,7 +50,7 @@ function Button({
   return (
     <ButtonPrimitive
       data-slot="button"
-      className={cn(buttonVariants({ variant, size }), className)}
+      className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
   );

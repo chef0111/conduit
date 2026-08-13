@@ -41,6 +41,7 @@ yarn-error.log*
 .DS_Store
 *.pem
 .codegraph
+.superpowers
 
 # Cursor
 .cursor

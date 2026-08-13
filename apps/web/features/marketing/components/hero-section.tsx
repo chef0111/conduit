@@ -21,10 +21,7 @@ export default function HeroSection() {
   const variants = fadeUpVariants(reduced);
 
   return (
-    <SectionShell
-      theme="light"
-      className="relative min-h-[100dvh] overflow-hidden"
-    >
+    <SectionShell theme="light" className="relative overflow-hidden pb-4">
       <HeroCircuitBackground />
       <div className="relative pt-28 md:pt-32">
         <div className="mx-auto max-w-6xl px-6">
@@ -87,7 +84,7 @@ export default function HeroSection() {
               initial="hidden"
               animate="visible"
               variants={variants}
-              className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+              className="mt-8 flex items-center justify-center gap-3"
             >
               <Button
                 nativeButton={false}

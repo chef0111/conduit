@@ -42,12 +42,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  transpilePackages: [
-    '@repo/api-contract',
-    '@repo/auth',
-    '@repo/zod',
-    '@repo/db',
-  ],
+  transpilePackages: ['@repo/api-contract', '@repo/auth'],
 };
 
 export default nextConfig;

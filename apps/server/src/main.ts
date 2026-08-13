@@ -9,6 +9,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false,
   });
+  app.enableCors({
+    origin:
+      process.env.BETTER_AUTH_TRUSTED_ORIGIN ?? 'https://conduit.localhost',
+    credentials: true,
+  });
   const port = Number(process.env.PORT ?? 3333);
   const host = process.env.HOST ?? '0.0.0.0';
   await app.listen(port, host);
