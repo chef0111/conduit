@@ -1,22 +1,16 @@
+import { getSessionCookie } from 'better-auth/cookies';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import { auth } from '@/lib/auth';
-
-export async function proxy(request: NextRequest) {
-  const sessionData = await auth.api.getSession({
-    headers: request.headers,
-  });
-  const session = sessionData?.session;
+export function proxy(request: NextRequest) {
+  const sessionCookie = getSessionCookie(request);
   const pathname = request.nextUrl.pathname;
 
-  // Protected routes - require authentication
   const protectedRoutes = ['/dashboard'];
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   );
 
-  // Auth routes - redirect to home if already logged in
   const authRoutes = [
     '/sign-in',
     '/sign-up',
@@ -26,15 +20,13 @@ export async function proxy(request: NextRequest) {
   ];
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 
-  // Redirect unauthenticated users from protected routes to login
-  if (isProtectedRoute && !session) {
-    const url = new URL('/login', request.url);
+  if (isProtectedRoute && !sessionCookie) {
+    const url = new URL('/sign-in', request.url);
     url.searchParams.set('from', pathname);
     return NextResponse.redirect(url);
   }
 
-  // Redirect logged-in users away from auth pages
-  if (isAuthRoute && session) {
+  if (isAuthRoute && sessionCookie) {
     const from = request.nextUrl.searchParams.get('from');
     const redirectUrl =
       from && from.startsWith('/') && !from.startsWith('//') ? from : '/';
