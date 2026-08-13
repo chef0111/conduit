@@ -1,4 +1,4 @@
-import { getSessionCookie } from '@repo/auth';
+import { getSessionCookie } from '@repo/auth/cookies';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -20,9 +20,9 @@ export function proxy(request: NextRequest) {
   ];
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 
-  // Redirect unauthenticated users from protected routes to login
+  // Redirect unauthenticated users from protected routes to sign-in
   if (isProtectedRoute && !session) {
-    const url = new URL('/login', request.url);
+    const url = new URL('/sign-in', request.url);
     url.searchParams.set('callbackURL', pathname);
     return NextResponse.redirect(url);
   }
