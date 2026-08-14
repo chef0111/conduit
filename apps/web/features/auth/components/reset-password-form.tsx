@@ -2,14 +2,17 @@
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { authClient } from '@repo/auth/client';
+import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
+import { type SyntheticEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type { z } from 'zod';
 
 import { FormInput } from '@/components/form/form-input';
 import { FormInputOTP } from '@/components/form/form-otp';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
@@ -28,14 +31,15 @@ export function ResetPasswordForm({
   callbackURL,
 }: ResetPasswordFormProps) {
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
   const parsedEmailFromQuery =
     ResetPasswordSchema.shape.email.safeParse(emailFromQuery);
   const validEmailFromQuery = parsedEmailFromQuery.success
     ? parsedEmailFromQuery.data
     : null;
 
-  const { control, handleSubmit, formState } = useForm<ResetPasswordFormValues>(
-    {
+  const { control, handleSubmit, formState, reset } =
+    useForm<ResetPasswordFormValues>({
       resolver: standardSchemaResolver(ResetPasswordSchema),
       defaultValues: {
         email: validEmailFromQuery ?? '',
@@ -43,24 +47,33 @@ export function ResetPasswordForm({
         password: '',
         confirmPassword: '',
       },
-    }
-  );
-
-  const onSubmit = handleSubmit(async (values) => {
-    const { error } = await authClient.emailOtp.resetPassword({
-      email: values.email,
-      otp: values.otp,
-      password: values.password,
     });
 
-    if (error) {
-      toast.error(error.message ?? 'Password reset failed. Please try again.');
-      return;
-    }
+  const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
+    const succeeded = await handleSubmit(async (values) => {
+      setError(null);
 
-    toast.success('Password updated. Sign in with your new password.');
-    router.push(withCallbackURL('/sign-in', callbackURL) as Route);
-  });
+      const response = await authClient.emailOtp.resetPassword({
+        email: values.email,
+        otp: values.otp,
+        password: values.password,
+      });
+
+      if (response?.data) {
+        toast.success('Password updated. Sign in with your new password.');
+        router.push(withCallbackURL('/sign-in', callbackURL) as Route);
+        router.refresh();
+        return true;
+      }
+
+      setError(response?.error?.message || 'Something went wrong');
+      return false;
+    })(event);
+
+    if (succeeded) {
+      reset();
+    }
+  };
 
   return (
     <form className="flex flex-col gap-5" onSubmit={onSubmit}>
@@ -99,13 +112,26 @@ export function ResetPasswordForm({
         />
       </FieldGroup>
 
+      {!!error && (
+        <Alert
+          variant="destructive"
+          className="bg-destructive/10 border-destructive/20 border"
+        >
+          <IconAlertCircle />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription className="text-wrap">{error}</AlertDescription>
+        </Alert>
+      )}
+
       <Button
         type="submit"
         size="lg"
         className="w-full"
         disabled={formState.isSubmitting}
       >
-        {formState.isSubmitting ? <Spinner data-icon="inline-start" /> : null}
+        {formState.isSubmitting && (
+          <Spinner className="text-zinc-100" data-icon="inline-start" />
+        )}
         Reset password
       </Button>
     </form>

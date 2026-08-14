@@ -14,7 +14,7 @@ export const OAuthForm = () => {
     if (pendingProvider === provider) {
       return (
         <>
-          <Spinner data-icon="inline-start" />
+          <Spinner className="text-muted-foreground" data-icon="inline-start" />
           <span>Redirecting...</span>
         </>
       );
@@ -25,14 +25,14 @@ export const OAuthForm = () => {
         return (
           <>
             <GoogleIcon data-icon="inline-start" />
-            <span>Continue with Google</span>
+            <span className="max-lg:hidden">Continue with Google</span>
           </>
         );
       case 'github':
         return (
           <>
             <GitHubIcon data-icon="inline-start" />
-            <span>Continue with GitHub</span>
+            <span className="max-lg:hidden">Continue with GitHub</span>
           </>
         );
       default: {
@@ -47,18 +47,18 @@ export const OAuthForm = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex gap-2 lg:flex-col">
       <Button
-        variant="secondary"
-        className="w-full"
+        variant="outline"
+        className="btn-outline max-lg:flex-1"
         disabled={isOAuthPending}
         onClick={() => void handleSignIn('google')}
       >
         {renderButtonContent('google')}
       </Button>
       <Button
-        variant="secondary"
-        className="w-full"
+        variant="outline"
+        className="btn-outline max-lg:flex-1"
         disabled={isOAuthPending}
         onClick={() => void handleSignIn('github')}
       >

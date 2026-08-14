@@ -67,7 +67,7 @@ importers:
         specifier: ^7.8.2
         version: 7.8.2
       zod:
-        specifier: ^4.1.5
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@nestjs/cli':
@@ -197,7 +197,7 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
       zod:
-        specifier: ^4.1.5
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@repo/eslint-config':
@@ -246,7 +246,7 @@ importers:
         specifier: ^1.10.4
         version: 1.14.8
       zod:
-        specifier: ^4.1.5
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@repo/typescript-config':
@@ -274,7 +274,7 @@ importers:
         specifier: ^6.0.2
         version: 6.18.0
       zod:
-        specifier: ^4.1.5
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@repo/typescript-config':

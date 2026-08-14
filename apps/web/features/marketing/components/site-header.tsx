@@ -118,7 +118,7 @@ export default function SiteHeader() {
               variant="ghost"
               nativeButton={false}
               className="text-foreground"
-              render={<Link href="/sign-in">Login</Link>}
+              render={<Link href="/sign-in">Sign in</Link>}
             />
             <Button
               size="sm"
@@ -167,7 +167,7 @@ export default function SiteHeader() {
                     size="sm"
                     variant="outline"
                     nativeButton={false}
-                    render={<Link href="/sign-in">Login</Link>}
+                    render={<Link href="/sign-in">Sign in</Link>}
                   />
                   <Button
                     size="sm"

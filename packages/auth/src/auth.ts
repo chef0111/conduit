@@ -1,9 +1,12 @@
-import { betterAuth } from 'better-auth';
+import { betterAuth, type BetterAuthOptions } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { emailOTP } from 'better-auth/plugins';
 import { prisma } from '@repo/db';
 import { Resend } from 'resend';
-import type {} from 'zod/v4/core';
+import { APIError, createAuthMiddleware } from 'better-auth/api';
+import crypto from 'crypto';
+import { PasswordSchema } from './validations.js';
+import { resend } from './resend.js';
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -38,11 +41,29 @@ function getCookieAdvanced(baseURL: string) {
   };
 }
 
+const passwordHooks: BetterAuthOptions['hooks'] = {
+  before: createAuthMiddleware(async (ctx) => {
+    if (
+      ctx.path === '/sign-up/email' ||
+      ctx.path === '/reset-password' ||
+      ctx.path === '/change-password'
+    ) {
+      const password = ctx.body.password || ctx.body.newPassword;
+
+      const { error } = PasswordSchema.safeParse(password);
+
+      if (error) {
+        throw new APIError('BAD_REQUEST', {
+          message: 'Password not strong enough.',
+        });
+      }
+    }
+  }),
+};
+
 export function createAuth() {
   const baseURL = process.env.BETTER_AUTH_URL ?? 'http://localhost:3333';
-  const resendApiKey = process.env.RESEND_API_KEY;
-  const resend = resendApiKey ? new Resend(resendApiKey) : null;
-  const emailFrom = process.env.AUTH_EMAIL_FROM ?? 'onboarding@resend.dev';
+  const emailFrom = `Gia Bảo from Conduit <${process.env.AUTH_EMAIL_FROM ?? 'conduit@giabao.dev'}>`;
   const socialProviders: NonNullable<
     Parameters<typeof betterAuth>[0]['socialProviders']
   > = {};
@@ -76,6 +97,35 @@ export function createAuth() {
       sendOnSignIn: true,
       autoSignInAfterVerification: true,
     },
+    databaseHooks: {
+      user: {
+        create: {
+          before: async (user) => {
+            const emailPrefix = user.email.split('@')[0];
+            const generatedName = emailPrefix
+              ?.split(/[._-]/)
+              .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+              .join(' ');
+
+            const emailHash = crypto
+              .createHash('sha256')
+              .update(user.email.trim().toLowerCase())
+              .digest('hex');
+            const generatedImage = `https://gravatar.com/avatar/${emailHash}?d=retro`;
+
+            return {
+              data: {
+                ...user,
+                name: user.name || generatedName,
+                image: user.image || generatedImage,
+                role: user.role || 'user',
+              },
+            };
+          },
+        },
+      },
+    },
+    hooks: passwordHooks,
     advanced: getCookieAdvanced(baseURL),
     socialProviders,
     plugins: [
@@ -84,14 +134,14 @@ export function createAuth() {
         sendVerificationOnSignUp: true,
         otpLength: 6,
         async sendVerificationOTP({ email, otp, type }) {
-          const subject =
-            type === 'sign-in'
-              ? 'Your sign-in code'
-              : type === 'email-verification'
-                ? 'Verify your email'
-                : type === 'forget-password'
-                  ? 'Reset your password'
-                  : 'Your verification code';
+          const OtpSubjects: Record<string, string> = {
+            'sign-in': 'Your sign-in code',
+            'email-verification': 'Verify your email',
+            'forget-password': 'Reset your password',
+            'change-email': 'Verify your new email',
+          };
+
+          const subject = OtpSubjects[type] || 'Your verification code';
 
           if (!resend) {
             console.log(`[auth:otp] to=${email} type=${type} otp=${otp}`);
@@ -100,9 +150,9 @@ export function createAuth() {
 
           await resend.emails.send({
             from: emailFrom,
-            to: email,
+            to: [email],
             subject,
-            text: `Your code is ${otp}`,
+            html: `<p>Your OTP code is: <strong>${otp}</strong></p>`,
           });
         },
       }),
