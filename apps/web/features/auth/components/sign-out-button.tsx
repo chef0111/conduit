@@ -1,13 +1,13 @@
 'use client';
 
-import { authClient } from '@repo/auth/client';
+import { IconLogout } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
+import { authClient } from '@/services/auth/client';
 
 export function SignOutButton() {
   const router = useRouter();
@@ -36,11 +36,11 @@ export function SignOutButton() {
   return (
     <Button
       type="button"
-      variant="secondary"
+      variant="outline"
       disabled={pending}
-      onClick={() => void handleSignOut()}
+      onClick={handleSignOut}
     >
-      {pending ? <Spinner data-icon="inline-start" /> : null}
+      <IconLogout />
       Sign out
     </Button>
   );

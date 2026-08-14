@@ -1,7 +1,7 @@
 'use client';
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { authClient } from '@repo/auth/client';
+import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -11,11 +11,13 @@ import type { z } from 'zod';
 
 import { FormInput } from '@/components/form/form-input';
 import { FormInputOTP } from '@/components/form/form-otp';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
 import { isSafeInternalPath } from '@/features/auth/lib/callback-url';
 import { EmailOtpSchema } from '@/features/auth/lib/validations';
+import { authClient } from '@/services/auth/client';
 
 type VerifyEmailFormValues = z.infer<typeof EmailOtpSchema>;
 
@@ -29,6 +31,7 @@ export function VerifyEmailForm({
   callbackURL,
 }: VerifyEmailFormProps) {
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(0);
   const [isResending, setIsResending] = useState(false);
   const parsedEmailFromQuery =
@@ -37,7 +40,7 @@ export function VerifyEmailForm({
     ? parsedEmailFromQuery.data
     : null;
 
-  const { control, handleSubmit, getValues, formState } =
+  const { control, handleSubmit, getValues, formState, reset } =
     useForm<VerifyEmailFormValues>({
       resolver: standardSchemaResolver(EmailOtpSchema),
       defaultValues: {
@@ -59,19 +62,20 @@ export function VerifyEmailForm({
   }, [cooldown]);
 
   const onSubmit = handleSubmit(async (values) => {
-    const { error } = await authClient.emailOtp.verifyEmail({
+    const response = await authClient.emailOtp.verifyEmail({
       email: values.email,
       otp: values.otp,
     });
 
-    if (error) {
-      toast.error(error.message ?? 'Verification failed. Please try again.');
-      return;
-    }
+    if (response?.data) {
+      router.push(
+        (isSafeInternalPath(callbackURL) ? callbackURL : '/dashboard') as Route
+      );
 
-    router.push(
-      (isSafeInternalPath(callbackURL) ? callbackURL : '/dashboard') as Route
-    );
+      reset();
+    } else {
+      setError(response?.error?.message || 'Something went wrong.');
+    }
   });
 
   const handleResend = async () => {
@@ -81,30 +85,30 @@ export function VerifyEmailForm({
 
     const email = getValues('email');
     if (!email) {
-      toast.error('Enter your email address first.');
+      setError('Enter your email address first.');
       return;
     }
 
     setIsResending(true);
-    const { error } = await authClient.emailOtp.sendVerificationOtp({
+    const response = await authClient.emailOtp.sendVerificationOtp({
       email,
       type: 'email-verification',
     });
     setIsResending(false);
 
-    if (error) {
-      toast.error(error.message ?? 'Could not resend the code.');
-      return;
+    if (response?.data) {
+      setError(null);
+      setCooldown(60);
+      toast.success('A new code has been sent.');
+    } else {
+      setError(response?.error?.message || 'Something went wrong');
     }
-
-    setCooldown(60);
-    toast.success('A new code has been sent.');
   };
 
   return (
     <form className="flex flex-col gap-5" onSubmit={onSubmit}>
       <FieldGroup>
-        {!validEmailFromQuery ? (
+        {!validEmailFromQuery && (
           <FormInput
             control={control}
             name="email"
@@ -113,7 +117,7 @@ export function VerifyEmailForm({
             label="Email"
             placeholder="example@conduit.com"
           />
-        ) : null}
+        )}
         <FormInputOTP
           control={control}
           name="otp"
@@ -122,6 +126,17 @@ export function VerifyEmailForm({
         />
       </FieldGroup>
 
+      {!!error && (
+        <Alert
+          variant="destructive"
+          className="bg-destructive/10 border-destructive/20 border"
+        >
+          <IconAlertCircle />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription className="text-wrap">{error}</AlertDescription>
+        </Alert>
+      )}
+
       <div className="flex flex-col gap-3">
         <Button
           type="submit"
@@ -129,7 +144,9 @@ export function VerifyEmailForm({
           className="w-full"
           disabled={formState.isSubmitting}
         >
-          {formState.isSubmitting ? <Spinner data-icon="inline-start" /> : null}
+          {formState.isSubmitting && (
+            <Spinner className="text-foreground" data-icon="inline-start" />
+          )}
           Verify email
         </Button>
         <Button
@@ -139,7 +156,9 @@ export function VerifyEmailForm({
           onClick={() => void handleResend()}
           disabled={isResending || cooldown > 0}
         >
-          {isResending ? <Spinner data-icon="inline-start" /> : null}
+          {isResending && (
+            <Spinner className="text-zinc-100" data-icon="inline-start" />
+          )}
           {cooldown > 0 ? `Resend code in ${cooldown}s` : 'Resend code'}
         </Button>
       </div>

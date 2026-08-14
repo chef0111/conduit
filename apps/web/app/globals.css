@@ -192,6 +192,24 @@
   }
 }
 
+@keyframes loading-spinner-fade {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.15;
+  }
+}
+
 @utility ease-out-cubic {
   @apply ease-[cubic-bezier(0.32,0.72,0,1)];
+}
+
+@utility input-otp-slot {
+  @apply size-14! text-xl! sm:size-12! sm:text-2xl!;
+}
+
+@utility input-otp-group {
+  @apply w-full gap-2 *:data-[slot=input-otp-slot]:rounded-md *:data-[slot=input-otp-slot]:border;
 }

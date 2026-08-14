@@ -6,6 +6,7 @@ import { Resend } from 'resend';
 import { APIError, createAuthMiddleware } from 'better-auth/api';
 import crypto from 'crypto';
 import { PasswordSchema } from './validations.js';
+import { resend } from './resend.js';
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -62,9 +63,7 @@ const passwordHooks: BetterAuthOptions['hooks'] = {
 
 export function createAuth() {
   const baseURL = process.env.BETTER_AUTH_URL ?? 'http://localhost:3333';
-  const resendApiKey = process.env.RESEND_API_KEY;
-  const resend = resendApiKey ? new Resend(resendApiKey) : null;
-  const emailFrom = process.env.AUTH_EMAIL_FROM ?? 'onboarding@resend.dev';
+  const emailFrom = `Gia Bảo from Conduit <${process.env.AUTH_EMAIL_FROM ?? 'conduit@giabao.dev'}>`;
   const socialProviders: NonNullable<
     Parameters<typeof betterAuth>[0]['socialProviders']
   > = {};
@@ -135,14 +134,14 @@ export function createAuth() {
         sendVerificationOnSignUp: true,
         otpLength: 6,
         async sendVerificationOTP({ email, otp, type }) {
-          const subject =
-            type === 'sign-in'
-              ? 'Your sign-in code'
-              : type === 'email-verification'
-                ? 'Verify your email'
-                : type === 'forget-password'
-                  ? 'Reset your password'
-                  : 'Your verification code';
+          const OtpSubjects: Record<string, string> = {
+            'sign-in': 'Your sign-in code',
+            'email-verification': 'Verify your email',
+            'forget-password': 'Reset your password',
+            'change-email': 'Verify your new email',
+          };
+
+          const subject = OtpSubjects[type] || 'Your verification code';
 
           if (!resend) {
             console.log(`[auth:otp] to=${email} type=${type} otp=${otp}`);
@@ -151,9 +150,9 @@ export function createAuth() {
 
           await resend.emails.send({
             from: emailFrom,
-            to: email,
+            to: [email],
             subject,
-            text: `Your code is ${otp}`,
+            html: `<p>Your OTP code is: <strong>${otp}</strong></p>`,
           });
         },
       }),

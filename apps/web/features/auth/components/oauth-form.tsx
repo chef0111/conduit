@@ -14,7 +14,7 @@ export const OAuthForm = () => {
     if (pendingProvider === provider) {
       return (
         <>
-          <Spinner data-icon="inline-start" />
+          <Spinner className="text-muted-foreground" data-icon="inline-start" />
           <span>Redirecting...</span>
         </>
       );
