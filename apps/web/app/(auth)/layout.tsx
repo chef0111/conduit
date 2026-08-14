@@ -3,9 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-import { ForcedThemeProvider } from '@/components/forced-theme-provider';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
+import { ForcedThemeProvider } from '@/context/forced-theme-provider';
 
 export default function AuthLayout({
   children,
@@ -19,7 +19,10 @@ export default function AuthLayout({
         className="bg-background text-foreground flex min-h-screen w-full flex-col font-sans lg:flex-row"
       >
         {/* Left Image Panel */}
-        <div className="sticky flex min-h-[40vh] w-full flex-col justify-between overflow-hidden p-8 md:p-12 lg:min-h-screen lg:w-1/2 lg:p-16">
+        <div
+          className="sticky flex min-h-[40vh] w-full flex-col justify-between overflow-hidden p-8 md:p-12 lg:min-h-screen lg:w-1/2 lg:p-16"
+          style={{ viewTransitionName: 'auth-hero' }}
+        >
           {/* Background Image — wrapper owns the insets; fill ignores intrinsic width/height */}
           <div className="pointer-events-none absolute inset-0 lg:inset-8">
             <Image

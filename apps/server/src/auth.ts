@@ -1,4 +1,5 @@
-import { type Auth, createAuth } from '@repo/auth';
+import { createAuth } from '@repo/auth';
+import type { Auth } from '@repo/auth/types';
 
 export const auth: Auth = createAuth();
 
