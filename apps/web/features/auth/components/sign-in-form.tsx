@@ -89,7 +89,7 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
 
       if (response?.data?.user) {
         toast.success('Success', {
-          description: 'You are now logged in',
+          description: 'Signed in successfully',
         });
 
         router.push(
