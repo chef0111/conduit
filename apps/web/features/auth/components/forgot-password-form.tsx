@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
 import { withCallbackURL } from '@/features/auth/lib/callback-url';
+import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
 import { ForgotPasswordSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
 
@@ -46,13 +47,14 @@ export function ForgotPasswordForm({ callbackURL }: ForgotPasswordFormProps) {
 
       if (response?.data) {
         toast.success('If that email exists, a reset code has been sent.');
-        router.push(
-          withCallbackURL(
+        navigateWithTransition({
+          router,
+          href: withCallbackURL(
             `/reset-password?email=${encodeURIComponent(values.email)}`,
             callbackURL
-          ) as Route
-        );
-        router.refresh();
+          ) as Route,
+          type: 'nav-forward',
+        });
         return true;
       }
 

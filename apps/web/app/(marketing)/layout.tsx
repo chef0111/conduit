@@ -1,4 +1,4 @@
-import { ForcedThemeProvider } from '@/components/forced-theme-provider';
+import { ForcedThemeProvider } from '@/context/forced-theme-provider';
 import SiteFooter from '@/features/marketing/components/site-footer';
 import SiteHeader from '@/features/marketing/components/site-header';
 import { cn } from '@/lib/utils';

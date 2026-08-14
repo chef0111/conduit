@@ -29,6 +29,7 @@ import {
   isSafeInternalPath,
   withCallbackURL,
 } from '@/features/auth/lib/callback-url';
+import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
 import { SignInSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
 
@@ -135,6 +136,7 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
                 className="mt-0"
                 linkClassName="text-muted-foreground text-xs hover:text-foreground"
                 tabIndex={-1}
+                transitionTypes={['nav-forward']}
               />
             }
           />
@@ -183,13 +185,15 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
-                router.push(
-                  withCallbackURL(
+                setOpenUnverifiedDialog(false);
+                navigateWithTransition({
+                  router,
+                  href: withCallbackURL(
                     `/verify-email?email=${encodeURIComponent(unverifiedEmail)}`,
                     callbackURL
-                  ) as Route
-                );
-                setOpenUnverifiedDialog(false);
+                  ) as Route,
+                  type: 'nav-forward',
+                });
               }}
             >
               Continue

@@ -2,6 +2,8 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
+@import '../features/auth/styles/transition.css';
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

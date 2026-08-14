@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 
 import { FieldSeparator } from '@/components/ui/field';
 import { AuthActionLink } from '@/features/auth/components/auth-action-link';
+import { DirectionalTransition } from '@/features/auth/components/directional-transition';
 import { OAuthForm } from '@/features/auth/components/oauth-form';
 import { SignInForm } from '@/features/auth/components/sign-in-form';
 import {
@@ -23,33 +24,39 @@ function SignInContent({ callbackURL }: { callbackURL: string | null }) {
   );
 }
 
-export default function SignInPage() {
+function SignInBody() {
   const searchParams = useSearchParams();
   const callbackURL = searchParams.get('callbackURL');
 
   return (
-    <div className="bg-background flex w-full flex-col items-center justify-center p-6 sm:p-8 lg:w-1/2">
-      <div className="w-full max-w-md md:max-w-lg xl:max-w-xl">
-        <div className="mb-6 text-center">
-          <h2 className="text-foreground mb-2 text-3xl font-medium tracking-tight">
-            Sign In
-          </h2>
-          <p className="text-muted-foreground text-base">
-            Manage your team&apos;s work in one place.
-          </p>
-        </div>
-
-        <OAuthProvider>
-          <SignInContent callbackURL={callbackURL} />
-        </OAuthProvider>
-
-        <AuthActionLink
-          prompt="Don't have an account?"
-          href="/sign-up"
-          label="Sign up"
-          callbackURL={callbackURL}
-        />
+    <>
+      <div className="mb-6 text-center">
+        <h2 className="text-foreground mb-2 text-3xl font-medium tracking-tight">
+          Sign In
+        </h2>
+        <p className="text-muted-foreground text-base">
+          Manage your team&apos;s work in one place.
+        </p>
       </div>
-    </div>
+
+      <OAuthProvider>
+        <SignInContent callbackURL={callbackURL} />
+      </OAuthProvider>
+
+      <AuthActionLink
+        prompt="Don't have an account?"
+        href="/sign-up"
+        label="Sign up"
+        callbackURL={callbackURL}
+      />
+    </>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <DirectionalTransition>
+      <SignInBody />
+    </DirectionalTransition>
   );
 }

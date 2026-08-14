@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { Spinner } from '@/components/ui/spinner';
 import { withCallbackURL } from '@/features/auth/lib/callback-url';
+import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
 import { ResetPasswordSchema } from '@/features/auth/lib/validations';
 
 type ResetPasswordFormValues = z.infer<typeof ResetPasswordSchema>;
@@ -61,8 +62,11 @@ export function ResetPasswordForm({
 
       if (response?.data) {
         toast.success('Password updated. Sign in with your new password.');
-        router.push(withCallbackURL('/sign-in', callbackURL) as Route);
-        router.refresh();
+        navigateWithTransition({
+          router,
+          href: withCallbackURL('/sign-in', callbackURL) as Route,
+          type: 'nav-back',
+        });
         return true;
       }
 
