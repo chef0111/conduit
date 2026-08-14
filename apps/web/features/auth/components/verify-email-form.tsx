@@ -4,7 +4,7 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { type SyntheticEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type { z } from 'zod';
@@ -61,22 +61,33 @@ export function VerifyEmailForm({
     return () => clearInterval(timer);
   }, [cooldown]);
 
-  const onSubmit = handleSubmit(async (values) => {
-    const response = await authClient.emailOtp.verifyEmail({
-      email: values.email,
-      otp: values.otp,
-    });
+  const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
+    const succeeded = await handleSubmit(async (values) => {
+      setError(null);
 
-    if (response?.data) {
-      router.push(
-        (isSafeInternalPath(callbackURL) ? callbackURL : '/dashboard') as Route
-      );
+      const response = await authClient.emailOtp.verifyEmail({
+        email: values.email,
+        otp: values.otp,
+      });
 
-      reset();
-    } else {
+      if (response?.data) {
+        router.push(
+          (isSafeInternalPath(callbackURL)
+            ? callbackURL
+            : '/dashboard') as Route
+        );
+        router.refresh();
+        return true;
+      }
+
       setError(response?.error?.message || 'Something went wrong.');
+      return false;
+    })(event);
+
+    if (succeeded) {
+      reset();
     }
-  });
+  };
 
   const handleResend = async () => {
     if (isResending || cooldown > 0) {

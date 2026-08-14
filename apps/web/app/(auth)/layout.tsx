@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 
 import { ForcedThemeProvider } from '@/components/forced-theme-provider';
 import { Logo } from '@/components/logo';
+import { Button } from '@/components/ui/button';
 
 export default function AuthLayout({
   children,
@@ -35,13 +36,15 @@ export default function AuthLayout({
           <div className="relative z-10 flex items-center justify-between">
             <Logo textClassName="text-white" />
 
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-xs font-medium text-white/90 transition-colors hover:text-white md:text-sm lg:text-base"
+            <Button
+              variant="ghost"
+              nativeButton={false}
+              className="hover:bg-muted/20 text-background! gap-1.5 has-data-[icon=inline-start]:ps-1.5"
+              render={<Link href="/" />}
             >
-              <IconChevronLeft className="size-4" />
+              <IconChevronLeft data-icon="inline-start" />
               Back to Website
-            </Link>
+            </Button>
           </div>
 
           {/* Bottom Content */}

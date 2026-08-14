@@ -4,7 +4,7 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { type SyntheticEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type { z } from 'zod';
@@ -36,25 +36,34 @@ export function ForgotPasswordForm({ callbackURL }: ForgotPasswordFormProps) {
       },
     });
 
-  const onSubmit = handleSubmit(async (values) => {
-    const response = await authClient.emailOtp.requestPasswordReset({
-      email: values.email,
-    });
+  const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
+    const succeeded = await handleSubmit(async (values) => {
+      setError(null);
 
-    if (response?.data) {
-      toast.success('If that email exists, a reset code has been sent.');
-      router.push(
-        withCallbackURL(
-          `/reset-password?email=${encodeURIComponent(values.email)}`,
-          callbackURL
-        ) as Route
-      );
+      const response = await authClient.emailOtp.requestPasswordReset({
+        email: values.email,
+      });
 
-      reset();
-    } else {
+      if (response?.data) {
+        toast.success('If that email exists, a reset code has been sent.');
+        router.push(
+          withCallbackURL(
+            `/reset-password?email=${encodeURIComponent(values.email)}`,
+            callbackURL
+          ) as Route
+        );
+        router.refresh();
+        return true;
+      }
+
       setError(response?.error?.message || 'Something went wrong');
+      return false;
+    })(event);
+
+    if (succeeded) {
+      reset();
     }
-  });
+  };
 
   return (
     <form className="flex flex-col gap-5" onSubmit={onSubmit}>

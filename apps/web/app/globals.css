@@ -90,8 +90,8 @@
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);
-  --selection: oklch(0.141 0.005 285.823);
-  --selection-foreground: oklch(0.985 0 0);
+  --selection: oklch(0.5 0.134 242.749);
+  --selection-foreground: oklch(0.977 0.013 236.62);
   --chart-1: oklch(0.845 0.143 164.978);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.596 0.145 163.225);
@@ -129,8 +129,8 @@
   --border: oklch(0.274 0.006 286.033);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.552 0.016 285.938);
-  --selection: oklch(0.985 0 0);
-  --selection-foreground: oklch(0.141 0.005 285.823);
+  --selection: oklch(0.5 0.134 242.749);
+  --selection-foreground: oklch(0.977 0.013 236.62);
   --chart-1: oklch(0.845 0.143 164.978);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.596 0.145 163.225);
@@ -204,6 +204,18 @@
 
 @utility ease-out-cubic {
   @apply ease-[cubic-bezier(0.32,0.72,0,1)];
+}
+
+@utility btn-outline {
+  @apply hover:bg-accent! bg-gray-100! shadow-[inset_0_1.5px_0_0_rgba(255,255,255,1),0_0_0_1px_rgba(0,0,0,0.04)]!;
+}
+
+@utility link {
+  @apply decoration-1 underline-offset-4 hover:underline active:underline;
+}
+
+@utility link-underline {
+  @apply underline decoration-current/30 decoration-1 underline-offset-4 transition-colors hover:decoration-current active:decoration-current;
 }
 
 @utility input-otp-slot {

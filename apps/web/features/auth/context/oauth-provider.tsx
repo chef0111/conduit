@@ -1,7 +1,7 @@
 'use client';
 
 import { authClient } from '@repo/auth/client';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   createContext,
   type ReactNode,
@@ -33,6 +33,7 @@ function toastOAuthError(message: string) {
 }
 
 export function OAuthProvider({ children }: { children: ReactNode }) {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [pendingProvider, setPendingProvider] = useState<OAuthProvider | null>(
     null
@@ -67,6 +68,7 @@ export function OAuthProvider({ children }: { children: ReactNode }) {
       });
     } finally {
       setPendingProvider(null);
+      router.refresh();
     }
   };
 

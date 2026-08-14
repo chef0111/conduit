@@ -1,14 +1,15 @@
 'use client';
 
-import type { Route } from 'next';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { FieldSeparator } from '@/components/ui/field';
+import { AuthActionLink } from '@/features/auth/components/auth-action-link';
 import { OAuthForm } from '@/features/auth/components/oauth-form';
 import { SignInForm } from '@/features/auth/components/sign-in-form';
-import { OAuthProvider, useOAuth } from '@/features/auth/context/oauth-provider';
-import { withCallbackURL } from '@/features/auth/lib/callback-url';
+import {
+  OAuthProvider,
+  useOAuth,
+} from '@/features/auth/context/oauth-provider';
 
 function SignInContent({ callbackURL }: { callbackURL: string | null }) {
   const { isOAuthPending } = useOAuth();
@@ -31,24 +32,23 @@ export default function SignInPage() {
       <div className="w-full max-w-md md:max-w-lg xl:max-w-xl">
         <div className="mb-6 text-center">
           <h2 className="text-foreground mb-2 text-3xl font-medium tracking-tight">
-            Sign in
+            Sign In
           </h2>
-          <p className="text-muted-foreground text-base">Welcome back.</p>
+          <p className="text-muted-foreground text-base">
+            Manage your team&apos;s work in one place.
+          </p>
         </div>
 
         <OAuthProvider>
           <SignInContent callbackURL={callbackURL} />
         </OAuthProvider>
 
-        <p className="text-muted-foreground mt-6 text-xs">
-          Don&apos;t have an account?{' '}
-          <Link
-            href={withCallbackURL('/sign-up', callbackURL) as Route}
-            className="text-foreground font-semibold underline-offset-3 hover:underline"
-          >
-            Sign up
-          </Link>
-        </p>
+        <AuthActionLink
+          prompt="Don't have an account?"
+          href="/sign-up"
+          label="Sign up"
+          callbackURL={callbackURL}
+        />
       </div>
     </div>
   );

@@ -1,11 +1,9 @@
 'use client';
 
-import type { Route } from 'next';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
+import { AuthActionLink } from '@/features/auth/components/auth-action-link';
 import { ForgotPasswordForm } from '@/features/auth/components/forgot-password-form';
-import { withCallbackURL } from '@/features/auth/lib/callback-url';
 
 export default function ForgotPasswordPage() {
   const searchParams = useSearchParams();
@@ -25,15 +23,12 @@ export default function ForgotPasswordPage() {
 
         <ForgotPasswordForm callbackURL={callbackURL} />
 
-        <p className="text-muted-foreground mt-6 text-xs">
-          Back to{' '}
-          <Link
-            href={withCallbackURL('/sign-in', callbackURL) as Route}
-            className="text-foreground font-semibold underline-offset-3 hover:underline"
-          >
-            Sign in
-          </Link>
-        </p>
+        <AuthActionLink
+          prompt="Back to"
+          href="/sign-in"
+          label="Sign in"
+          callbackURL={callbackURL}
+        />
       </div>
     </div>
   );

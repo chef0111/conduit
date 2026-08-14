@@ -4,9 +4,8 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import type { ErrorContext } from '@repo/auth/types';
 import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { type SyntheticEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type { z } from 'zod';
@@ -32,6 +31,8 @@ import {
 } from '@/features/auth/lib/callback-url';
 import { SignInSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
+
+import { AuthActionLink } from './auth-action-link';
 
 type SignInFormValues = z.infer<typeof SignInSchema>;
 
@@ -65,37 +66,48 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
     }
   );
 
-  const onSubmit = handleSubmit(async (values) => {
-    const response = await authClient.signIn.email(
-      {
-        email: values.email,
-        password: values.password,
-      },
-      {
-        onError: ({ error }) => {
-          if (isUnverifiedEmailError(error)) {
-            setUnverifiedEmail(values.email);
-            setOpenUnverifiedDialog(true);
-            return;
-          }
+  const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
+    const succeeded = await handleSubmit(async (values) => {
+      setError(null);
+
+      const response = await authClient.signIn.email(
+        {
+          email: values.email,
+          password: values.password,
         },
-      }
-    );
-
-    if (response?.data?.user) {
-      toast.success('Success', {
-        description: 'You are now logged in',
-      });
-
-      router.push(
-        (isSafeInternalPath(callbackURL) ? callbackURL : '/dashboard') as Route
+        {
+          onError: ({ error }) => {
+            if (isUnverifiedEmailError(error)) {
+              setUnverifiedEmail(values.email);
+              setOpenUnverifiedDialog(true);
+              return;
+            }
+          },
+        }
       );
 
-      reset();
-    } else {
+      if (response?.data?.user) {
+        toast.success('Success', {
+          description: 'You are now logged in',
+        });
+
+        router.push(
+          (isSafeInternalPath(callbackURL)
+            ? callbackURL
+            : '/dashboard') as Route
+        );
+        router.refresh();
+        return true;
+      }
+
       setError(response?.error?.message || 'Something went wrong.');
+      return false;
+    })(event);
+
+    if (succeeded) {
+      reset();
     }
-  });
+  };
 
   return (
     <>
@@ -116,13 +128,14 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
             label="Password"
             placeholder="********"
             labelAction={
-              <Link
-                href={withCallbackURL('/forgot-password', callbackURL) as Route}
-                className="text-muted-foreground text-xs underline-offset-3 hover:underline"
+              <AuthActionLink
+                href="/forgot-password"
+                label="Forgot password?"
+                callbackURL={callbackURL}
+                className="mt-0"
+                linkClassName="text-muted-foreground text-xs hover:text-foreground"
                 tabIndex={-1}
-              >
-                Forgot password?
-              </Link>
+              />
             }
           />
         </FieldGroup>

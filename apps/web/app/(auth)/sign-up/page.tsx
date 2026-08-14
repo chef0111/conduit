@@ -1,14 +1,15 @@
 'use client';
 
-import type { Route } from 'next';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { FieldSeparator } from '@/components/ui/field';
+import { AuthActionLink } from '@/features/auth/components/auth-action-link';
 import { OAuthForm } from '@/features/auth/components/oauth-form';
 import { SignUpForm } from '@/features/auth/components/sign-up-form';
-import { OAuthProvider, useOAuth } from '@/features/auth/context/oauth-provider';
-import { withCallbackURL } from '@/features/auth/lib/callback-url';
+import {
+  OAuthProvider,
+  useOAuth,
+} from '@/features/auth/context/oauth-provider';
 
 function SignUpContent({ callbackURL }: { callbackURL: string | null }) {
   const { isOAuthPending } = useOAuth();
@@ -34,7 +35,7 @@ export default function SignUpPage() {
             Create your Account
           </h2>
           <p className="text-muted-foreground text-base">
-            Let&apos;s get started with your 30 days free trial.
+            Join the AIO platform where teams connect and collaborate.
           </p>
         </div>
 
@@ -42,15 +43,12 @@ export default function SignUpPage() {
           <SignUpContent callbackURL={callbackURL} />
         </OAuthProvider>
 
-        <p className="text-muted-foreground mt-6 text-xs">
-          Already have an account?{' '}
-          <Link
-            href={withCallbackURL('/sign-in', callbackURL) as Route}
-            className="text-foreground font-semibold underline-offset-3 hover:underline"
-          >
-            Sign in
-          </Link>
-        </p>
+        <AuthActionLink
+          prompt="Already have an account?"
+          href="/sign-in"
+          label="Sign in"
+          callbackURL={callbackURL}
+        />
       </div>
     </div>
   );

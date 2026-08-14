@@ -5,7 +5,7 @@ import { authClient } from '@repo/auth/client';
 import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { type SyntheticEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type { z } from 'zod';
@@ -49,22 +49,31 @@ export function ResetPasswordForm({
       },
     });
 
-  const onSubmit = handleSubmit(async (values) => {
-    const response = await authClient.emailOtp.resetPassword({
-      email: values.email,
-      otp: values.otp,
-      password: values.password,
-    });
+  const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
+    const succeeded = await handleSubmit(async (values) => {
+      setError(null);
 
-    if (response?.data) {
-      toast.success('Password updated. Sign in with your new password.');
-      router.push(withCallbackURL('/sign-in', callbackURL) as Route);
+      const response = await authClient.emailOtp.resetPassword({
+        email: values.email,
+        otp: values.otp,
+        password: values.password,
+      });
 
-      reset();
-    } else {
+      if (response?.data) {
+        toast.success('Password updated. Sign in with your new password.');
+        router.push(withCallbackURL('/sign-in', callbackURL) as Route);
+        router.refresh();
+        return true;
+      }
+
       setError(response?.error?.message || 'Something went wrong');
+      return false;
+    })(event);
+
+    if (succeeded) {
+      reset();
     }
-  });
+  };
 
   return (
     <form className="flex flex-col gap-5" onSubmit={onSubmit}>
