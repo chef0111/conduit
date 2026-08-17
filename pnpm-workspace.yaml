@@ -9,6 +9,7 @@ allowBuilds:
   prisma: true
   esbuild: true
   '@prisma/ppg': true
+  '@scarf/scarf': true
 
 overrides:
   '@types/react': 19.2.18
