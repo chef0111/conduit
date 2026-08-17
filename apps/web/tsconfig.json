@@ -19,5 +19,5 @@
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"],
-  "references": [{ "path": "../../packages/api-contract" }]
+  "references": [{ "path": "../../packages/contracts" }]
 }

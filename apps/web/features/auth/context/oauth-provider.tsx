@@ -1,6 +1,5 @@
 'use client';
 
-import { authClient } from '@repo/auth/client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   createContext,
@@ -13,6 +12,7 @@ import {
 import { toast } from 'sonner';
 
 import { toAbsoluteAppUrl } from '@/features/auth/lib/callback-url';
+import { authClient } from '@/services/auth/client';
 
 import type { OAuthProvider } from '../types/auth';
 

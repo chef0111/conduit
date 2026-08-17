@@ -10,6 +10,7 @@
     "BETTER_AUTH_SECRET",
     "BETTER_AUTH_URL",
     "BETTER_AUTH_TRUSTED_ORIGIN",
+    "AUTH_COOKIE_DOMAIN",
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",
     "GITHUB_CLIENT_ID",
@@ -35,6 +36,22 @@
     },
     "typecheck": {
       "dependsOn": ["^typecheck", "^build"]
+    },
+    "db:generate": {
+      "cache": false,
+      "outputs": []
+    },
+    "db:push": {
+      "cache": false,
+      "outputs": []
+    },
+    "db:migrate": {
+      "cache": false,
+      "outputs": []
+    },
+    "db:migrate-deploy": {
+      "cache": false,
+      "outputs": []
     },
     "dev": {
       "cache": false,

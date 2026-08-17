@@ -1,14 +1,19 @@
 import type { IncomingHttpHeaders } from 'node:http';
 
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { AuthService } from '@thallesp/nestjs-better-auth';
 import type { Request } from 'express';
 
-import { auth, type Session } from '../auth.js';
+import type { Auth, Session } from '../auth/auth.config.js';
 
 @Injectable()
-export class SessionService {
+export class UsersService {
+  constructor(
+    @Inject(AuthService) private readonly authService: AuthService<Auth>
+  ) {}
+
   async getSession(request: Request): Promise<Session | null> {
-    return auth.api.getSession({
+    return this.authService.api.getSession({
       headers: toWebHeaders(request.headers),
     });
   }

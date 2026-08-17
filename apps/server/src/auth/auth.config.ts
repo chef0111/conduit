@@ -1,12 +1,13 @@
+import crypto from 'node:crypto';
+
 import { betterAuth, type BetterAuthOptions } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { emailOTP } from 'better-auth/plugins';
-import { prisma } from '@repo/db';
-import { Resend } from 'resend';
 import { APIError, createAuthMiddleware } from 'better-auth/api';
-import crypto from 'crypto';
-import { PasswordSchema } from './validations.js';
+import { emailOTP } from 'better-auth/plugins';
+
+import type { PrismaClient } from '../generated/prisma/client.js';
 import { resend } from './resend.js';
+import { PasswordSchema } from './validations.js';
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -61,7 +62,7 @@ const passwordHooks: BetterAuthOptions['hooks'] = {
   }),
 };
 
-export function createAuth() {
+export function createAuth(prisma: PrismaClient) {
   const baseURL = process.env.BETTER_AUTH_URL ?? 'http://localhost:3333';
   const emailFrom = `Gia Bảo from Conduit <${process.env.AUTH_EMAIL_FROM ?? 'conduit@giabao.dev'}>`;
   const socialProviders: NonNullable<

@@ -1,8 +1,8 @@
 'use client';
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import type { ErrorContext } from '@repo/auth/types';
 import { IconAlertCircle } from '@tabler/icons-react';
+import type { ErrorContext } from 'better-auth/react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { type SyntheticEvent, useState } from 'react';

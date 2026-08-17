@@ -26,7 +26,7 @@ coverage
 out/
 build
 dist
-packages/db/src/generated
+apps/server/src/generated
 
 # Next.js
 next-env.d.ts

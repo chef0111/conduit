@@ -11,21 +11,29 @@
     "start:app": "portless api.conduit node dist/main.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 .",
+    "db:generate": "npx prisma generate",
+    "db:push": "npx prisma db push",
+    "db:migrate": "npx prisma migrate dev",
+    "db:migrate-deploy": "npx prisma migrate deploy",
     "upgrade:nest": "npx npm-check-updates \"/^@nestjs/\" -u"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
     "@nestjs/common": "^11.1.6",
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
     "@orpc/nest": "^1.14.8",
     "@orpc/server": "^1.14.8",
-    "@repo/api-contract": "workspace:*",
-    "@repo/auth": "workspace:*",
-    "@repo/db": "workspace:*",
+    "@repo/contract": "workspace:*",
+    "@prisma/adapter-neon": "^7.0.0",
+    "@prisma/client": "^7.0.0",
     "@thallesp/nestjs-better-auth": "^2.7.0",
+    "better-auth": "^1.6.25",
     "dotenv": "^17.4.2",
+    "resend": "^6.0.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
+    "ws": "^8.18.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -35,8 +43,10 @@
     "@repo/typescript-config": "workspace:*",
     "@types/express": "^5.0.3",
     "@types/node": "^22.15.3",
+    "@types/ws": "^8.18.1",
     "@typescript/native": "npm:typescript@^7.0.2",
     "eslint": "^9.39.1",
+    "prisma": "^7.0.0",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   }
 }

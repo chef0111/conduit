@@ -1,11 +1,11 @@
 import { healthCheckContract } from './contracts/health.js';
-import { getSessionContract } from './contracts/session.js';
+import { getSessionContract } from './contracts/users.js';
 
 export const contract = {
   health: {
     check: healthCheckContract,
   },
-  auth: {
+  users: {
     getSession: getSessionContract,
   },
 };
