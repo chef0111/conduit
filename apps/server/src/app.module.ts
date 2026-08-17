@@ -5,6 +5,7 @@ import { AuthModule } from '@thallesp/nestjs-better-auth';
 import type { Request } from 'express';
 
 import { auth } from './auth.js';
+import { DatabaseModule } from './database/database.module.js';
 import { HealthController } from './health.controller.js';
 import { SessionController } from './session/session.controller.js';
 import { SessionService } from './session/session.service.js';
@@ -17,6 +18,7 @@ declare module '@orpc/nest' {
 
 @Module({
   imports: [
+    DatabaseModule,
     AuthModule.forRoot({
       auth,
       bodyParser: {
