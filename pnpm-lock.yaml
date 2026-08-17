@@ -45,9 +45,9 @@ importers:
       '@orpc/server':
         specifier: ^1.14.8
         version: 1.14.8(ws@8.21.1)
-      '@repo/api-contract':
+      '@repo/contracts':
         specifier: workspace:*
-        version: link:../../packages/api-contract
+        version: link:../../packages/contracts
       '@repo/auth':
         specifier: workspace:*
         version: link:../../packages/auth
@@ -124,9 +124,9 @@ importers:
       '@react-three/fiber':
         specifier: ^9.7.0
         version: 9.7.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(three@0.185.1)
-      '@repo/api-contract':
+      '@repo/contracts':
         specifier: workspace:*
-        version: link:../../packages/api-contract
+        version: link:../../packages/contracts
       '@repo/auth':
         specifier: workspace:*
         version: link:../../packages/auth
@@ -240,7 +240,7 @@ importers:
         specifier: npm:@typescript/typescript6@^6.0.2
         version: '@typescript/typescript6@6.0.2'
 
-  packages/api-contract:
+  packages/contracts:
     dependencies:
       '@orpc/contract':
         specifier: ^1.10.4

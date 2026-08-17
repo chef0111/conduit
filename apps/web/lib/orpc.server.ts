@@ -3,7 +3,7 @@ import 'server-only';
 import { createORPCClient } from '@orpc/client';
 import type { ContractRouterClient } from '@orpc/contract';
 import { createTanstackQueryUtils } from '@orpc/tanstack-query';
-import type { contract } from '@repo/api-contract';
+import type { contract } from '@repo/contracts';
 import { headers } from 'next/headers';
 
 import { createOrpcLink } from './orpc-link';

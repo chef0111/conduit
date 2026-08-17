@@ -1,6 +1,6 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import { Implement, implement } from '@orpc/nest';
-import { contract } from '@repo/api-contract';
+import { contract } from '@repo/contracts';
 import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import type { Response } from 'express';
 

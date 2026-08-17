@@ -19,7 +19,7 @@
     "@nestjs/platform-express": "^11.1.6",
     "@orpc/nest": "^1.14.8",
     "@orpc/server": "^1.14.8",
-    "@repo/api-contract": "workspace:*",
+    "@repo/contracts": "workspace:*",
     "@repo/auth": "workspace:*",
     "@repo/db": "workspace:*",
     "@thallesp/nestjs-better-auth": "^2.7.0",
