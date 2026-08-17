@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { AuthService } from '@thallesp/nestjs-better-auth';
 import type { Request } from 'express';
 
-import type { Auth, Session } from '../auth/auth.config.js';
+import type { Auth, Session } from '@/auth/auth.config.js';
 
 @Injectable()
 export class UsersService {

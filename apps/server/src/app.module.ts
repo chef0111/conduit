@@ -4,12 +4,12 @@ import { onError, ORPCModule } from '@orpc/nest';
 import { AuthModule } from '@thallesp/nestjs-better-auth';
 import type { Request } from 'express';
 
-import { createAuth } from './auth/auth.config.js';
-import { DatabaseModule } from './database/database.module.js';
-import { PrismaService } from './database/prisma.service.js';
-import { HealthController } from './health.controller.js';
-import { UsersController } from './users/users.controller.js';
-import { UsersService } from './users/users.service.js';
+import { createAuth } from '@/auth/auth.config.js';
+import { DatabaseModule } from '@/database/database.module.js';
+import { PrismaService } from '@/database/prisma.service.js';
+import { HealthController } from '@/health.controller.js';
+import { UsersController } from '@/users/users.controller.js';
+import { UsersService } from '@/users/users.service.js';
 
 declare module '@orpc/nest' {
   interface ORPCGlobalContext {

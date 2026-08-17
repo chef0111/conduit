@@ -1,9 +1,8 @@
+import { PrismaClient } from '@generated/prisma/client.js';
 import { neonConfig } from '@neondatabase/serverless';
 import { Injectable, type OnModuleDestroy } from '@nestjs/common';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import ws from 'ws';
-
-import { PrismaClient } from '../generated/prisma/client.js';
 
 neonConfig.webSocketConstructor = ws;
 

@@ -1,11 +1,11 @@
 import crypto from 'node:crypto';
 
+import type { PrismaClient } from '@generated/prisma/client.js';
 import { betterAuth, type BetterAuthOptions } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { APIError, createAuthMiddleware } from 'better-auth/api';
 import { emailOTP } from 'better-auth/plugins';
 
-import type { PrismaClient } from '../generated/prisma/client.js';
 import { resend } from './resend.js';
 import { PasswordSchema } from './validations.js';
 
