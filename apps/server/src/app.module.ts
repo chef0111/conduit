@@ -4,8 +4,9 @@ import { onError, ORPCModule } from '@orpc/nest';
 import { AuthModule } from '@thallesp/nestjs-better-auth';
 import type { Request } from 'express';
 
-import { auth } from './auth.js';
+import { createAuth } from './auth/auth.config.js';
 import { DatabaseModule } from './database/database.module.js';
+import { PrismaService } from './database/prisma.service.js';
 import { HealthController } from './health.controller.js';
 import { SessionController } from './session/session.controller.js';
 import { SessionService } from './session/session.service.js';
@@ -19,12 +20,15 @@ declare module '@orpc/nest' {
 @Module({
   imports: [
     DatabaseModule,
-    AuthModule.forRoot({
-      auth,
-      bodyParser: {
-        json: { limit: '2mb' },
-        urlencoded: { limit: '2mb', extended: true },
-      },
+    AuthModule.forRootAsync({
+      useFactory: (prisma: PrismaService) => ({
+        auth: createAuth(prisma),
+        bodyParser: {
+          json: { limit: '2mb' },
+          urlencoded: { limit: '2mb', extended: true },
+        },
+      }),
+      inject: [PrismaService],
     }),
     ORPCModule.forRootAsync({
       useFactory: (request: Request) => ({
