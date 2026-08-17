@@ -5,9 +5,10 @@ import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { APIError, createAuthMiddleware } from 'better-auth/api';
 import { emailOTP } from 'better-auth/plugins';
 
-import type { PrismaClient } from '../generated/prisma/client.js';
-import { resend } from './resend.js';
-import { PasswordSchema } from './validations.js';
+import { prisma } from '@/database/prisma.service';
+
+import { resend } from './resend';
+import { PasswordSchema } from './validations';
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -62,105 +63,95 @@ const passwordHooks: BetterAuthOptions['hooks'] = {
   }),
 };
 
-export function createAuth(prisma: PrismaClient) {
-  const baseURL = process.env.BETTER_AUTH_URL ?? 'http://localhost:3333';
-  const emailFrom = `Gia Bảo from Conduit <${process.env.AUTH_EMAIL_FROM ?? 'conduit@giabao.dev'}>`;
-  const socialProviders: NonNullable<
-    Parameters<typeof betterAuth>[0]['socialProviders']
-  > = {};
+const baseURL = process.env.BETTER_AUTH_URL ?? 'http://localhost:3333';
+const emailFrom = `Gia Bảo from Conduit <${process.env.AUTH_EMAIL_FROM ?? 'conduit@giabao.dev'}>`;
 
-  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
-    socialProviders.google = {
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    };
-  }
-
-  if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
-    socialProviders.github = {
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    };
-  }
-
-  return betterAuth({
-    database: prismaAdapter(prisma, {
-      provider: 'postgresql',
-    }),
-    secret: requireEnv('BETTER_AUTH_SECRET'),
-    baseURL,
-    trustedOrigins: getTrustedOrigins(),
-    emailAndPassword: {
-      enabled: true,
-      requireEmailVerification: true,
+export const auth = betterAuth({
+  database: prismaAdapter(prisma, {
+    provider: 'postgresql',
+  }),
+  secret: requireEnv('BETTER_AUTH_SECRET'),
+  baseURL,
+  trustedOrigins: getTrustedOrigins(),
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: true,
+  },
+  emailVerification: {
+    sendOnSignIn: true,
+    autoSignInAfterVerification: true,
+  },
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
-    emailVerification: {
-      sendOnSignIn: true,
-      autoSignInAfterVerification: true,
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     },
-    databaseHooks: {
-      user: {
-        create: {
-          before: async (user) => {
-            const emailPrefix = user.email.split('@')[0];
-            const generatedName = emailPrefix
-              ?.split(/[._-]/)
-              .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-              .join(' ');
+  },
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user) => {
+          const emailPrefix = user.email.split('@')[0];
+          const generatedName = emailPrefix
+            ?.split(/[._-]/)
+            .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+            .join(' ');
 
-            const emailHash = crypto
-              .createHash('sha256')
-              .update(user.email.trim().toLowerCase())
-              .digest('hex');
-            const generatedImage = `https://gravatar.com/avatar/${emailHash}?d=retro`;
+          const emailHash = crypto
+            .createHash('sha256')
+            .update(user.email.trim().toLowerCase())
+            .digest('hex');
+          const generatedImage = `https://gravatar.com/avatar/${emailHash}?d=retro`;
 
-            return {
-              data: {
-                ...user,
-                name: user.name || generatedName,
-                image: user.image || generatedImage,
-                role: user.role || 'user',
-              },
-            };
-          },
+          return {
+            data: {
+              ...user,
+              name: user.name || generatedName,
+              image: user.image || generatedImage,
+              role: user.role || 'user',
+            },
+          };
         },
       },
     },
-    hooks: passwordHooks,
-    advanced: getCookieAdvanced(baseURL),
-    socialProviders,
-    plugins: [
-      emailOTP({
-        overrideDefaultEmailVerification: true,
-        sendVerificationOnSignUp: true,
-        otpLength: 6,
-        async sendVerificationOTP({ email, otp, type }) {
-          const OtpSubjects: Record<string, string> = {
-            'sign-in': 'Your sign-in code',
-            'email-verification': 'Verify your email',
-            'forget-password': 'Reset your password',
-            'change-email': 'Verify your new email',
-          };
+  },
+  hooks: passwordHooks,
+  advanced: getCookieAdvanced(baseURL),
+  plugins: [
+    emailOTP({
+      overrideDefaultEmailVerification: true,
+      sendVerificationOnSignUp: true,
+      otpLength: 6,
+      async sendVerificationOTP({ email, otp, type }) {
+        const OtpSubjects: Record<string, string> = {
+          'sign-in': 'Your sign-in code',
+          'email-verification': 'Verify your email',
+          'forget-password': 'Reset your password',
+          'change-email': 'Verify your new email',
+        };
 
-          const subject = OtpSubjects[type] || 'Your verification code';
+        const subject = OtpSubjects[type] || 'Your verification code';
 
-          if (!resend) {
-            console.log(`[auth:otp] to=${email} type=${type} otp=${otp}`);
-            return;
-          }
+        if (!resend) {
+          console.log(`[auth:otp] to=${email} type=${type} otp=${otp}`);
+          return;
+        }
 
-          await resend.emails.send({
-            from: emailFrom,
-            to: [email],
-            subject,
-            html: `<p>Your OTP code is: <strong>${otp}</strong></p>`,
-          });
-        },
-      }),
-    ],
-  });
-}
+        await resend.emails.send({
+          from: emailFrom,
+          to: [email],
+          subject,
+          html: `<p>Your OTP code is: <strong>${otp}</strong></p>`,
+        });
+      },
+    }),
+  ],
+});
 
-export type Auth = ReturnType<typeof createAuth>;
+export type Auth = typeof auth;
 export type Session = Auth['$Infer']['Session'];
 export type User = Session['user'];

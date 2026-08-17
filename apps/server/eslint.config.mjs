@@ -1,4 +1,4 @@
 import { nodeConfig } from '@repo/eslint-config/node';
 
 /** @type {import("eslint").Linter.Config[]} */
-export default [...nodeConfig, { ignores: ['src/generated/**'] }];
+export default [...nodeConfig, { ignores: ['generated/**'] }];

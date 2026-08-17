@@ -1,11 +1,19 @@
 {
   "extends": ["//"],
   "tasks": {
+    "db:generate": {
+      "cache": true,
+      "inputs": ["$TURBO_DEFAULT$", "database/**", "prisma.config.ts"],
+      "outputs": ["generated/**"]
+    },
     "build": {
-      "dependsOn": ["db:generate", "^build"]
+      "dependsOn": ["db:generate", "$TURBO_EXTENDS$"]
     },
     "typecheck": {
-      "dependsOn": ["db:generate", "^typecheck", "^build"]
+      "dependsOn": ["db:generate", "$TURBO_EXTENDS$"]
+    },
+    "dev": {
+      "dependsOn": ["db:generate"]
     }
   }
 }
