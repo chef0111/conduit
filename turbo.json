@@ -37,6 +37,22 @@
     "typecheck": {
       "dependsOn": ["^typecheck", "^build"]
     },
+    "db:generate": {
+      "cache": false,
+      "outputs": []
+    },
+    "db:push": {
+      "cache": false,
+      "outputs": []
+    },
+    "db:migrate": {
+      "cache": false,
+      "outputs": []
+    },
+    "db:migrate-deploy": {
+      "cache": false,
+      "outputs": []
+    },
     "dev": {
       "cache": false,
       "persistent": true

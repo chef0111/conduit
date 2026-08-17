@@ -10,6 +10,10 @@
     "typecheck": "turbo run typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,mdx,css}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,mdx,css}\" --cache",
+    "db:generate": "turbo run db:generate",
+    "db:push": "turbo run db:push",
+    "db:migrate": "turbo run db:migrate",
+    "db:migrate-deploy": "turbo run db:migrate-deploy",
     "upgrade:next": "node ./scripts/upgrade-next.mjs",
     "upgrade:nest": "pnpm --dir apps/server run upgrade:nest && pnpm install"
   },

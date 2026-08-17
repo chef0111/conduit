@@ -2,13 +2,10 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": ["generate", "^build"]
+      "dependsOn": ["db:generate", "^build"]
     },
     "typecheck": {
-      "dependsOn": ["generate", "^typecheck", "^build"]
-    },
-    "generate": {
-      "outputs": []
+      "dependsOn": ["db:generate", "^typecheck", "^build"]
     }
   }
 }

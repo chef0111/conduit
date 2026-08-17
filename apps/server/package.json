@@ -11,9 +11,10 @@
     "start:app": "portless api.conduit node dist/main.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 .",
-    "generate": "prisma generate",
-    "migrate": "prisma migrate dev",
-    "migrate:deploy": "prisma migrate deploy",
+    "db:generate": "npx prisma generate",
+    "db:push": "npx prisma db push",
+    "db:migrate": "npx prisma migrate dev",
+    "db:migrate-deploy": "npx prisma migrate deploy",
     "upgrade:nest": "npx npm-check-updates \"/^@nestjs/\" -u"
   },
   "dependencies": {
