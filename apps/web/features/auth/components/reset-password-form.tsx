@@ -1,7 +1,6 @@
 'use client';
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import { authClient } from '@repo/auth/client';
 import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
@@ -19,6 +18,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { withCallbackURL } from '@/features/auth/lib/callback-url';
 import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
 import { ResetPasswordSchema } from '@/features/auth/lib/validations';
+import { authClient } from '@/services/auth/client';
 
 type ResetPasswordFormValues = z.infer<typeof ResetPasswordSchema>;
 
