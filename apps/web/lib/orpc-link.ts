@@ -1,5 +1,5 @@
 import { OpenAPILink } from '@orpc/openapi-client/fetch';
-import { contract } from '@repo/contracts';
+import { contract } from '@repo/contract';
 
 import { getServerBaseUrl } from './env';
 

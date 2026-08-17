@@ -1,5 +1,5 @@
-import { Injectable, type OnModuleDestroy } from '@nestjs/common';
 import { neonConfig } from '@neondatabase/serverless';
+import { Injectable, type OnModuleDestroy } from '@nestjs/common';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import ws from 'ws';
 

@@ -1,6 +1,6 @@
 import { Controller, Inject } from '@nestjs/common';
 import { Implement, implement } from '@orpc/nest';
-import { contract } from '@repo/contracts';
+import { contract } from '@repo/contract';
 import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 
 import { UsersService } from './users.service.js';
