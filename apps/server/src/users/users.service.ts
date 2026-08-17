@@ -7,7 +7,7 @@ import type { Request } from 'express';
 import type { Auth, Session } from '../auth/auth.config.js';
 
 @Injectable()
-export class SessionService {
+export class UsersService {
   constructor(private readonly authService: AuthService<Auth>) {}
 
   async getSession(request: Request): Promise<Session | null> {

@@ -8,8 +8,8 @@ import { createAuth } from './auth/auth.config.js';
 import { DatabaseModule } from './database/database.module.js';
 import { PrismaService } from './database/prisma.service.js';
 import { HealthController } from './health.controller.js';
-import { SessionController } from './session/session.controller.js';
-import { SessionService } from './session/session.service.js';
+import { UsersController } from './users/users.controller.js';
+import { UsersService } from './users/users.service.js';
 
 declare module '@orpc/nest' {
   interface ORPCGlobalContext {
@@ -43,7 +43,7 @@ declare module '@orpc/nest' {
       inject: [REQUEST],
     }),
   ],
-  controllers: [HealthController, SessionController],
-  providers: [SessionService],
+  controllers: [HealthController, UsersController],
+  providers: [UsersService],
 })
 export class AppModule {}
