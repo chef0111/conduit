@@ -23,9 +23,6 @@
       "@generated/*": ["./generated/*"]
     }
   },
-  "tsc-alias": {
-    "resolveFullPaths": true
-  },
   "include": ["src/**/*", "generated/**/*"],
   "exclude": ["node_modules", "dist"]
 }

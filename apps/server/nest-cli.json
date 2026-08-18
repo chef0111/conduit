@@ -3,8 +3,15 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "entryFile": "src/main",
-  "exec": "node scripts/run-dist.mjs",
   "compilerOptions": {
+    "builder": {
+      "type": "swc",
+      "options": {
+        "filenames": ["src", "generated"],
+        "stripLeadingPaths": false
+      }
+    },
+    "typeCheck": true,
     "deleteOutDir": true,
     "tsConfigPath": "tsconfig.build.json"
   }
