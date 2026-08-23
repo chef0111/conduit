@@ -13,7 +13,7 @@ function buildEslintCommand(cwd) {
     const files = filenames
       .map((file) => `"${toPosix(path.relative(cwd, file))}"`)
       .join(' ');
-    return `pnpm --dir ${dir} exec eslint --fix --max-warnings 0 ${files}`;
+    return `npx --dir ${dir} eslint --fix --max-warnings 0 ${files}`;
   };
 }
 
