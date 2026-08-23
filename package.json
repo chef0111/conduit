@@ -14,8 +14,6 @@
     "db:push": "turbo run db:push",
     "db:migrate": "turbo run db:migrate",
     "db:migrate-deploy": "turbo run db:migrate-deploy",
-    "upgrade:next": "node ./scripts/upgrade-next.mjs",
-    "upgrade:nest": "pnpm --dir apps/server run upgrade:nest && pnpm install",
     "prepare": "husky"
   },
   "devDependencies": {
