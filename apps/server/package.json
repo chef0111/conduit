@@ -9,6 +9,7 @@
     "build": "nest build",
     "start": "node dist/src/main.js",
     "start:app": "portless api.conduit node dist/src/main.js",
+    "conduit": "nest build && node dist/src/main.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 .",
     "db:generate": "npx prisma generate",
