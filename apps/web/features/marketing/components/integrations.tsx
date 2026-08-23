@@ -5,6 +5,8 @@ import { cn } from '@repo/ui/lib/utils';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { type ComponentType, type SVGProps, useState } from 'react';
 
+import { getSignUpUrl } from '@/lib/env';
+
 import { ForwardButton } from './forward-button';
 import { SectionShell } from './section-shell';
 import {
@@ -86,7 +88,7 @@ export default function Integrations() {
             Conduit keeps developer experience front-and-center with a stack
             that fits modern web and AI workflows.
           </p>
-          <ForwardButton variant="ghost" href="/sign-up" className="mt-6">
+          <ForwardButton variant="ghost" href={getSignUpUrl()} className="mt-6">
             All integrations
           </ForwardButton>
         </div>

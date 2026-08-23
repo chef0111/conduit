@@ -3,8 +3,32 @@ import Link from 'next/link';
 
 import { Logo } from '@/components/logo';
 import { SectionShell } from '@/features/marketing/components/section-shell';
+import { getSignUpUrl } from '@/lib/env';
 
-type FooterLink = { href: Route; label: string };
+type FooterLink = { href: string; label: string };
+
+function isAbsoluteUrl(href: string) {
+  return href.startsWith('http://') || href.startsWith('https://');
+}
+
+function FooterAnchor({ href, label }: FooterLink) {
+  const className =
+    'hover:text-foreground text-muted-foreground text-sm duration-150';
+
+  if (isAbsoluteUrl(href)) {
+    return (
+      <a href={href} className={className}>
+        {label}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href as Route} className={className}>
+      {label}
+    </Link>
+  );
+}
 
 const communityLinks: FooterLink[] = [
   { href: '#' as Route, label: 'GitHub' },
@@ -20,7 +44,7 @@ const footerLinks: { name: string; links: FooterLink[] }[] = [
       { href: '#product' as Route, label: 'Surfaces' },
       { href: '#solutions' as Route, label: 'Solutions' },
       { href: '#pricing' as Route, label: 'Pricing' },
-      { href: '/sign-up' as Route, label: 'Get started' },
+      { href: getSignUpUrl(), label: 'Get started' },
     ],
   },
   {
@@ -67,12 +91,7 @@ export default function SiteFooter() {
               <ul className="mt-4 list-inside space-y-4">
                 {linksGroup.links.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="hover:text-foreground text-muted-foreground text-sm duration-150"
-                    >
-                      {link.label}
-                    </Link>
+                    <FooterAnchor href={link.href} label={link.label} />
                   </li>
                 ))}
               </ul>
@@ -83,12 +102,7 @@ export default function SiteFooter() {
             <ul className="mt-4 list-inside space-y-4">
               {communityLinks.map((link) => (
                 <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="hover:text-foreground text-muted-foreground text-sm duration-150"
-                  >
-                    {link.label}
-                  </Link>
+                  <FooterAnchor href={link.href} label={link.label} />
                 </li>
               ))}
             </ul>

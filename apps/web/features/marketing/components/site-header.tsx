@@ -11,6 +11,7 @@ import React from 'react';
 import { Logo } from '@/components/logo';
 import { useHeaderTheme } from '@/features/marketing/hooks/use-header-theme';
 import { easeDrawer } from '@/features/marketing/lib/motion';
+import { getSignUpUrl } from '@/lib/env';
 
 const menuItems: { name: string; href: Route }[] = [
   { name: 'Product', href: '#product' as Route },
@@ -115,15 +116,8 @@ export default function SiteHeader() {
           <div className="hidden items-center gap-2 md:flex">
             <Button
               size="sm"
-              variant="ghost"
               nativeButton={false}
-              className="text-foreground"
-              render={<Link href="/sign-in">Sign in</Link>}
-            />
-            <Button
-              size="sm"
-              nativeButton={false}
-              render={<Link href="/sign-up">Get Started</Link>}
+              render={<a href={getSignUpUrl()}>Get Started</a>}
             />
           </div>
 
@@ -165,14 +159,8 @@ export default function SiteHeader() {
                 <div className="flex w-full flex-col gap-2 sm:flex-row">
                   <Button
                     size="sm"
-                    variant="outline"
                     nativeButton={false}
-                    render={<Link href="/sign-in">Sign in</Link>}
-                  />
-                  <Button
-                    size="sm"
-                    nativeButton={false}
-                    render={<Link href="/sign-up">Get Started</Link>}
+                    render={<a href={getSignUpUrl()}>Get Started</a>}
                   />
                 </div>
               </motion.div>

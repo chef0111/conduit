@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
   experimental: {
     useTypeScriptCli: false,
     typedEnv: true,
-    authInterrupts: true,
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@tabler/icons-react'],
   },
@@ -42,7 +41,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  transpilePackages: ['@repo/contract', '@repo/ui'],
+  transpilePackages: ['@repo/ui'],
 };
 
 export default nextConfig;

@@ -2,11 +2,8 @@ import './globals.css';
 
 import { cn } from '@repo/ui/lib/utils';
 import type { Metadata } from 'next';
-import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 import { fontVariables } from '@/config/font';
-
-import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'Conduit',
@@ -26,11 +23,7 @@ export default function RootLayout({
       style={{ colorScheme: 'light' }}
       suppressHydrationWarning
     >
-      <body>
-        <Providers>
-          <NuqsAdapter>{children}</NuqsAdapter>
-        </Providers>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

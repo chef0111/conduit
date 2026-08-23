@@ -5,11 +5,15 @@ import type { Route } from 'next';
 import Link from 'next/link';
 
 interface ForwardButtonProps {
-  href: Route;
+  href: string;
   children: React.ReactNode;
   variant?: 'default' | 'outline' | 'ghost';
   size?: 'default' | 'sm' | 'lg';
   className?: string;
+}
+
+function isAbsoluteUrl(href: string) {
+  return href.startsWith('http://') || href.startsWith('https://');
 }
 
 export function ForwardButton({
@@ -24,7 +28,9 @@ export function ForwardButton({
       variant={variant}
       size={size}
       nativeButton={false}
-      render={<Link href={href} />}
+      render={
+        isAbsoluteUrl(href) ? <a href={href} /> : <Link href={href as Route} />
+      }
       className={cn('group gap-1 overflow-hidden pr-1.5', className)}
     >
       {children}

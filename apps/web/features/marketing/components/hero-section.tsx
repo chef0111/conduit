@@ -12,6 +12,7 @@ import {
   fadeUpBlurVariants,
   fadeUpVariants,
 } from '@/features/marketing/lib/motion';
+import { getSignUpUrl } from '@/lib/env';
 
 import { HeroCircuitBackground } from './hero-circuit-background';
 import { SectionShell } from './section-shell';
@@ -89,9 +90,9 @@ export default function HeroSection() {
               <Button
                 nativeButton={false}
                 render={
-                  <Link href="/sign-up">
+                  <a href={getSignUpUrl()}>
                     <span className="text-nowrap">Get started</span>
-                  </Link>
+                  </a>
                 }
               />
               <Button

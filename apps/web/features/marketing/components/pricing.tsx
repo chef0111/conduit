@@ -3,13 +3,13 @@
 import { Button } from '@repo/ui/components/button';
 import { Check } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
-import Link from 'next/link';
 
 import {
   easeOut,
   staggerContainer,
   viewportOnce,
 } from '@/features/marketing/lib/motion';
+import { getSignUpUrl } from '@/lib/env';
 
 import { SectionShell } from './section-shell';
 
@@ -134,7 +134,7 @@ export default function Pricing() {
                   className="w-full"
                   variant={plan.variant}
                   nativeButton={false}
-                  render={<Link href="/sign-up">Get Started</Link>}
+                  render={<a href={getSignUpUrl()}>Get Started</a>}
                 />
               </div>
 

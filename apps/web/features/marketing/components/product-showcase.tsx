@@ -10,6 +10,7 @@ import {
   staggerItem,
   viewportOnce,
 } from '@/features/marketing/lib/motion';
+import { getSignUpUrl } from '@/lib/env';
 
 import { ForwardButton } from './forward-button';
 import { SectionShell } from './section-shell';
@@ -101,7 +102,7 @@ export default function ProductShowcase() {
         </motion.div>
 
         <div className="mt-12 flex justify-center">
-          <ForwardButton variant="ghost" href="/sign-up">
+          <ForwardButton variant="ghost" href={getSignUpUrl()}>
             Explore all surfaces
           </ForwardButton>
         </div>
