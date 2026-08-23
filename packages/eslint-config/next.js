@@ -29,6 +29,9 @@ export const nextJsConfig = [
         ...globals.browser,
       },
     },
+    settings: {
+      react: { version: '19.2.8' },
+    },
   },
   {
     plugins: {
@@ -44,9 +47,10 @@ export const nextJsConfig = [
     plugins: {
       'react-hooks': pluginReactHooks,
     },
-    settings: { react: { version: 'detect' } },
+    settings: { react: { version: '19.2.8' } },
     rules: {
-      ...pluginReactHooks.configs.recommended.rules,
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',

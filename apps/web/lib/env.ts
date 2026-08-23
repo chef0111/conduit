@@ -1,7 +1,7 @@
-export function getServerBaseUrl() {
-  return (
-    process.env.NEXT_PUBLIC_SERVER_URL ??
-    process.env.SERVER_URL ??
-    'https://api.conduit.localhost'
-  );
+export function getAppBaseUrl() {
+  return process.env.NEXT_PUBLIC_APP_URL!;
+}
+
+export function getSignUpUrl() {
+  return `${getAppBaseUrl()}/sign-up`;
 }

@@ -8,6 +8,7 @@ import { emailOTP } from 'better-auth/plugins';
 import { prisma } from '@/database/prisma.service';
 
 import { resend } from './resend';
+import { getTrustedOrigins } from './trusted-origins';
 import { PasswordSchema } from './validations';
 
 function requireEnv(name: string): string {
@@ -16,19 +17,6 @@ function requireEnv(name: string): string {
     throw new Error(`Missing required environment variable: ${name}`);
   }
   return value;
-}
-
-function getTrustedOrigins(): string[] {
-  const configured =
-    process.env.BETTER_AUTH_TRUSTED_ORIGIN ?? 'http://localhost:3000';
-  const origins = new Set([configured]);
-
-  if (process.env.NODE_ENV !== 'production') {
-    origins.add('http://localhost:3000');
-    origins.add('https://conduit.localhost');
-  }
-
-  return [...origins];
 }
 
 function getCookieAdvanced(baseURL: string) {

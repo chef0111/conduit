@@ -5,6 +5,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "start": "turbo run start",
+    "conduit": "turbo run conduit",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
     "typecheck": "turbo run typecheck",
@@ -14,8 +15,6 @@
     "db:push": "turbo run db:push",
     "db:migrate": "turbo run db:migrate",
     "db:migrate-deploy": "turbo run db:migrate-deploy",
-    "upgrade:next": "node ./scripts/upgrade-next.mjs",
-    "upgrade:nest": "pnpm --dir apps/server run upgrade:nest && pnpm install",
     "prepare": "husky"
   },
   "devDependencies": {

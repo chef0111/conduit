@@ -7,6 +7,8 @@
     "PORT",
     "SERVER_URL",
     "NEXT_PUBLIC_SERVER_URL",
+    "NEXT_PUBLIC_APP_URL",
+    "NEXT_PUBLIC_MARKETING_URL",
     "BETTER_AUTH_SECRET",
     "BETTER_AUTH_URL",
     "BETTER_AUTH_TRUSTED_ORIGIN",
@@ -58,6 +60,10 @@
       "persistent": true
     },
     "start": {
+      "cache": false,
+      "persistent": true
+    },
+    "conduit": {
       "cache": false,
       "persistent": true
     }

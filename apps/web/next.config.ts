@@ -9,9 +9,8 @@ const nextConfig: NextConfig = {
   experimental: {
     useTypeScriptCli: false,
     typedEnv: true,
-    authInterrupts: true,
     optimizeCss: true,
-    optimizePackageImports: ['lucide-react', '@tabler/icons-react'],
+    optimizePackageImports: ['@tabler/icons-react'],
   },
   images: {
     remotePatterns: [
@@ -42,7 +41,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  transpilePackages: ['@repo/contract'],
+  transpilePackages: ['@repo/ui'],
 };
 
 export default nextConfig;

@@ -44,7 +44,9 @@ yarn-error.log*
 .superpowers
 
 # Cursor
-.cursor
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
 
 # eslint
 .eslintcache

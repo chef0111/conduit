@@ -8,6 +8,7 @@ import { contract } from '@repo/contract';
 import swaggerUi from 'swagger-ui-express';
 
 import { AppModule } from './app.module';
+import { getTrustedOrigins } from './auth/trusted-origins';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -15,8 +16,7 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin:
-      process.env.BETTER_AUTH_TRUSTED_ORIGIN ?? 'https://conduit.localhost',
+    origin: getTrustedOrigins(),
     credentials: true,
   });
 

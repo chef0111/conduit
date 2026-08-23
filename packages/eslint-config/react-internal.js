@@ -15,8 +15,8 @@ export const config = [
   js.configs.recommended,
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
   {
+    ...pluginReact.configs.flat.recommended,
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
       globals: {
@@ -24,14 +24,18 @@ export const config = [
         ...globals.browser,
       },
     },
+    settings: {
+      react: { version: '19.2.8' },
+    },
   },
   {
     plugins: {
       'react-hooks': pluginReactHooks,
     },
-    settings: { react: { version: 'detect' } },
+    settings: { react: { version: '19.2.8' } },
     rules: {
-      ...pluginReactHooks.configs.recommended.rules,
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
       // React scope no longer necessary with new JSX transform.
       'react/react-in-jsx-scope': 'off',
     },
