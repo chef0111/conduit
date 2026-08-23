@@ -4,8 +4,8 @@ import { IconChevronLeft } from '@tabler/icons-react';
 import Image from 'next/image';
 import { Suspense } from 'react';
 
-import { getMarketingBaseUrl } from '@/lib/env';
 import { ThemeProvider } from '@/context/theme-provider';
+import { getMarketingBaseUrl } from '@/lib/env';
 
 export default function AuthLayout({
   children,
