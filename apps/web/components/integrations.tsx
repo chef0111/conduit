@@ -1,11 +1,11 @@
 'use client';
 
 import { CanvasRevealEffect } from '@repo/ui/components/canvas-reveal-effect';
-import { cn } from '@repo/ui/lib/utils';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { type ComponentType, type SVGProps, useState } from 'react';
 
 import { getSignUpUrl } from '@/lib/env';
+import { cn } from '@/lib/utils';
 
 import { ForwardButton } from './forward-button';
 import { SectionShell } from './section-shell';

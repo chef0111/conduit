@@ -1,17 +1,17 @@
 'use client';
 
+import { Brand } from '@repo/ui/components/brand';
 import { Button } from '@repo/ui/components/button';
-import { cn } from '@repo/ui/lib/utils';
 import { IconMenu2, IconX } from '@tabler/icons-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import React from 'react';
 
-import { Logo } from '@/components/logo';
-import { useHeaderTheme } from '@/features/marketing/hooks/use-header-theme';
-import { easeDrawer } from '@/features/marketing/lib/motion';
+import { useHeaderTheme } from '@/hooks/use-header-theme';
 import { getSignUpUrl } from '@/lib/env';
+import { easeDrawer } from '@/lib/motion';
+import { cn } from '@/lib/utils';
 
 const menuItems: { name: string; href: Route }[] = [
   { name: 'Product', href: '#product' as Route },
@@ -64,7 +64,7 @@ export default function SiteHeader() {
         <div className="relative flex flex-wrap items-center justify-between gap-3 p-2">
           <div className="flex w-full items-center justify-between md:w-auto">
             <Link href="/" aria-label="home" className="flex items-center pl-1">
-              <Logo className="origin-left scale-90" />
+              <Brand className="origin-left scale-90" />
             </Link>
 
             <Button

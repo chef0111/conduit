@@ -1,5 +1,5 @@
 export function getAppBaseUrl() {
-  return process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.conduit.localhost';
+  return process.env.NEXT_PUBLIC_APP_URL!;
 }
 
 export function getSignUpUrl() {

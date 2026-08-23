@@ -1,5 +1,6 @@
-import { cn } from '@repo/ui/lib/utils';
 import type { ComponentProps } from 'react';
+
+import { cn } from '@/lib/utils';
 
 export function Testimonial({ className, ...props }: ComponentProps<'figure'>) {
   return (

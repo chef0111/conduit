@@ -9,8 +9,8 @@ import { IconAt } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 
-import { SectionShell } from '@/features/marketing/components/section-shell';
-import { fadeUpVariants } from '@/features/marketing/lib/motion';
+import { SectionShell } from '@/components/section-shell';
+import { fadeUpVariants } from '@/lib/motion';
 
 import { ForwardButton } from './forward-button';
 

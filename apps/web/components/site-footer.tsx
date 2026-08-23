@@ -1,8 +1,8 @@
+import { Brand } from '@repo/ui/components/brand';
 import type { Route } from 'next';
 import Link from 'next/link';
 
-import { Logo } from '@/components/logo';
-import { SectionShell } from '@/features/marketing/components/section-shell';
+import { SectionShell } from '@/components/section-shell';
 import { getSignUpUrl } from '@/lib/env';
 
 type FooterLink = { href: string; label: string };
@@ -77,7 +77,7 @@ export default function SiteFooter() {
       <div className="mx-auto grid w-full max-w-6xl space-y-16 px-16 pt-20 pb-16 lg:grid-cols-3 lg:gap-8">
         <div className="flex flex-col gap-4 md:gap-2">
           <Link href="/" aria-label="go home">
-            <Logo />
+            <Brand />
           </Link>
           <span className="text-muted-foreground text-sm">
             Manage your team&apos;s work in one place.

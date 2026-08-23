@@ -1,9 +1,9 @@
+import { Brand } from '@repo/ui/components/brand';
 import { Button } from '@repo/ui/components/button';
 import { IconChevronLeft } from '@tabler/icons-react';
 import Image from 'next/image';
 import { Suspense } from 'react';
 
-import { Logo } from '@/components/logo';
 import { ForcedThemeProvider } from '@/context/forced-theme-provider';
 import { getMarketingBaseUrl } from '@/lib/env';
 
@@ -37,7 +37,7 @@ export default function AuthLayout({
 
           {/* Top Header */}
           <div className="relative z-10 flex items-center justify-between">
-            <Logo textClassName="text-white" />
+            <Brand textClassName="text-white" />
 
             <Button
               variant="ghost"

@@ -3,11 +3,7 @@
 import { IconRosetteDiscountCheck } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 
-import {
-  staggerContainer,
-  staggerItem,
-  viewportOnce,
-} from '@/features/marketing/lib/motion';
+import { staggerContainer, staggerItem, viewportOnce } from '@/lib/motion';
 
 import { SectionShell } from '../section-shell';
 import {

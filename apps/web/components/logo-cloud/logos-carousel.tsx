@@ -1,6 +1,5 @@
 'use client';
 
-import { cn } from '@repo/ui/lib/utils';
 import type { Transition } from 'motion/react';
 import {
   AnimatePresence,
@@ -17,6 +16,8 @@ import {
   useRef,
   useState,
 } from 'react';
+
+import { cn } from '@/lib/utils';
 
 const DEFAULT_COLUMN_COUNT = 4;
 

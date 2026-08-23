@@ -4,13 +4,13 @@ import { IconHash, IconMessageCircle, IconUsers } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 
+import { getSignUpUrl } from '@/lib/env';
 import {
   easeOut,
   staggerContainer,
   staggerItem,
   viewportOnce,
-} from '@/features/marketing/lib/motion';
-import { getSignUpUrl } from '@/lib/env';
+} from '@/lib/motion';
 
 import { ForwardButton } from './forward-button';
 import { SectionShell } from './section-shell';

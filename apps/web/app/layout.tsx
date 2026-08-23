@@ -1,9 +1,10 @@
 import './globals.css';
 
-import { cn } from '@repo/ui/lib/utils';
 import type { Metadata } from 'next';
 
 import { fontVariables } from '@/config/font';
+import { ThemeProvider } from '@/context/theme-provider';
+import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Conduit',
@@ -23,7 +24,16 @@ export default function RootLayout({
       style={{ colorScheme: 'light' }}
       suppressHydrationWarning
     >
-      <body>{children}</body>
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          forcedTheme="dark"
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

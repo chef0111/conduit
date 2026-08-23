@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import type { SectionTheme } from '@/features/marketing/components/section-shell';
+import type { SectionTheme } from '@/components/section-shell';
 
 /**
  * Sample Y for the light ↔ dark transition.

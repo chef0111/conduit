@@ -4,13 +4,13 @@ import { IconBell, IconSparkles, IconWifi } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 
-import { SectionShell } from '@/features/marketing/components/section-shell';
+import { SectionShell } from '@/components/section-shell';
 import {
   easeOut,
   staggerContainer,
   staggerItem,
   viewportOnce,
-} from '@/features/marketing/lib/motion';
+} from '@/lib/motion';
 
 const realtimePoints = [
   {

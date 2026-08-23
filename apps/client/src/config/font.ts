@@ -1,7 +1,8 @@
-import { cn } from '@repo/ui/lib/utils';
 import { GeistMono } from 'geist/font/mono';
 import { GeistPixelSquare } from 'geist/font/pixel';
 import { GeistSans } from 'geist/font/sans';
+
+import { cn } from '@/lib/utils';
 
 const fontSans = GeistSans;
 const fontMono = GeistMono;

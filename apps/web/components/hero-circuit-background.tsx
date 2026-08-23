@@ -1,5 +1,6 @@
-import { cn } from '@repo/ui/lib/utils';
 import Image from 'next/image';
+
+import { cn } from '@/lib/utils';
 
 export function HeroCircuitBackground({ className }: { className?: string }) {
   return (

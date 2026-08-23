@@ -4,12 +4,8 @@ import { Button } from '@repo/ui/components/button';
 import { Check } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 
-import {
-  easeOut,
-  staggerContainer,
-  viewportOnce,
-} from '@/features/marketing/lib/motion';
 import { getSignUpUrl } from '@/lib/env';
+import { easeOut, staggerContainer, viewportOnce } from '@/lib/motion';
 
 import { SectionShell } from './section-shell';
 

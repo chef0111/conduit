@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 
-import CallToAction from '@/features/marketing/components/call-to-action';
-import { FeatureBands } from '@/features/marketing/components/feature-bands';
-import HeroSection from '@/features/marketing/components/hero-section';
-import Integrations from '@/features/marketing/components/integrations';
-import LogoCloud from '@/features/marketing/components/logo-cloud';
-import Pricing from '@/features/marketing/components/pricing';
-import ProductShowcase from '@/features/marketing/components/product-showcase';
-import Testimonials from '@/features/marketing/components/testimonials';
+import CallToAction from '@/components/call-to-action';
+import { FeatureBands } from '@/components/feature-bands';
+import HeroSection from '@/components/hero-section';
+import Integrations from '@/components/integrations';
+import LogoCloud from '@/components/logo-cloud';
+import Pricing from '@/components/pricing';
+import ProductShowcase from '@/components/product-showcase';
+import Testimonials from '@/components/testimonials';
 
 export const metadata: Metadata = {
   alternates: {

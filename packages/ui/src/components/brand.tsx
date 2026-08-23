@@ -1,15 +1,15 @@
 import { cn } from '@repo/ui/lib/utils';
 
-export const Logo = ({
+function Brand({
   className,
   textClassName,
 }: {
   className?: string;
   textClassName?: string;
-}) => {
+}) {
   return (
     <span className={cn('inline-flex items-center gap-2', className)}>
-      <LogoIcon />
+      <BrandIcon />
       <span
         className={cn(
           'text-foreground text-2xl leading-none font-semibold tracking-tight',
@@ -20,9 +20,9 @@ export const Logo = ({
       </span>
     </span>
   );
-};
+}
 
-export const LogoIcon = ({ className }: { className?: string }) => {
+function BrandIcon({ className }: { className?: string }) {
   return (
     <svg
       className={cn('text-foreground relative size-8', className)}
@@ -88,4 +88,6 @@ export const LogoIcon = ({ className }: { className?: string }) => {
       </svg>
     </svg>
   );
-};
+}
+
+export { Brand, BrandIcon };
