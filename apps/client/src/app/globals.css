@@ -1,1 +1,2 @@
 @import '@repo/ui/globals.css';
+@import '../features/auth/styles/transition.css';
