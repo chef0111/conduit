@@ -1,12 +1,12 @@
 'use client';
 
 import { ProgressProvider } from '@bprogress/next/app';
+import { Toaster } from '@repo/ui/components/sonner';
+import { TooltipProvider } from '@repo/ui/components/tooltip';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { type ReactNode, useState } from 'react';
 
-import { Toaster } from '@/components/ui/sonner';
-import { TooltipProvider } from '@/components/ui/tooltip';
 import { AuthProvider } from '@/context/auth-provider';
 import { ThemeProvider } from '@/context/theme-provider';
 import { createQueryClient } from '@/lib/query/client';

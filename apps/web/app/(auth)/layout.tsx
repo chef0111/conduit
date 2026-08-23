@@ -1,10 +1,10 @@
+import { Button } from '@repo/ui/components/button';
 import { IconChevronLeft } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
 import { Logo } from '@/components/logo';
-import { Button } from '@/components/ui/button';
 import { ForcedThemeProvider } from '@/context/forced-theme-provider';
 
 export default function AuthLayout({

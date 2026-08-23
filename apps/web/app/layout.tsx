@@ -1,10 +1,10 @@
 import './globals.css';
 
+import { cn } from '@repo/ui/lib/utils';
 import type { Metadata } from 'next';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 import { fontVariables } from '@/config/font';
-import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
 

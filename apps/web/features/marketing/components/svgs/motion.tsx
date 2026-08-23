@@ -1,6 +1,5 @@
+import { cn } from '@repo/ui/lib/utils';
 import type { SVGProps } from 'react';
-
-import { cn } from '@/lib/utils';
 
 type LogoProps = {
   className?: string;

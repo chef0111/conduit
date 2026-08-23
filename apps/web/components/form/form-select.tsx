@@ -1,11 +1,10 @@
-import type { ReactNode } from 'react';
-
 import {
   Select,
   SelectContent,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@repo/ui/components/select';
+import type { ReactNode } from 'react';
 
 import type { FormControlFn } from './form-base';
 import { FormBase } from './form-base';

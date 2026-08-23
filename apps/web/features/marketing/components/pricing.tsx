@@ -1,10 +1,10 @@
 'use client';
 
+import { Button } from '@repo/ui/components/button';
 import { Check } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
 import {
   easeOut,
   staggerContainer,

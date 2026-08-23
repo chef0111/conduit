@@ -1,11 +1,11 @@
 'use client';
 
+import { Button } from '@repo/ui/components/button';
+import { cn } from '@repo/ui/lib/utils';
 import { useTheme } from 'next-themes';
 import { useCallback } from 'react';
 
 import { MoonIcon, SunIcon } from '@/components/icons';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
 interface ThemeToggleProps {
   variant?: 'outline' | 'ghost';

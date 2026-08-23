@@ -1,8 +1,9 @@
 'use client';
 
+import { Button } from '@repo/ui/components/button';
+import { Spinner } from '@repo/ui/components/spinner';
+
 import { GitHubIcon, GoogleIcon } from '@/components/icons';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
 
 import { useOAuth } from '../context/oauth-provider';
 import type { OAuthProvider } from '../types/auth';

@@ -1,7 +1,6 @@
+import { Badge } from '@repo/ui/components/badge';
+import { cn } from '@repo/ui/lib/utils';
 import type { ComponentProps, HTMLAttributes } from 'react';
-
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
 
 export type StatusProps = ComponentProps<typeof Badge> & {
   status: 'online' | 'offline' | 'maintenance' | 'degraded';

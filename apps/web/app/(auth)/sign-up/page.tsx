@@ -1,8 +1,8 @@
 'use client';
 
+import { FieldSeparator } from '@repo/ui/components/field';
 import { useSearchParams } from 'next/navigation';
 
-import { FieldSeparator } from '@/components/ui/field';
 import { AuthActionLink } from '@/features/auth/components/auth-action-link';
 import { DirectionalTransition } from '@/features/auth/components/directional-transition';
 import { OAuthForm } from '@/features/auth/components/oauth-form';

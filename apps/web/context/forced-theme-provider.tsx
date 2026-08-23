@@ -1,8 +1,7 @@
 'use client';
 
+import { Toaster } from '@repo/ui/components/sonner';
 import { type ReactNode, useLayoutEffect } from 'react';
-
-import { Toaster } from '@/components/ui/sonner';
 
 export type ForcedTheme = 'light' | 'dark';
 

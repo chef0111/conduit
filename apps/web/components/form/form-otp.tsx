@@ -1,15 +1,15 @@
 'use client';
 
-import { REGEXP_ONLY_DIGITS } from 'input-otp';
-import type { ReactNode } from 'react';
-import { Activity } from 'react';
-
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from '@/components/ui/input-otp';
+} from '@repo/ui/components/input-otp';
+import { REGEXP_ONLY_DIGITS } from 'input-otp';
+import type { ReactNode } from 'react';
+import { Activity } from 'react';
+
 import { useMediaQuery } from '@/hooks/use-media-query';
 
 import type { FormControlFn } from './form-base';

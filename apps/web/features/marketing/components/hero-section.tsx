@@ -1,12 +1,12 @@
 'use client';
 
+import { Button } from '@repo/ui/components/button';
+import { Status, StatusIndicator } from '@repo/ui/components/status';
 import { IconArrowRight } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
-import { Status, StatusIndicator } from '@/components/ui/status';
 import {
   easeOut,
   fadeUpBlurVariants,

@@ -38,6 +38,8 @@
     "@types/three": "^0.185.4",
     "@typescript/native": "npm:typescript@^7.0.2",
     "eslint": "^9.39.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
     "tailwindcss": "^4.3.3",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   }

@@ -1,10 +1,10 @@
+import { cn } from '@repo/ui/lib/utils';
 import type { HTMLAttributes, ReactNode } from 'react';
 
 import {
   type CutoutOrientation,
   SectionCutout,
 } from '@/features/marketing/components/section-shell/section-cutout';
-import { cn } from '@/lib/utils';
 
 export type SectionTheme = 'light' | 'dark';
 

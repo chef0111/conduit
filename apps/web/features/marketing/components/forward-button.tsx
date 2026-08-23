@@ -1,9 +1,8 @@
+import { Button } from '@repo/ui/components/button';
+import { cn } from '@repo/ui/lib/utils';
 import { IconChevronRight } from '@tabler/icons-react';
 import type { Route } from 'next';
 import Link from 'next/link';
-
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
 interface ForwardButtonProps {
   href: Route;

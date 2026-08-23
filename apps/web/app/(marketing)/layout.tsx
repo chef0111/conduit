@@ -1,7 +1,8 @@
+import { cn } from '@repo/ui/lib/utils';
+
 import { ForcedThemeProvider } from '@/context/forced-theme-provider';
 import SiteFooter from '@/features/marketing/components/site-footer';
 import SiteHeader from '@/features/marketing/components/site-header';
-import { cn } from '@/lib/utils';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (

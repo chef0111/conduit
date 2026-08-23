@@ -1,8 +1,7 @@
 'use client';
 
+import { cn } from '@repo/ui/lib/utils';
 import { type ComponentPropsWithoutRef, type ReactNode, useRef } from 'react';
-
-import { cn } from '@/lib/utils';
 
 export type TestimonialSpotlightProps = Omit<
   ComponentPropsWithoutRef<'div'>,

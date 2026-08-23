@@ -1,12 +1,11 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupTextarea,
-} from '@/components/ui/input-group';
-import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
+} from '@repo/ui/components/input-group';
+import { Textarea } from '@repo/ui/components/textarea';
+import { cn } from '@repo/ui/lib/utils';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 import type { FormControlFn } from './form-base';
 import { FormBase } from './form-base';

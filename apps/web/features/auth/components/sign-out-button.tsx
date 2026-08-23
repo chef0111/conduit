@@ -1,12 +1,12 @@
 'use client';
 
+import { Button } from '@repo/ui/components/button';
 import { IconLogout } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { Button } from '@/components/ui/button';
 import { authClient } from '@/services/auth/client';
 
 export function SignOutButton() {

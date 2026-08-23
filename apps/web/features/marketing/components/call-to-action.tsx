@@ -1,14 +1,14 @@
 'use client';
 
-import { IconAt } from '@tabler/icons-react';
-import { motion, useReducedMotion } from 'motion/react';
-import Image from 'next/image';
-
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from '@/components/ui/input-group';
+} from '@repo/ui/components/input-group';
+import { IconAt } from '@tabler/icons-react';
+import { motion, useReducedMotion } from 'motion/react';
+import Image from 'next/image';
+
 import { SectionShell } from '@/features/marketing/components/section-shell';
 import { fadeUpVariants } from '@/features/marketing/lib/motion';
 

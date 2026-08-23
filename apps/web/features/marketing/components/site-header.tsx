@@ -1,5 +1,7 @@
 'use client';
 
+import { Button } from '@repo/ui/components/button';
+import { cn } from '@repo/ui/lib/utils';
 import { IconMenu2, IconX } from '@tabler/icons-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import type { Route } from 'next';
@@ -7,10 +9,8 @@ import Link from 'next/link';
 import React from 'react';
 
 import { Logo } from '@/components/logo';
-import { Button } from '@/components/ui/button';
 import { useHeaderTheme } from '@/features/marketing/hooks/use-header-theme';
 import { easeDrawer } from '@/features/marketing/lib/motion';
-import { cn } from '@/lib/utils';
 
 const menuItems: { name: string; href: Route }[] = [
   { name: 'Product', href: '#product' as Route },

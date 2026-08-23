@@ -1,17 +1,16 @@
 'use client';
 
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
-import { IconCheck, IconChevronDown, IconX } from '@tabler/icons-react';
-import * as React from 'react';
-
-import { Button } from '@/components/ui/button';
+import { Button } from '@repo/ui/components/button';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from '@/components/ui/input-group';
-import { cn } from '@/lib/utils';
+} from '@repo/ui/components/input-group';
+import { cn } from '@repo/ui/lib/utils';
+import { IconCheck, IconChevronDown, IconX } from '@tabler/icons-react';
+import * as React from 'react';
 
 const Combobox = ComboboxPrimitive.Root;
 

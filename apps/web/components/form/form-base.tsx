@@ -1,13 +1,12 @@
-import type { ReactNode } from 'react';
-import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
-
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldLabel,
-} from '@/components/ui/field';
+} from '@repo/ui/components/field';
+import type { ReactNode } from 'react';
+import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 export type FormControlProps<
   TFieldValues extends FieldValues = FieldValues,
