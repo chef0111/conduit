@@ -1,0 +1,20 @@
+---
+description: Subagent type, grok 4.6 model
+alwaysApply: true
+---
+
+# Subagents
+
+Use `Task` with `subagent_type: "poteto-agent"` only. Do not use `explore`, `generalPurpose`, or `plan`.
+
+Model is the grok 4.6 family. Today that slug is `cursor-grok-4.6-xhigh`. Resume an existing poteto-agent. Do not spawn a sibling for the same thread.
+
+```
+# BAD
+Task(subagent_type="explore", model="fast")
+
+# GOOD
+Task(subagent_type="poteto-agent", model="cursor-grok-4.6-xhigh", prompt="...")
+```
+
+Pass file pointers in the prompt. Do not dump whole files. The parent reviews the diff.

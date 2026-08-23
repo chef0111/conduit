@@ -1,0 +1,20 @@
+---
+description: Coarse commit slices
+alwaysApply: true
+---
+
+# Commits
+
+Commit a verifiable slice. Product move. Marketing strip. This rule file with its first slice.
+
+Do not commit a rename-only, delete-only, or formatting-only diff. Fold those into the slice they belong to.
+
+```
+# BAD
+git commit -m "rename dashboard page"
+
+# GOOD
+feat(client): move product app off web
+```
+
+Conventional Commits. Body lines at most 100 characters. Run `/deslop` before commit. Do not push unless asked.
