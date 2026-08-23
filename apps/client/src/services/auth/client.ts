@@ -7,6 +7,7 @@ export function createAppAuthClient(baseURL?: string) {
       baseURL ??
       process.env.NEXT_PUBLIC_SERVER_URL ??
       'https://api.conduit.localhost',
+    basePath: '/auth',
     fetchOptions: {
       credentials: 'include',
     },

@@ -60,6 +60,7 @@ export const auth = betterAuth({
   }),
   secret: requireEnv('BETTER_AUTH_SECRET'),
   baseURL,
+  basePath: '/auth',
   trustedOrigins: getTrustedOrigins(),
   emailAndPassword: {
     enabled: true,
