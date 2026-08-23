@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     useTypeScriptCli: false,
     typedEnv: true,
     optimizeCss: true,
-    optimizePackageImports: ['lucide-react', '@tabler/icons-react'],
+    optimizePackageImports: ['@tabler/icons-react'],
   },
   images: {
     remotePatterns: [

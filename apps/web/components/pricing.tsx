@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@repo/ui/components/button';
-import { Check } from 'lucide-react';
+import { IconCheck } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 
 import { getSignUpUrl } from '@/lib/env';
@@ -137,7 +137,7 @@ export default function Pricing() {
               <ul className="text-muted-foreground list-outside space-y-3 text-sm">
                 {plan.features.map((item) => (
                   <li key={item} className="flex items-center gap-3">
-                    <Check className="text-foreground size-3.5 shrink-0" />
+                    <IconCheck className="text-foreground size-3.5 shrink-0" />
                     {item}
                   </li>
                 ))}
