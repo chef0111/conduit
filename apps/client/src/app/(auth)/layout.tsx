@@ -4,8 +4,8 @@ import { IconChevronLeft } from '@tabler/icons-react';
 import Image from 'next/image';
 import { Suspense } from 'react';
 
-import { ForcedThemeProvider } from '@/context/forced-theme-provider';
 import { getMarketingBaseUrl } from '@/lib/env';
+import { ThemeProvider } from '@/context/theme-provider';
 
 export default function AuthLayout({
   children,
@@ -13,7 +13,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ForcedThemeProvider theme="light">
+    <ThemeProvider forcedTheme="light">
       <main
         data-surface="light"
         className="bg-background text-foreground flex min-h-screen w-full flex-col font-sans lg:flex-row"
@@ -66,6 +66,6 @@ export default function AuthLayout({
 
         <Suspense>{children}</Suspense>
       </main>
-    </ForcedThemeProvider>
+    </ThemeProvider>
   );
 }
