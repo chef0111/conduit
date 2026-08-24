@@ -2,9 +2,7 @@
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/components/alert';
-import { Button } from '@repo/ui/components/button';
 import { FieldGroup } from '@repo/ui/components/field';
-import { Spinner } from '@repo/ui/components/spinner';
 import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
@@ -14,7 +12,9 @@ import type { z } from 'zod';
 
 import { FormCheckbox } from '@/components/form/form-checkbox';
 import { FormInput } from '@/components/form/form-input';
+import { type ButtonStatus, StatusButton } from '@/components/status-button';
 import { withCallbackURL } from '@/features/auth/lib/callback-url';
+import { verifyEmailPath } from '@/features/auth/lib/email-otp-type';
 import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
 import { SignUpSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
@@ -28,6 +28,7 @@ type SignUpFormProps = {
 
 export function SignUpForm({ callbackURL, isOAuthPending }: SignUpFormProps) {
   const router = useRouter();
+  const [status, setStatus] = useState<ButtonStatus>('idle');
   const [error, setError] = useState<string | null>(null);
 
   const { control, handleSubmit, formState, reset } = useForm<SignUpFormValues>(
@@ -46,6 +47,7 @@ export function SignUpForm({ callbackURL, isOAuthPending }: SignUpFormProps) {
   const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     const succeeded = await handleSubmit(async (values) => {
       setError(null);
+      setStatus('loading');
 
       const response = await authClient.signUp.email({
         name: values.name,
@@ -54,10 +56,14 @@ export function SignUpForm({ callbackURL, isOAuthPending }: SignUpFormProps) {
       });
 
       if (response?.data?.user) {
+        setStatus('success');
         navigateWithTransition({
           router,
           href: withCallbackURL(
-            `/verify-email?email=${encodeURIComponent(values.email)}`,
+            verifyEmailPath({
+              email: values.email,
+              type: 'email-verification',
+            }),
             callbackURL
           ) as Route,
           type: 'nav-forward',
@@ -66,6 +72,7 @@ export function SignUpForm({ callbackURL, isOAuthPending }: SignUpFormProps) {
       }
 
       setError(response?.error?.message || 'Something went wrong.');
+      setStatus('idle');
       return false;
     })(event);
 
@@ -126,12 +133,17 @@ export function SignUpForm({ callbackURL, isOAuthPending }: SignUpFormProps) {
         </Alert>
       )}
 
-      <Button type="submit" size="lg" className="w-full" disabled={isDisabled}>
-        {formState.isSubmitting && (
-          <Spinner className="text-zinc-100" data-icon="inline-start" />
-        )}
+      <StatusButton
+        type="submit"
+        status={status}
+        onStatusChange={setStatus}
+        size="lg"
+        className="w-full"
+        disabled={isDisabled}
+        successLabel="Account created"
+      >
         Create account
-      </Button>
+      </StatusButton>
     </form>
   );
 }

@@ -4,11 +4,10 @@ import { CanvasRevealEffect } from '@repo/ui/components/canvas-reveal-effect';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { type ComponentType, type SVGProps, useState } from 'react';
 
-import { getSignUpUrl } from '@/lib/env';
+import { getSignInUrl } from '@/lib/env';
 import { cn } from '@/lib/utils';
 
 import { ForwardButton } from './forward-button';
-import { SectionShell } from './section-shell';
 import {
   ArcjetMark,
   ClaudeMark,
@@ -16,7 +15,8 @@ import {
   NeonMark,
   PrismaMark,
   Vercel,
-} from './svgs';
+} from './icons';
+import { SectionShell } from './section-shell';
 
 type Framework = {
   name: string;
@@ -88,7 +88,7 @@ export default function Integrations() {
             Conduit keeps developer experience front-and-center with a stack
             that fits modern web and AI workflows.
           </p>
-          <ForwardButton variant="ghost" href={getSignUpUrl()} className="mt-6">
+          <ForwardButton variant="ghost" href={getSignInUrl()} className="mt-6">
             All integrations
           </ForwardButton>
         </div>

@@ -7,11 +7,10 @@ import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { getSignUpUrl } from '@/lib/env';
+import { HeroCircuitBackground } from '@/components/hero-circuit-background';
+import { SectionShell } from '@/components/section-shell';
+import { getSignInUrl } from '@/lib/env';
 import { easeOut, fadeUpBlurVariants, fadeUpVariants } from '@/lib/motion';
-
-import { HeroCircuitBackground } from './hero-circuit-background';
-import { SectionShell } from './section-shell';
 
 export default function HeroSection() {
   const reduced = useReducedMotion() ?? false;
@@ -86,7 +85,7 @@ export default function HeroSection() {
               <Button
                 nativeButton={false}
                 render={
-                  <a href={getSignUpUrl()}>
+                  <a href={getSignInUrl()}>
                     <span className="text-nowrap">Get started</span>
                   </a>
                 }

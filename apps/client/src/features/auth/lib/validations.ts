@@ -47,7 +47,6 @@ export const ForgotPasswordSchema = z.object({
 export const ResetPasswordSchema = z
   .object({
     email: z.email('Email is required'),
-    otp: z.string().length(6),
     password: PasswordSchema,
     confirmPassword: z.string().min(1, 'You must confirm your password'),
   })

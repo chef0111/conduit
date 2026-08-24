@@ -12,23 +12,22 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@repo/ui/components/alert-dialog';
-import { Button } from '@repo/ui/components/button';
 import { FieldGroup } from '@repo/ui/components/field';
-import { Spinner } from '@repo/ui/components/spinner';
 import { IconAlertCircle } from '@tabler/icons-react';
 import type { ErrorContext } from 'better-auth/react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { type SyntheticEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import type { z } from 'zod';
 
 import { FormInput } from '@/components/form/form-input';
+import { type ButtonStatus, StatusButton } from '@/components/status-button';
 import {
   isSafeInternalPath,
   withCallbackURL,
 } from '@/features/auth/lib/callback-url';
+import { verifyEmailPath } from '@/features/auth/lib/email-otp-type';
 import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
 import { SignInSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
@@ -53,6 +52,7 @@ function isUnverifiedEmailError(error: SignInError) {
 
 export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
   const router = useRouter();
+  const [status, setStatus] = useState<ButtonStatus>('idle');
   const [error, setError] = useState<string | null>(null);
   const [openUnverifiedDialog, setOpenUnverifiedDialog] = useState(false);
   const [unverifiedEmail, setUnverifiedEmail] = useState('');
@@ -70,6 +70,7 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
   const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     const succeeded = await handleSubmit(async (values) => {
       setError(null);
+      setStatus('loading');
 
       const response = await authClient.signIn.email(
         {
@@ -88,10 +89,7 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
       );
 
       if (response?.data?.user) {
-        toast.success('Success', {
-          description: 'Signed in successfully',
-        });
-
+        setStatus('success');
         router.push(
           (isSafeInternalPath(callbackURL) ? callbackURL : '/') as Route
         );
@@ -100,6 +98,7 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
       }
 
       setError(response?.error?.message || 'Something went wrong.');
+      setStatus('idle');
       return false;
     })(event);
 
@@ -154,17 +153,17 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
           </Alert>
         )}
 
-        <Button
+        <StatusButton
           type="submit"
+          status={status}
+          onStatusChange={setStatus}
           size="lg"
           className="w-full"
           disabled={isOAuthPending || formState.isSubmitting}
+          successLabel="Signed in"
         >
-          {formState.isSubmitting && (
-            <Spinner className="text-zinc-100" data-icon="inline-start" />
-          )}
           Sign in
-        </Button>
+        </StatusButton>
       </form>
 
       <AlertDialog
@@ -187,7 +186,10 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
                 navigateWithTransition({
                   router,
                   href: withCallbackURL(
-                    `/verify-email?email=${encodeURIComponent(unverifiedEmail)}`,
+                    verifyEmailPath({
+                      email: unverifiedEmail,
+                      type: 'email-verification',
+                    }),
                     callbackURL
                   ) as Route,
                   type: 'nav-forward',

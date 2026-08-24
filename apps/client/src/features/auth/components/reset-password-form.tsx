@@ -2,21 +2,23 @@
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/components/alert';
-import { Button } from '@repo/ui/components/button';
 import { FieldGroup } from '@repo/ui/components/field';
-import { Spinner } from '@repo/ui/components/spinner';
 import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
-import { type SyntheticEvent, useState } from 'react';
+import { type SyntheticEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import type { z } from 'zod';
 
 import { FormInput } from '@/components/form/form-input';
-import { FormInputOTP } from '@/components/form/form-otp';
+import { type ButtonStatus, StatusButton } from '@/components/status-button';
 import { withCallbackURL } from '@/features/auth/lib/callback-url';
+import { verifyEmailPath } from '@/features/auth/lib/email-otp-type';
 import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
+import {
+  clearResetPasswordOtp,
+  readResetPasswordOtp,
+} from '@/features/auth/lib/reset-password-otp';
 import { ResetPasswordSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
 
@@ -27,41 +29,75 @@ type ResetPasswordFormProps = {
   callbackURL: string | null;
 };
 
+function forgetPasswordVerifyHref(
+  email: string,
+  callbackURL: string | null
+): Route {
+  return withCallbackURL(
+    verifyEmailPath({ email, type: 'forget-password' }),
+    callbackURL
+  ) as Route;
+}
+
 export function ResetPasswordForm({
   emailFromQuery,
   callbackURL,
 }: ResetPasswordFormProps) {
   const router = useRouter();
+  const [status, setStatus] = useState<ButtonStatus>('idle');
   const [error, setError] = useState<string | null>(null);
   const parsedEmailFromQuery =
     ResetPasswordSchema.shape.email.safeParse(emailFromQuery);
   const validEmailFromQuery = parsedEmailFromQuery.success
     ? parsedEmailFromQuery.data
     : null;
+  const [canReset, setCanReset] = useState(!validEmailFromQuery);
 
   const { control, handleSubmit, formState, reset } =
     useForm<ResetPasswordFormValues>({
       resolver: standardSchemaResolver(ResetPasswordSchema),
       defaultValues: {
         email: validEmailFromQuery ?? '',
-        otp: '',
         password: '',
         confirmPassword: '',
       },
     });
 
+  useEffect(() => {
+    if (!validEmailFromQuery) {
+      setCanReset(true);
+      return;
+    }
+
+    if (readResetPasswordOtp(validEmailFromQuery) !== null) {
+      setCanReset(true);
+      return;
+    }
+
+    router.replace(forgetPasswordVerifyHref(validEmailFromQuery, callbackURL));
+  }, [callbackURL, router, validEmailFromQuery]);
+
   const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     const succeeded = await handleSubmit(async (values) => {
       setError(null);
+      setStatus('loading');
+
+      const otp = readResetPasswordOtp(values.email);
+      if (!otp) {
+        setStatus('idle');
+        router.replace(forgetPasswordVerifyHref(values.email, callbackURL));
+        return false;
+      }
 
       const response = await authClient.emailOtp.resetPassword({
         email: values.email,
-        otp: values.otp,
+        otp,
         password: values.password,
       });
 
       if (response?.data) {
-        toast.success('Password updated. Sign in with your new password.');
+        clearResetPasswordOtp();
+        setStatus('success');
         navigateWithTransition({
           router,
           href: withCallbackURL('/sign-in', callbackURL) as Route,
@@ -71,6 +107,7 @@ export function ResetPasswordForm({
       }
 
       setError(response?.error?.message || 'Something went wrong');
+      setStatus('idle');
       return false;
     })(event);
 
@@ -79,10 +116,14 @@ export function ResetPasswordForm({
     }
   };
 
+  if (!canReset) {
+    return null;
+  }
+
   return (
     <form className="flex flex-col gap-5" onSubmit={onSubmit}>
       <FieldGroup>
-        {!validEmailFromQuery ? (
+        {!validEmailFromQuery && (
           <FormInput
             control={control}
             name="email"
@@ -91,13 +132,7 @@ export function ResetPasswordForm({
             label="Email"
             placeholder="example@conduit.com"
           />
-        ) : null}
-        <FormInputOTP
-          control={control}
-          name="otp"
-          label="Reset code"
-          description="Enter the 6-digit code sent to your email."
-        />
+        )}
         <FormInput
           control={control}
           name="password"
@@ -127,17 +162,17 @@ export function ResetPasswordForm({
         </Alert>
       )}
 
-      <Button
+      <StatusButton
         type="submit"
+        status={status}
+        onStatusChange={setStatus}
         size="lg"
         className="w-full"
         disabled={formState.isSubmitting}
+        successLabel="Password updated"
       >
-        {formState.isSubmitting && (
-          <Spinner className="text-zinc-100" data-icon="inline-start" />
-        )}
         Reset password
-      </Button>
+      </StatusButton>
     </form>
   );
 }

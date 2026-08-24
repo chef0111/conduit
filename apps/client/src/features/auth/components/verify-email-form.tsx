@@ -2,43 +2,54 @@
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/components/alert';
-import { Button } from '@repo/ui/components/button';
 import { FieldGroup } from '@repo/ui/components/field';
-import { Spinner } from '@repo/ui/components/spinner';
 import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { type SyntheticEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import type { z } from 'zod';
 
 import { FormInput } from '@/components/form/form-input';
 import { FormInputOTP } from '@/components/form/form-otp';
-import { isSafeInternalPath } from '@/features/auth/lib/callback-url';
+import { type ButtonStatus, StatusButton } from '@/components/status-button';
+import {
+  isSafeInternalPath,
+  withCallbackURL,
+} from '@/features/auth/lib/callback-url';
+import {
+  emailOtpCopyFor,
+  type EmailOtpType,
+} from '@/features/auth/lib/email-otp-type';
+import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
+import { stashResetPasswordOtp } from '@/features/auth/lib/reset-password-otp';
 import { EmailOtpSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
 
 type VerifyEmailFormValues = z.infer<typeof EmailOtpSchema>;
 
 type VerifyEmailFormProps = {
+  type: EmailOtpType;
   emailFromQuery: string | null;
   callbackURL: string | null;
 };
 
 export function VerifyEmailForm({
+  type: emailType,
   emailFromQuery,
   callbackURL,
 }: VerifyEmailFormProps) {
   const router = useRouter();
+  const [status, setStatus] = useState<ButtonStatus>('idle');
+  const [resendStatus, setResendStatus] = useState<ButtonStatus>('idle');
   const [error, setError] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(0);
-  const [isResending, setIsResending] = useState(false);
   const parsedEmailFromQuery =
     EmailOtpSchema.shape.email.safeParse(emailFromQuery);
   const validEmailFromQuery = parsedEmailFromQuery.success
     ? parsedEmailFromQuery.data
     : null;
+  const copy = emailOtpCopyFor(emailType);
 
   const { control, handleSubmit, getValues, formState, reset } =
     useForm<VerifyEmailFormValues>({
@@ -64,22 +75,59 @@ export function VerifyEmailForm({
   const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     const succeeded = await handleSubmit(async (values) => {
       setError(null);
+      setStatus('loading');
 
-      const response = await authClient.emailOtp.verifyEmail({
-        email: values.email,
-        otp: values.otp,
-      });
+      switch (emailType) {
+        case 'email-verification': {
+          const response = await authClient.emailOtp.verifyEmail({
+            email: values.email,
+            otp: values.otp,
+          });
 
-      if (response?.data) {
-        router.push(
-          (isSafeInternalPath(callbackURL) ? callbackURL : '/') as Route
-        );
-        router.refresh();
-        return true;
+          if (response?.data) {
+            setStatus('success');
+            router.push(
+              (isSafeInternalPath(callbackURL) ? callbackURL : '/') as Route
+            );
+            router.refresh();
+            return true;
+          }
+
+          setError(response?.error?.message || 'Something went wrong.');
+          setStatus('idle');
+          return false;
+        }
+        case 'forget-password': {
+          const response = await authClient.emailOtp.checkVerificationOtp({
+            email: values.email,
+            type: 'forget-password',
+            otp: values.otp,
+          });
+
+          if (response?.data) {
+            stashResetPasswordOtp(values.email, values.otp);
+            setStatus('success');
+            const params = new URLSearchParams({ email: values.email });
+            navigateWithTransition({
+              router,
+              href: withCallbackURL(
+                `/reset-password?${params.toString()}`,
+                callbackURL
+              ) as Route,
+              type: 'nav-forward',
+            });
+            return true;
+          }
+
+          setError(response?.error?.message || 'Something went wrong.');
+          setStatus('idle');
+          return false;
+        }
+        default: {
+          emailType satisfies never;
+          throw new Error(`Unhandled type: ${JSON.stringify(emailType)}`);
+        }
       }
-
-      setError(response?.error?.message || 'Something went wrong.');
-      return false;
     })(event);
 
     if (succeeded) {
@@ -88,7 +136,7 @@ export function VerifyEmailForm({
   };
 
   const handleResend = async () => {
-    if (isResending || cooldown > 0) {
+    if (resendStatus !== 'idle' || cooldown > 0) {
       return;
     }
 
@@ -98,20 +146,41 @@ export function VerifyEmailForm({
       return;
     }
 
-    setIsResending(true);
-    const response = await authClient.emailOtp.sendVerificationOtp({
-      email,
-      type: 'email-verification',
-    });
-    setIsResending(false);
+    setError(null);
+    setResendStatus('loading');
+
+    let response:
+      | Awaited<ReturnType<typeof authClient.emailOtp.sendVerificationOtp>>
+      | Awaited<ReturnType<typeof authClient.emailOtp.requestPasswordReset>>;
+
+    switch (emailType) {
+      case 'email-verification': {
+        response = await authClient.emailOtp.sendVerificationOtp({
+          email,
+          type: 'email-verification',
+        });
+        break;
+      }
+      case 'forget-password': {
+        response = await authClient.emailOtp.requestPasswordReset({
+          email,
+        });
+        break;
+      }
+      default: {
+        emailType satisfies never;
+        throw new Error(`Unhandled type: ${JSON.stringify(emailType)}`);
+      }
+    }
 
     if (response?.data) {
-      setError(null);
+      setResendStatus('success');
       setCooldown(60);
-      toast.success('A new code has been sent.');
-    } else {
-      setError(response?.error?.message || 'Something went wrong');
+      return;
     }
+
+    setError(response?.error?.message || 'Something went wrong');
+    setResendStatus('idle');
   };
 
   return (
@@ -130,7 +199,7 @@ export function VerifyEmailForm({
         <FormInputOTP
           control={control}
           name="otp"
-          label="Verification code"
+          label={copy.otpLabel}
           description="Enter the 6-digit code sent to your email."
         />
       </FieldGroup>
@@ -147,29 +216,29 @@ export function VerifyEmailForm({
       )}
 
       <div className="flex flex-col gap-3">
-        <Button
+        <StatusButton
           type="submit"
+          status={status}
+          onStatusChange={setStatus}
           size="lg"
           className="w-full"
           disabled={formState.isSubmitting}
+          successLabel={copy.successLabel}
         >
-          {formState.isSubmitting && (
-            <Spinner className="text-foreground" data-icon="inline-start" />
-          )}
-          Verify email
-        </Button>
-        <Button
+          {copy.submitLabel}
+        </StatusButton>
+        <StatusButton
           type="button"
           variant="outline"
           className="w-full"
+          status={resendStatus}
+          onStatusChange={setResendStatus}
+          disabled={resendStatus === 'idle' && cooldown > 0}
+          successLabel="Code sent"
           onClick={() => void handleResend()}
-          disabled={isResending || cooldown > 0}
         >
-          {isResending && (
-            <Spinner className="text-zinc-100" data-icon="inline-start" />
-          )}
           {cooldown > 0 ? `Resend code in ${cooldown}s` : 'Resend code'}
-        </Button>
+        </StatusButton>
       </div>
     </form>
   );

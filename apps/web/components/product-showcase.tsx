@@ -4,16 +4,15 @@ import { IconHash, IconMessageCircle, IconUsers } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 
-import { getSignUpUrl } from '@/lib/env';
+import { ForwardButton } from '@/components/forward-button';
+import { SectionShell } from '@/components/section-shell';
+import { getSignInUrl } from '@/lib/env';
 import {
   easeOut,
   staggerContainer,
   staggerItem,
   viewportOnce,
 } from '@/lib/motion';
-
-import { ForwardButton } from './forward-button';
-import { SectionShell } from './section-shell';
 
 const surfaces = [
   {
@@ -102,7 +101,7 @@ export default function ProductShowcase() {
         </motion.div>
 
         <div className="mt-12 flex justify-center">
-          <ForwardButton variant="ghost" href={getSignUpUrl()}>
+          <ForwardButton variant="ghost" href={getSignInUrl()}>
             Explore all surfaces
           </ForwardButton>
         </div>

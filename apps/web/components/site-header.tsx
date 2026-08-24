@@ -9,7 +9,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import { useHeaderTheme } from '@/hooks/use-header-theme';
-import { getSignUpUrl } from '@/lib/env';
+import { getSignInUrl } from '@/lib/env';
 import { easeDrawer } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
@@ -117,7 +117,7 @@ export default function SiteHeader() {
             <Button
               size="sm"
               nativeButton={false}
-              render={<a href={getSignUpUrl()}>Get Started</a>}
+              render={<a href={getSignInUrl()}>Get Started</a>}
             />
           </div>
 
@@ -160,7 +160,7 @@ export default function SiteHeader() {
                   <Button
                     size="sm"
                     nativeButton={false}
-                    render={<a href={getSignUpUrl()}>Get Started</a>}
+                    render={<a href={getSignInUrl()}>Get Started</a>}
                   />
                 </div>
               </motion.div>

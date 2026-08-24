@@ -2,19 +2,18 @@
 
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/components/alert';
-import { Button } from '@repo/ui/components/button';
 import { FieldGroup } from '@repo/ui/components/field';
-import { Spinner } from '@repo/ui/components/spinner';
 import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { type SyntheticEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import type { z } from 'zod';
 
 import { FormInput } from '@/components/form/form-input';
+import { type ButtonStatus, StatusButton } from '@/components/status-button';
 import { withCallbackURL } from '@/features/auth/lib/callback-url';
+import { verifyEmailPath } from '@/features/auth/lib/email-otp-type';
 import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
 import { ForgotPasswordSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
@@ -27,6 +26,7 @@ type ForgotPasswordFormProps = {
 
 export function ForgotPasswordForm({ callbackURL }: ForgotPasswordFormProps) {
   const router = useRouter();
+  const [status, setStatus] = useState<ButtonStatus>('idle');
   const [error, setError] = useState<string | null>(null);
 
   const { control, handleSubmit, formState, reset } =
@@ -40,17 +40,21 @@ export function ForgotPasswordForm({ callbackURL }: ForgotPasswordFormProps) {
   const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     const succeeded = await handleSubmit(async (values) => {
       setError(null);
+      setStatus('loading');
 
       const response = await authClient.emailOtp.requestPasswordReset({
         email: values.email,
       });
 
       if (response?.data) {
-        toast.success('If that email exists, a reset code has been sent.');
+        setStatus('success');
         navigateWithTransition({
           router,
           href: withCallbackURL(
-            `/reset-password?email=${encodeURIComponent(values.email)}`,
+            verifyEmailPath({
+              email: values.email,
+              type: 'forget-password',
+            }),
             callbackURL
           ) as Route,
           type: 'nav-forward',
@@ -59,6 +63,7 @@ export function ForgotPasswordForm({ callbackURL }: ForgotPasswordFormProps) {
       }
 
       setError(response?.error?.message || 'Something went wrong');
+      setStatus('idle');
       return false;
     })(event);
 
@@ -91,17 +96,17 @@ export function ForgotPasswordForm({ callbackURL }: ForgotPasswordFormProps) {
         </Alert>
       )}
 
-      <Button
+      <StatusButton
         type="submit"
+        status={status}
+        onStatusChange={setStatus}
         size="lg"
         className="w-full"
         disabled={formState.isSubmitting}
+        successLabel="Reset code sent"
       >
-        {formState.isSubmitting && (
-          <Spinner className="text-zinc-100" data-icon="inline-start" />
-        )}
         Continue
-      </Button>
+      </StatusButton>
     </form>
   );
 }
