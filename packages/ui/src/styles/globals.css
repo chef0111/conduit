@@ -66,6 +66,18 @@
     }
   }
 
+  --animate-spinner-opacity: spinner-opacity
+    var(--tw-animation-duration, var(--tw-duration, 1s)) linear infinite;
+
+  @keyframes spinner-opacity {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0.15;
+    }
+  }
+
   --header-height: --spacing(12);
   --fade-top-height: --spacing(20);
   --fade-bottom-height: --spacing(20);
@@ -191,16 +203,6 @@
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
     @apply border-border outline-ring/50;
-  }
-}
-
-@keyframes loading-spinner-fade {
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0.15;
   }
 }
 

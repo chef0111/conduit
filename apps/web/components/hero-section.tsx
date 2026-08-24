@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 import { HeroCircuitBackground } from '@/components/hero-circuit-background';
 import { SectionShell } from '@/components/section-shell';
-import { getSignUpUrl } from '@/lib/env';
+import { getSignInUrl } from '@/lib/env';
 import { easeOut, fadeUpBlurVariants, fadeUpVariants } from '@/lib/motion';
 
 export default function HeroSection() {
@@ -85,7 +85,7 @@ export default function HeroSection() {
               <Button
                 nativeButton={false}
                 render={
-                  <a href={getSignUpUrl()}>
+                  <a href={getSignInUrl()}>
                     <span className="text-nowrap">Get started</span>
                   </a>
                 }

@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 import { ForwardButton } from '@/components/forward-button';
 import { SectionShell } from '@/components/section-shell';
-import { getSignUpUrl } from '@/lib/env';
+import { getSignInUrl } from '@/lib/env';
 import {
   easeOut,
   staggerContainer,
@@ -101,7 +101,7 @@ export default function ProductShowcase() {
         </motion.div>
 
         <div className="mt-12 flex justify-center">
-          <ForwardButton variant="ghost" href={getSignUpUrl()}>
+          <ForwardButton variant="ghost" href={getSignInUrl()}>
             Explore all surfaces
           </ForwardButton>
         </div>

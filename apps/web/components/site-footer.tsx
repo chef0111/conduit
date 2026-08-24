@@ -3,7 +3,7 @@ import type { Route } from 'next';
 import Link from 'next/link';
 
 import { SectionShell } from '@/components/section-shell';
-import { getSignUpUrl } from '@/lib/env';
+import { getSignInUrl } from '@/lib/env';
 
 type FooterLink = { href: string; label: string };
 
@@ -44,7 +44,7 @@ const footerLinks: { name: string; links: FooterLink[] }[] = [
       { href: '#product' as Route, label: 'Surfaces' },
       { href: '#solutions' as Route, label: 'Solutions' },
       { href: '#pricing' as Route, label: 'Pricing' },
-      { href: getSignUpUrl(), label: 'Get started' },
+      { href: getSignInUrl(), label: 'Get started' },
     ],
   },
   {

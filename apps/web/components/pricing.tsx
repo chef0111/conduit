@@ -5,7 +5,7 @@ import { IconCheck } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 
 import { SectionShell } from '@/components/section-shell';
-import { getSignUpUrl } from '@/lib/env';
+import { getSignInUrl } from '@/lib/env';
 import { easeOut, staggerContainer, viewportOnce } from '@/lib/motion';
 
 const plans = [
@@ -129,7 +129,7 @@ export default function Pricing() {
                   className="w-full"
                   variant={plan.variant}
                   nativeButton={false}
-                  render={<a href={getSignUpUrl()}>Get Started</a>}
+                  render={<a href={getSignInUrl()}>Get Started</a>}
                 />
               </div>
 
