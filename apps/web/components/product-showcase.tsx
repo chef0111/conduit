@@ -4,6 +4,8 @@ import { IconHash, IconMessageCircle, IconUsers } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 
+import { ForwardButton } from '@/components/forward-button';
+import { SectionShell } from '@/components/section-shell';
 import { getSignUpUrl } from '@/lib/env';
 import {
   easeOut,
@@ -11,9 +13,6 @@ import {
   staggerItem,
   viewportOnce,
 } from '@/lib/motion';
-
-import { ForwardButton } from './forward-button';
-import { SectionShell } from './section-shell';
 
 const surfaces = [
   {

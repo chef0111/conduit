@@ -8,7 +8,6 @@ import { getSignUpUrl } from '@/lib/env';
 import { cn } from '@/lib/utils';
 
 import { ForwardButton } from './forward-button';
-import { SectionShell } from './section-shell';
 import {
   ArcjetMark,
   ClaudeMark,
@@ -16,7 +15,8 @@ import {
   NeonMark,
   PrismaMark,
   Vercel,
-} from './svgs';
+} from './icons';
+import { SectionShell } from './section-shell';
 
 type Framework = {
   name: string;

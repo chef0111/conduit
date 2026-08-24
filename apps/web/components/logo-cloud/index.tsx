@@ -2,7 +2,6 @@
 
 import type { ComponentType } from 'react';
 
-import { SectionShell } from '../section-shell';
 import {
   Arcjet,
   BetterAuth,
@@ -12,7 +11,9 @@ import {
   Neon,
   Prisma,
   VercelFull,
-} from '../svgs';
+} from '@/components/icons';
+import { SectionShell } from '@/components/section-shell';
+
 import { LogosCarousel } from './logos-carousel';
 
 type PartnerLogo = {

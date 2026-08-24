@@ -9,10 +9,9 @@ import { IconAt } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 
+import { ForwardButton } from '@/components/forward-button';
 import { SectionShell } from '@/components/section-shell';
 import { fadeUpVariants } from '@/lib/motion';
-
-import { ForwardButton } from './forward-button';
 
 const avatars = [
   {

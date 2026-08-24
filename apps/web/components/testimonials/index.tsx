@@ -3,9 +3,9 @@
 import { IconRosetteDiscountCheck } from '@tabler/icons-react';
 import { motion, useReducedMotion } from 'motion/react';
 
+import { SectionShell } from '@/components/section-shell';
 import { staggerContainer, staggerItem, viewportOnce } from '@/lib/motion';
 
-import { SectionShell } from '../section-shell';
 import {
   Testimonial,
   TestimonialAuthor,

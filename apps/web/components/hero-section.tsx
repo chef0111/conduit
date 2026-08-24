@@ -7,11 +7,10 @@ import { motion, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { HeroCircuitBackground } from '@/components/hero-circuit-background';
+import { SectionShell } from '@/components/section-shell';
 import { getSignUpUrl } from '@/lib/env';
 import { easeOut, fadeUpBlurVariants, fadeUpVariants } from '@/lib/motion';
-
-import { HeroCircuitBackground } from './hero-circuit-background';
-import { SectionShell } from './section-shell';
 
 export default function HeroSection() {
   const reduced = useReducedMotion() ?? false;
