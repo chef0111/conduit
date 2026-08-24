@@ -1,3 +1,4 @@
+import '@/lib/orpc.server';
 import './globals.css';
 
 import type { Metadata } from 'next';
@@ -23,7 +24,6 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn('h-full antialiased', fontVariables)}
-      style={{ colorScheme: 'light' }}
       suppressHydrationWarning
     >
       <body>
