@@ -15,10 +15,10 @@ function ResetPasswordBody() {
     <>
       <div className="mb-6 text-center">
         <h2 className="text-foreground mb-2 text-3xl font-medium tracking-tight">
-          Reset your password
+          Set a new password
         </h2>
         <p className="text-muted-foreground text-base">
-          Enter your code and choose a new password.
+          Choose a new password for your account.
         </p>
       </div>
 

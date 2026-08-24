@@ -15,6 +15,7 @@ import type { z } from 'zod';
 import { FormCheckbox } from '@/components/form/form-checkbox';
 import { FormInput } from '@/components/form/form-input';
 import { withCallbackURL } from '@/features/auth/lib/callback-url';
+import { verifyEmailPath } from '@/features/auth/lib/email-otp-purpose';
 import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
 import { SignUpSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
@@ -57,7 +58,10 @@ export function SignUpForm({ callbackURL, isOAuthPending }: SignUpFormProps) {
         navigateWithTransition({
           router,
           href: withCallbackURL(
-            `/verify-email?email=${encodeURIComponent(values.email)}`,
+            verifyEmailPath({
+              email: values.email,
+              purpose: 'email-verification',
+            }),
             callbackURL
           ) as Route,
           type: 'nav-forward',

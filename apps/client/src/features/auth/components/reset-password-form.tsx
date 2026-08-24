@@ -8,15 +8,19 @@ import { Spinner } from '@repo/ui/components/spinner';
 import { IconAlertCircle } from '@tabler/icons-react';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
-import { type SyntheticEvent, useState } from 'react';
+import { type SyntheticEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type { z } from 'zod';
 
 import { FormInput } from '@/components/form/form-input';
-import { FormInputOTP } from '@/components/form/form-otp';
 import { withCallbackURL } from '@/features/auth/lib/callback-url';
+import { verifyEmailPath } from '@/features/auth/lib/email-otp-purpose';
 import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
+import {
+  clearResetPasswordOtp,
+  readResetPasswordOtp,
+} from '@/features/auth/lib/reset-password-otp';
 import { ResetPasswordSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
 
@@ -26,6 +30,16 @@ type ResetPasswordFormProps = {
   emailFromQuery: string | null;
   callbackURL: string | null;
 };
+
+function forgetPasswordVerifyHref(
+  email: string,
+  callbackURL: string | null
+): Route {
+  return withCallbackURL(
+    verifyEmailPath({ email, purpose: 'forget-password' }),
+    callbackURL
+  ) as Route;
+}
 
 export function ResetPasswordForm({
   emailFromQuery,
@@ -38,29 +52,50 @@ export function ResetPasswordForm({
   const validEmailFromQuery = parsedEmailFromQuery.success
     ? parsedEmailFromQuery.data
     : null;
+  const [canReset, setCanReset] = useState(!validEmailFromQuery);
 
   const { control, handleSubmit, formState, reset } =
     useForm<ResetPasswordFormValues>({
       resolver: standardSchemaResolver(ResetPasswordSchema),
       defaultValues: {
         email: validEmailFromQuery ?? '',
-        otp: '',
         password: '',
         confirmPassword: '',
       },
     });
 
+  useEffect(() => {
+    if (!validEmailFromQuery) {
+      setCanReset(true);
+      return;
+    }
+
+    if (readResetPasswordOtp(validEmailFromQuery) !== null) {
+      setCanReset(true);
+      return;
+    }
+
+    router.replace(forgetPasswordVerifyHref(validEmailFromQuery, callbackURL));
+  }, [callbackURL, router, validEmailFromQuery]);
+
   const onSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     const succeeded = await handleSubmit(async (values) => {
       setError(null);
 
+      const otp = readResetPasswordOtp(values.email);
+      if (!otp) {
+        router.replace(forgetPasswordVerifyHref(values.email, callbackURL));
+        return false;
+      }
+
       const response = await authClient.emailOtp.resetPassword({
         email: values.email,
-        otp: values.otp,
+        otp,
         password: values.password,
       });
 
       if (response?.data) {
+        clearResetPasswordOtp();
         toast.success('Password updated. Sign in with your new password.');
         navigateWithTransition({
           router,
@@ -79,10 +114,14 @@ export function ResetPasswordForm({
     }
   };
 
+  if (!canReset) {
+    return null;
+  }
+
   return (
     <form className="flex flex-col gap-5" onSubmit={onSubmit}>
       <FieldGroup>
-        {!validEmailFromQuery ? (
+        {!validEmailFromQuery && (
           <FormInput
             control={control}
             name="email"
@@ -91,13 +130,7 @@ export function ResetPasswordForm({
             label="Email"
             placeholder="example@conduit.com"
           />
-        ) : null}
-        <FormInputOTP
-          control={control}
-          name="otp"
-          label="Reset code"
-          description="Enter the 6-digit code sent to your email."
-        />
+        )}
         <FormInput
           control={control}
           name="password"

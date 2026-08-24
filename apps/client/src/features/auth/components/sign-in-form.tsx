@@ -29,6 +29,7 @@ import {
   isSafeInternalPath,
   withCallbackURL,
 } from '@/features/auth/lib/callback-url';
+import { verifyEmailPath } from '@/features/auth/lib/email-otp-purpose';
 import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
 import { SignInSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
@@ -187,7 +188,10 @@ export function SignInForm({ callbackURL, isOAuthPending }: SignInFormProps) {
                 navigateWithTransition({
                   router,
                   href: withCallbackURL(
-                    `/verify-email?email=${encodeURIComponent(unverifiedEmail)}`,
+                    verifyEmailPath({
+                      email: unverifiedEmail,
+                      purpose: 'email-verification',
+                    }),
                     callbackURL
                   ) as Route,
                   type: 'nav-forward',

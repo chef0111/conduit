@@ -15,18 +15,29 @@ import type { z } from 'zod';
 
 import { FormInput } from '@/components/form/form-input';
 import { FormInputOTP } from '@/components/form/form-otp';
-import { isSafeInternalPath } from '@/features/auth/lib/callback-url';
+import {
+  isSafeInternalPath,
+  withCallbackURL,
+} from '@/features/auth/lib/callback-url';
+import {
+  emailOtpCopyFor,
+  type EmailOtpPurpose,
+} from '@/features/auth/lib/email-otp-purpose';
+import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
+import { stashResetPasswordOtp } from '@/features/auth/lib/reset-password-otp';
 import { EmailOtpSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
 
 type VerifyEmailFormValues = z.infer<typeof EmailOtpSchema>;
 
 type VerifyEmailFormProps = {
+  purpose: EmailOtpPurpose;
   emailFromQuery: string | null;
   callbackURL: string | null;
 };
 
 export function VerifyEmailForm({
+  purpose,
   emailFromQuery,
   callbackURL,
 }: VerifyEmailFormProps) {
@@ -39,6 +50,7 @@ export function VerifyEmailForm({
   const validEmailFromQuery = parsedEmailFromQuery.success
     ? parsedEmailFromQuery.data
     : null;
+  const copy = emailOtpCopyFor(purpose);
 
   const { control, handleSubmit, getValues, formState, reset } =
     useForm<VerifyEmailFormValues>({
@@ -65,21 +77,53 @@ export function VerifyEmailForm({
     const succeeded = await handleSubmit(async (values) => {
       setError(null);
 
-      const response = await authClient.emailOtp.verifyEmail({
-        email: values.email,
-        otp: values.otp,
-      });
+      switch (purpose) {
+        case 'email-verification': {
+          const response = await authClient.emailOtp.verifyEmail({
+            email: values.email,
+            otp: values.otp,
+          });
 
-      if (response?.data) {
-        router.push(
-          (isSafeInternalPath(callbackURL) ? callbackURL : '/') as Route
-        );
-        router.refresh();
-        return true;
+          if (response?.data) {
+            router.push(
+              (isSafeInternalPath(callbackURL) ? callbackURL : '/') as Route
+            );
+            router.refresh();
+            return true;
+          }
+
+          setError(response?.error?.message || 'Something went wrong.');
+          return false;
+        }
+        case 'forget-password': {
+          const response = await authClient.emailOtp.checkVerificationOtp({
+            email: values.email,
+            type: 'forget-password',
+            otp: values.otp,
+          });
+
+          if (response?.data) {
+            stashResetPasswordOtp(values.email, values.otp);
+            const params = new URLSearchParams({ email: values.email });
+            navigateWithTransition({
+              router,
+              href: withCallbackURL(
+                `/reset-password?${params.toString()}`,
+                callbackURL
+              ) as Route,
+              type: 'nav-forward',
+            });
+            return true;
+          }
+
+          setError(response?.error?.message || 'Something went wrong.');
+          return false;
+        }
+        default: {
+          purpose satisfies never;
+          throw new Error(`Unhandled purpose: ${JSON.stringify(purpose)}`);
+        }
       }
-
-      setError(response?.error?.message || 'Something went wrong.');
-      return false;
     })(event);
 
     if (succeeded) {
@@ -99,10 +143,31 @@ export function VerifyEmailForm({
     }
 
     setIsResending(true);
-    const response = await authClient.emailOtp.sendVerificationOtp({
-      email,
-      type: 'email-verification',
-    });
+
+    let response:
+      | Awaited<ReturnType<typeof authClient.emailOtp.sendVerificationOtp>>
+      | Awaited<ReturnType<typeof authClient.emailOtp.requestPasswordReset>>;
+
+    switch (purpose) {
+      case 'email-verification': {
+        response = await authClient.emailOtp.sendVerificationOtp({
+          email,
+          type: 'email-verification',
+        });
+        break;
+      }
+      case 'forget-password': {
+        response = await authClient.emailOtp.requestPasswordReset({
+          email,
+        });
+        break;
+      }
+      default: {
+        purpose satisfies never;
+        throw new Error(`Unhandled purpose: ${JSON.stringify(purpose)}`);
+      }
+    }
+
     setIsResending(false);
 
     if (response?.data) {
@@ -130,7 +195,7 @@ export function VerifyEmailForm({
         <FormInputOTP
           control={control}
           name="otp"
-          label="Verification code"
+          label={copy.otpLabel}
           description="Enter the 6-digit code sent to your email."
         />
       </FieldGroup>
@@ -156,7 +221,7 @@ export function VerifyEmailForm({
           {formState.isSubmitting && (
             <Spinner className="text-foreground" data-icon="inline-start" />
           )}
-          Verify email
+          {copy.submitLabel}
         </Button>
         <Button
           type="button"

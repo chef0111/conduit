@@ -17,7 +17,7 @@ export function withCallbackURL(
   pathname: string,
   callbackURL: string | null | undefined
 ): string {
-  if (!isSafeInternalPath(callbackURL)) {
+  if (!isSafeInternalPath(callbackURL) || callbackURL === '/') {
     return pathname;
   }
 
