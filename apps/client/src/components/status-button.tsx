@@ -62,12 +62,12 @@ export type StatusButtonProps = Omit<
   children: React.ReactNode;
   /**
    * Uncontrolled mode: loading while the returned promise is pending, then
-   * success. Omit it when the form owns the submission.
+   * success. Omit it when `status` is controlled.
    */
   onClick?: (
     event: React.MouseEvent<HTMLButtonElement>
   ) => void | Promise<void>;
-  /** Controlled mode, e.g. derived from `useActionState`. */
+  /** Controlled mode. The parent owns loading and success. */
   status?: ButtonStatus;
   /** Also called for the automatic return to idle after `successDuration`. */
   onStatusChange?: (status: ButtonStatus) => void;
@@ -113,6 +113,13 @@ export function StatusButton({
     }
 
     if (!onClick) return;
+
+    // Controlled callers set loading and success themselves. Wrapping the
+    // click would flash success on a validation return.
+    if (statusProp !== undefined) {
+      await onClick(event);
+      return;
+    }
 
     setStatus('loading');
 

@@ -13,7 +13,7 @@ import type { z } from 'zod';
 import { FormInput } from '@/components/form/form-input';
 import { type ButtonStatus, StatusButton } from '@/components/status-button';
 import { withCallbackURL } from '@/features/auth/lib/callback-url';
-import { verifyEmailPath } from '@/features/auth/lib/email-otp-purpose';
+import { verifyEmailPath } from '@/features/auth/lib/email-otp-type';
 import { navigateWithTransition } from '@/features/auth/lib/navigate-with-transition';
 import { ForgotPasswordSchema } from '@/features/auth/lib/validations';
 import { authClient } from '@/services/auth/client';
@@ -53,7 +53,7 @@ export function ForgotPasswordForm({ callbackURL }: ForgotPasswordFormProps) {
           href: withCallbackURL(
             verifyEmailPath({
               email: values.email,
-              purpose: 'forget-password',
+              type: 'forget-password',
             }),
             callbackURL
           ) as Route,

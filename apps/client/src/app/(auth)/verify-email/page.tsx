@@ -7,15 +7,15 @@ import { DirectionalTransition } from '@/features/auth/components/directional-tr
 import { VerifyEmailForm } from '@/features/auth/components/verify-email-form';
 import {
   emailOtpCopyFor,
-  parseEmailOtpPurpose,
-} from '@/features/auth/lib/email-otp-purpose';
+  parseEmailOtpType,
+} from '@/features/auth/lib/email-otp-type';
 
 function VerifyEmailBody() {
   const searchParams = useSearchParams();
   const callbackURL = searchParams.get('callbackURL');
   const email = searchParams.get('email');
-  const purpose = parseEmailOtpPurpose(searchParams.get('type'));
-  const copy = emailOtpCopyFor(purpose);
+  const type = parseEmailOtpType(searchParams.get('type'));
+  const copy = emailOtpCopyFor(type);
 
   return (
     <>
@@ -27,7 +27,7 @@ function VerifyEmailBody() {
       </div>
 
       <VerifyEmailForm
-        purpose={purpose}
+        type={type}
         emailFromQuery={email}
         callbackURL={callbackURL}
       />
