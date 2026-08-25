@@ -10,7 +10,7 @@ import {
   parseEmailOtpType,
 } from '@/features/auth/lib/email-otp-type';
 
-function VerifyEmailBody() {
+export default function VerifyEmailPage() {
   const searchParams = useSearchParams();
   const callbackURL = searchParams.get('callbackURL');
   const email = searchParams.get('email');
@@ -18,7 +18,7 @@ function VerifyEmailBody() {
   const copy = emailOtpCopyFor(type);
 
   return (
-    <>
+    <DirectionalTransition>
       <div className="mb-6 text-center">
         <h2 className="text-foreground mb-2 text-3xl font-medium tracking-tight">
           {copy.title}
@@ -39,14 +39,6 @@ function VerifyEmailBody() {
         callbackURL={callbackURL}
         transitionTypes={['nav-back']}
       />
-    </>
-  );
-}
-
-export default function VerifyEmailPage() {
-  return (
-    <DirectionalTransition>
-      <VerifyEmailBody />
     </DirectionalTransition>
   );
 }

@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils';
 
 export type ButtonStatus = 'idle' | 'loading' | 'success';
 
-const DEFAULT_SUCCESS_DURATION = 1500;
+const DEFAULT_SUCCESS_DURATION = 1000;
 
 const swapVariants: Variants = {
   initial: { opacity: 0, y: 8, filter: 'blur(4px)' },

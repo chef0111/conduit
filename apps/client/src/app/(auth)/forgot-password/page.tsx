@@ -6,12 +6,12 @@ import { AuthActionLink } from '@/features/auth/components/auth-action-link';
 import { DirectionalTransition } from '@/features/auth/components/directional-transition';
 import { ForgotPasswordForm } from '@/features/auth/components/forgot-password-form';
 
-function ForgotPasswordBody() {
+export default function ForgotPasswordPage() {
   const searchParams = useSearchParams();
   const callbackURL = searchParams.get('callbackURL');
 
   return (
-    <>
+    <DirectionalTransition>
       <div className="mb-6 text-center">
         <h2 className="text-foreground mb-2 text-3xl font-medium tracking-tight">
           Forgot your password?
@@ -30,14 +30,6 @@ function ForgotPasswordBody() {
         callbackURL={callbackURL}
         transitionTypes={['nav-back']}
       />
-    </>
-  );
-}
-
-export default function ForgotPasswordPage() {
-  return (
-    <DirectionalTransition>
-      <ForgotPasswordBody />
     </DirectionalTransition>
   );
 }
