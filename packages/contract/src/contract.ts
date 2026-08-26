@@ -1,5 +1,5 @@
-import { healthCheckContract } from './contracts/health.js';
-import { getSessionContract } from './contracts/users.js';
+import { healthCheckContract } from '@/contracts/health';
+import { getSessionContract } from '@/contracts/users';
 
 export const contract = {
   health: {

@@ -24,6 +24,7 @@
   "registries": {
     "@tailark-oss": "https://oss.tailark.com/r/{name}.json",
     "@ncdai": "https://chanhdai.com/r/{name}.json",
-    "@aceternity": "https://ui.aceternity.com/registry/{name}.json"
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
+    "@shadcn-editor": "https://raw.githubusercontent.com/htmujahid/shadcn-editor/refs/heads/main/public/r/{name}.json"
   }
 }

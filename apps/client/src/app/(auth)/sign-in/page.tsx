@@ -24,12 +24,12 @@ function SignInContent({ callbackURL }: { callbackURL: string | null }) {
   );
 }
 
-function SignInBody() {
+export default function SignInPage() {
   const searchParams = useSearchParams();
   const callbackURL = searchParams.get('callbackURL');
 
   return (
-    <>
+    <DirectionalTransition>
       <div className="mb-6 text-center">
         <h2 className="text-foreground mb-2 text-3xl font-medium tracking-tight">
           Sign In
@@ -49,14 +49,6 @@ function SignInBody() {
         label="Sign up"
         callbackURL={callbackURL}
       />
-    </>
-  );
-}
-
-export default function SignInPage() {
-  return (
-    <DirectionalTransition>
-      <SignInBody />
     </DirectionalTransition>
   );
 }

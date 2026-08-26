@@ -1,14 +1,26 @@
 {
   "extends": "@repo/typescript-config/base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
     "composite": true,
     "incremental": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "declaration": true,
     "declarationMap": true,
-    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
+    "sourceMap": false,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "tsc-alias": {
+    "resolveFullPaths": true,
+    "resolveFullExtension": ".js"
+  }
 }

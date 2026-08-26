@@ -55,6 +55,8 @@ export const nextJsConfig = [
       'react/prop-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      'no-useless-assignment': 'off',
     },
   },
 ];

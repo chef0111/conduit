@@ -24,12 +24,12 @@ function SignUpContent({ callbackURL }: { callbackURL: string | null }) {
   );
 }
 
-function SignUpBody() {
+export default function SignUpPage() {
   const searchParams = useSearchParams();
   const callbackURL = searchParams.get('callbackURL');
 
   return (
-    <>
+    <DirectionalTransition>
       <div className="mb-6 text-center">
         <h2 className="text-foreground mb-2 text-3xl font-medium tracking-tight">
           Create your Account
@@ -49,14 +49,6 @@ function SignUpBody() {
         label="Sign in"
         callbackURL={callbackURL}
       />
-    </>
-  );
-}
-
-export default function SignUpPage() {
-  return (
-    <DirectionalTransition>
-      <SignUpBody />
     </DirectionalTransition>
   );
 }

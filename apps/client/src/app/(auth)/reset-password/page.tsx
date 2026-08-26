@@ -6,13 +6,13 @@ import { AuthActionLink } from '@/features/auth/components/auth-action-link';
 import { DirectionalTransition } from '@/features/auth/components/directional-transition';
 import { ResetPasswordForm } from '@/features/auth/components/reset-password-form';
 
-function ResetPasswordBody() {
+export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
   const callbackURL = searchParams.get('callbackURL');
   const email = searchParams.get('email');
 
   return (
-    <>
+    <DirectionalTransition>
       <div className="mb-6 text-center">
         <h2 className="text-foreground mb-2 text-3xl font-medium tracking-tight">
           Set a new password
@@ -31,14 +31,6 @@ function ResetPasswordBody() {
         callbackURL={callbackURL}
         transitionTypes={['nav-back']}
       />
-    </>
-  );
-}
-
-export default function ResetPasswordPage() {
-  return (
-    <DirectionalTransition>
-      <ResetPasswordBody />
     </DirectionalTransition>
   );
 }

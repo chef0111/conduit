@@ -19,12 +19,10 @@ export default function AuthLayout({
         data-surface="light"
         className="bg-background text-foreground flex min-h-screen w-full flex-col font-sans lg:flex-row"
       >
-        {/* Left Image Panel */}
         <div
           className="sticky flex min-h-[40vh] w-full flex-col justify-between overflow-hidden p-8 md:p-12 lg:min-h-screen lg:w-1/2 lg:p-16"
           style={{ viewTransitionName: 'auth-hero' }}
         >
-          {/* Background Image — wrapper owns the insets; fill ignores intrinsic width/height */}
           <div className="pointer-events-none absolute inset-0 lg:inset-8">
             <Image
               src="/images/auth.avif"
@@ -36,14 +34,13 @@ export default function AuthLayout({
             />
           </div>
 
-          {/* Top Header */}
           <div className="relative z-10 flex items-center justify-between">
             <Brand textClassName="text-white" />
 
             <Button
               variant="ghost"
               nativeButton={false}
-              className="hover:bg-muted/20 text-background! gap-1.5 has-data-[icon=inline-start]:ps-1.5"
+              className="text-background! gap-1.5 hover:bg-blue-500/20! has-data-[icon=inline-start]:ps-1.5"
               render={<a href={getMarketingBaseUrl()} />}
             >
               <IconChevronLeft data-icon="inline-start" />
@@ -51,17 +48,16 @@ export default function AuthLayout({
             </Button>
           </div>
 
-          {/* Bottom Content */}
           <div className="relative z-10 mt-12 lg:mt-0">
-            <h1 className="mb-4 max-w-xl text-4xl leading-[1.1] font-medium tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="text-background mb-4 max-w-xl text-4xl leading-[1.1] font-medium tracking-tight sm:text-5xl lg:text-6xl">
               Where Innovation
               <br />
               Meets Impact.
             </h1>
-            <p className="max-w-lg text-base leading-relaxed text-balance text-white/90 sm:text-lg">
+            <blockquote className="text-muted max-w-lg text-base leading-relaxed text-balance sm:text-lg">
               Conduit empowers teams to build, scale, and transform with
               technology that drives real results.
-            </p>
+            </blockquote>
           </div>
         </div>
 
