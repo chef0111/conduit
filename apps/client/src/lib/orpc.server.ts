@@ -1,14 +1,17 @@
 import 'server-only';
 
 import { createORPCClient } from '@orpc/client';
-import type { ContractRouterClient } from '@orpc/contract';
-import { createTanstackQueryUtils } from '@orpc/tanstack-query';
+import type { RouterContractClient } from '@orpc/contract';
+import {
+  createTanstackQueryUtils,
+  type RouterUtils,
+} from '@orpc/tanstack-query';
 import type { contract } from '@repo/contract';
 import { headers } from 'next/headers';
 
 import { createOrpcLink } from './orpc-link';
 
-export const client: ContractRouterClient<typeof contract> = createORPCClient(
+export const client: RouterContractClient<typeof contract> = createORPCClient(
   createOrpcLink(async () => {
     const incoming = await headers();
     const cookie = incoming.get('cookie');
@@ -22,4 +25,5 @@ export const client: ContractRouterClient<typeof contract> = createORPCClient(
   })
 );
 
-export const orpc = createTanstackQueryUtils(client);
+export const orpc: RouterUtils<typeof client> =
+  createTanstackQueryUtils(client);
