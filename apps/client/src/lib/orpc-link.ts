@@ -1,4 +1,5 @@
-import { OpenAPILink } from '@orpc/openapi-client/fetch';
+import { ResponseValidationLinkPlugin } from '@orpc/contract/plugins';
+import { OpenAPILink } from '@orpc/openapi/fetch';
 import { contract } from '@repo/contract';
 
 import { getServerBaseUrl } from './env';
@@ -6,10 +7,14 @@ import { getServerBaseUrl } from './env';
 export function createOrpcLink(
   getHeaders?: () => Promise<Record<string, string>>
 ) {
+  const base = new URL(getServerBaseUrl());
+
   return new OpenAPILink(contract, {
-    url: getServerBaseUrl(),
-    fetch: (request, init) =>
-      globalThis.fetch(request, {
+    origin: base.origin,
+    url: `${base.pathname}${base.search}` as `/${string}`,
+    plugins: [new ResponseValidationLinkPlugin(contract)],
+    fetch: (url, init) =>
+      globalThis.fetch(url, {
         ...init,
         credentials: 'include',
         cache: 'no-store',

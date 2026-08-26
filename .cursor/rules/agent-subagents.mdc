@@ -1,13 +1,16 @@
 ---
-description: Subagent type, grok 4.6 model
-alwaysApply: true
+description: >-
+  Apply only when poteto-mode is active (/poteto-mode or Custom Mode).
+  Subagent routing for poteto-agent and grok 4.5/4.6.
+  Do not apply in ordinary Agent sessions.
+alwaysApply: false
 ---
 
 # Subagents
 
 Use `Task` with `subagent_type: "poteto-agent"` only. Do not use `explore`, `generalPurpose`, or `plan`.
 
-Model is the grok 4.6 family. Today that slug is `cursor-grok-4.6-xhigh`. Resume an existing poteto-agent. Do not spawn a sibling for the same thread.
+Model is the grok 4.5/4.6 family. Resume an existing poteto-agent. Do not spawn a sibling for the same thread. Ensure that the correct model is picked for the difficulty of the task.
 
 ```
 # BAD

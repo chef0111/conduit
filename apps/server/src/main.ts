@@ -3,12 +3,37 @@ import 'reflect-metadata';
 
 import { NestFactory } from '@nestjs/core';
 import { OpenAPIGenerator } from '@orpc/openapi';
+import { OpenAPIHandler } from '@orpc/openapi/node';
+import { OpenAPIReferenceHandlerPlugin } from '@orpc/openapi/plugins';
 import { ZodToJsonSchemaConverter } from '@orpc/zod';
 import { contract } from '@repo/contract';
-import swaggerUi from 'swagger-ui-express';
+import type { NextFunction, Request, Response } from 'express';
 
 import { AppModule } from './app.module';
 import { getTrustedOrigins } from './auth/trusted-origins';
+
+const generator = new OpenAPIGenerator({
+  converters: [new ZodToJsonSchemaConverter()],
+});
+
+const docsHandler = new OpenAPIHandler(
+  {},
+  {
+    plugins: [
+      new OpenAPIReferenceHandlerPlugin({
+        spec: () =>
+          generator.generate(contract, {
+            base: {
+              info: {
+                title: 'Conduit API',
+                version: '0.1.0',
+              },
+            },
+          }),
+      }),
+    ],
+  }
+);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -20,19 +45,16 @@ async function bootstrap() {
     credentials: true,
   });
 
-  const generator = new OpenAPIGenerator({
-    schemaConverters: [new ZodToJsonSchemaConverter()],
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    void docsHandler
+      .handle(req, res, { prefix: '/docs', context: { request: req } })
+      .then(({ matched }) => {
+        if (!matched) {
+          next();
+        }
+      })
+      .catch(next);
   });
-
-  const spec = await generator.generate(contract, {
-    info: {
-      title: 'Conduit API',
-      version: '0.1.0',
-    },
-  });
-
-  const expressApp = app.getHttpAdapter().getInstance();
-  expressApp.use('/docs', swaggerUi.serve, swaggerUi.setup(spec));
 
   const port = Number(process.env.PORT ?? 3333);
   const host = process.env.HOST ?? '0.0.0.0';
