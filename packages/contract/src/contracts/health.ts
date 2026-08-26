@@ -1,6 +1,7 @@
 import { oc } from '@orpc/contract';
+import { openapi } from '@orpc/openapi';
 import { HealthStatusSchema } from '@/schemas/health';
 
 export const healthCheckContract = oc
-  .route({ method: 'GET', path: '/health' })
+  .meta(openapi({ method: 'GET', path: '/health' }))
   .output(HealthStatusSchema);

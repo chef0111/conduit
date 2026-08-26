@@ -21,13 +21,15 @@ async function bootstrap() {
   });
 
   const generator = new OpenAPIGenerator({
-    schemaConverters: [new ZodToJsonSchemaConverter()],
+    converters: [new ZodToJsonSchemaConverter()],
   });
 
   const spec = await generator.generate(contract, {
-    info: {
-      title: 'Conduit API',
-      version: '0.1.0',
+    base: {
+      info: {
+        title: 'Conduit API',
+        version: '0.1.0',
+      },
     },
   });
 
